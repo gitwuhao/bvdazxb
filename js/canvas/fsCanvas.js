@@ -30,9 +30,13 @@
             document.body.innerHTML = html;
         },
         initImageQueue: function() {
-            new fs.Task({
+            new util.task({
                 array: $('[data-src],[data-background]'),
                 handle: this.taskExecute.bind(this),
+                execute: function(task) {
+                    var me = this;
+                    this.handle(task, this.complete.bind(this));
+                },
                 finish: this.taskFinish.bind(this)
             });
         },

@@ -49,7 +49,7 @@
 
 
     classjs({
-        className: 'ui.asyncTask',
+        className: 'util.asyncTask',
         extend: 'util.task',
         index: 0,
         autoRun: true,

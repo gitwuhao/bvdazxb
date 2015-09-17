@@ -9,22 +9,23 @@
             'h5desc': 'http://hws.m.taobao.com/cache/mdesc/5.0?id='
         };
 
-    global.config = global.config || {};
+    var config = global.config || {};
+    global.config = config;
 
-    global.config.nodeURL = nodeURL;
-    global.config.urls = urls;
+    config.nodeURL = nodeURL;
+    config.urls = urls;
 
-    global.config.KEY = {
+    config.KEY = {
         hd: 'handu',
         amh: 'amh'
     };
 
-    global.config.PCSize = {
+    config.PCSize = {
         clientWidth: 790,
         clientHeight: 0
     };
 
-    global.config.MobileSize = {
+    config.MobileSize = {
         clientWidth: 320,
         clientHeight: 0
     };

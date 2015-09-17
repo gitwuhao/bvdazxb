@@ -48,7 +48,7 @@ var fsPlugin = {
                 canvas.height = data.clientHeight;
                 var ctx = canvas.getContext('2d');
                 ctx.drawImage(img, data.x, data.y, me.clientWidth, data.clientHeight, 0, 0, me.clientWidth, data.clientHeight);
-                callback(index, canvas.toDataURL(fsPlugin.defaultImageFormat === "png" ? "image/png" : "image/jpeg"));
+                callback(index, canvas.toDataURL(me.defaultImageFormat === "png" ? "image/png" : "image/jpeg"), me.defaultImageFormat);
             };
         }(index, img);
     },

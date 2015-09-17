@@ -21,6 +21,7 @@
     },
     "content_scripts": [{
         "js": [
+            "js/lib/jquery-2.1.1.min.js",
             "js/lib/util.js",
             "js/lib/arraybuffer.js",
             "js/bg/fsUtils.js",

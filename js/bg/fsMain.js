@@ -2,12 +2,12 @@ var fsMain = {
     'shops': [{
         'id': '58501945',
         'suid': '263817957',
-        'name': 'handuyishe',
+        'name': config.KEY.hd,
         items: {}
     }, {
         'id': '70986937',
         'suid': '849727411',
-        'name': 'amh',
+        'name': config.KEY.amh,
         items: {}
     }],
     getKey: function(title) {
@@ -21,14 +21,14 @@ var fsMain = {
     getShopData: function(handle) {
         var me = this,
             array = this.shops;
-        new fs.AjaxTask({
+        new util.asyncTask({
             array: array,
             timeout: 300,
             getAjaxcfg: function(shop) {
                 return {
                     type: 'POST',
                     async: false,
-                    url: fs.urls.data + 'shop_' + shop.id + '.json',
+                    url: config.urls.data + 'shop_' + shop.id + '.json',
                     dataType: 'text'
                 };
             },
@@ -42,13 +42,26 @@ var fsMain = {
             }
         });
     },
+    saveShopData: function(shop) {
+        $.ajax({
+            type: 'POST',
+            url: config.urls.upload,
+            data: {
+                filename: 'shop_' + shop.id + '.json',
+                dir: '',
+                data: JSON.stringify(shop)
+            },
+            success: function(data) {},
+            error: function() {}
+        });
+    },
     initShopData: function() {
         var array = this.shops;
         util.each(this.shops, function(i, shop) {
             $.ajax({
                 type: 'POST',
                 async: false,
-                url: fs.urls.data + 'shop_' + shop.id + '.json',
+                url: config.urls.data + 'shop_' + shop.id + '.json',
                 dataType: 'text',
                 success: function(data) {
                     localStorage[shop.id] = data;
@@ -95,7 +108,7 @@ var fsMain = {
         var me = this;
         $.ajax({
             cache: false,
-            url: fs.urls.detail + item.id,
+            url: config.urls.detail + item.id,
             dataType: 'text',
             success: function(html) {
                 me.doDetailHTML(item, html);
@@ -164,7 +177,7 @@ var fsMain = {
             $.ajax({
                 type: 'POST',
                 async: false,
-                url: fs.urls.upload,
+                url: config.urls.upload,
                 data: data,
                 success: function() {},
                 error: function() {}

@@ -31,11 +31,32 @@
                 var topic = msg.topic;
                 if (topic == 'hello') {
                     port.postMessage('hi');
-                } else if (topic == 'addDir') { 
-                    
-                } else if (topic == 'upload') { 
+                } else if (topic == 'createDir') {
+                    me.addDir({
+                        type: msg.type,
+                        dir: msg.dir,
+                        callback: function(data) {
+                            data.topic = 'createDirSuccess';
+                            port.postMessage(data);
+                        }
 
-
+                    });
+                } else if (topic == 'upload') {
+                    me.upload({
+                        dirId: msg.dirId,
+                        file: fs.base642Blob(msg.data),
+                        file_name: msg.file_name,
+                        index: msg.index,
+                        callback: function(data) {
+                            data.topic = 'uploadSuccess';
+                            /*
+                             *   index : index,
+                             *   url: module.fullUrl,
+                             *   picId: module.pictureId
+                             */
+                            port.postMessage(data);
+                        }
+                    });
                 }
             });
         },
@@ -120,6 +141,7 @@
             if (config.callback) {
                 var module = data.module;
                 config.callback({
+                    index: config.index,
                     url: module.fullUrl,
                     picId: module.pictureId
                 });

@@ -119,7 +119,12 @@ function initPictuerInstance(tab) {
         }
     };
     port.onMessage.addListener(function(request, sender) {
-
+        var topic = request.topic;
+        if (topic == 'createDirSuccess') {
+            fs.page.doCreateDirSuccess(request);
+        } else if (topic == 'uploadSuccess') {
+            fs.page.doUploadSuccess(request);
+        }
 
     });
 }
@@ -133,6 +138,7 @@ try {
                     fs.pictuer.sendMessage({
                         topic: 'hello'
                     });
+                     fs.page.init();
                     break;
                 case "getPortName":
                     sendResponse({
@@ -218,8 +224,8 @@ try {
 
 
                     checkKey(cShortcutPref, cDefaultShortcut, function() {
-                            captureLastUsedMode();
-                        }) ||
+                        captureLastUsedMode();
+                    }) ||
                         checkKey(cShortcutPrefVisible, cDefaultShortcutVisible, function() {
                             executeGrabber(getShortcutAction(cShortcutPrefVisibleAction, cDefaultShortcutVisibleAction), cModeVisible);
                         }) ||
@@ -230,8 +236,8 @@ try {
                             executeGrabber(getShortcutAction(cShortcutPrefSelectionAction, cDefaultShortcutSelectionAction), cModeSelected);
                         }) ||
                         (isNativeSupported() && checkKey(cShortcutPrefBrowser, cDefaultShortcutBrowser, function() {
-                            executeGrabber(getShortcutAction(cShortcutPrefBrowserAction, cDefaultShortcutBrowserAction), cModeBrowser);
-                        }));
+                        executeGrabber(getShortcutAction(cShortcutPrefBrowserAction, cDefaultShortcutBrowserAction), cModeBrowser);
+                    }));
 
                     break;
 
@@ -806,7 +812,7 @@ function captureTabs(action) {
                                             tabs: currentTab++
                                         }, function() {
                                             capturePage(action, cModeEntire, function(result) {
-                                                if (result) ++tabsCaptured;
+                                                if (result)++tabsCaptured;
                                                 iterator.next();
                                             });
 
