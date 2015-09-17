@@ -1,9 +1,29 @@
 {
     "background": {
-        "scripts": ["scripts/3p/jquery-2.1.1.min.js", "scripts/util.js", "scripts/fsHTML.js", "scripts/fsTask.js", "scripts/fsUtils.js", "scripts/bg/fsCommands.js", "scripts/bg/fsBackground.js", "scripts/bg/fsPlugin.js", "scripts/bg/fsMain.js", "scripts/bg/fsPage.js", "scripts/bg/fsNativeAPISupport.js", "scripts/3p/base64.js"]
+        "scripts": [
+            "js/lib/jquery-2.1.1.min.js",
+            "js/lib/util.js",
+            "js/lib/html.js",
+            "js/lib/class.js",
+            "js/lib/class.event.js",
+            "js/lib/task.js",
+            "js/bg/fsUtils.js",
+            "js/bg/fsCommands.js",
+            "js/bg/fsBackground.js",
+            "js/bg/fsPlugin.js",
+            "js/bg/fsMain.js",
+            "js/bg/fsPage.js"
+            // "js/bg/fsNativeAPISupport.js",
+            // "js/3p/base64.js"
+        ]
     },
     "content_scripts": [{
-        "js": ["scripts/fsUtils.js", "scripts/tb/fsArrayBuffer.js", "scripts/tb/fsGallery.js"],
+        "js": [
+            "js/lib/util.js",
+            "js/bg/fsUtils.js",
+            "js/lib/arraybuffer.js",
+            "js/tb/fsPictuer.js"
+        ],
         "matches": ["http://tadget.taobao.com/*", "https://tadget.taobao.com/*"],
         "run_at": "document_start"
     }],
@@ -19,7 +39,7 @@
     "manifest_version": 2,
     "name": "shortCapture",
     "offline_enabled": true,
-    "options_page": "fsOptions.html",
+    // "options_page": "fsOptions.html",
     "permissions": ["\u003Call_urls>", "contextMenus", "nativeMessaging", "debugger",
         "tabs", "http://*/*", "*://*/*"
     ],

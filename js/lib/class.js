@@ -12,6 +12,8 @@
         merger = util.merger,
         apply = util.apply,
         emptyFn = util.emptyFn,
+        isObject = util.isObject,
+        isString = util.isString,
         isFunction = util.isFunction;
 
     var removeOwnProperty = function() {
@@ -223,7 +225,7 @@
                 //重写对象属性和方法
                 this.override(config);
             },
-            ready: emptyFunction,
+            ready: emptyFn,
             destroy: function() {
                 classjs.log();
                 removeOwnProperty.call(this);

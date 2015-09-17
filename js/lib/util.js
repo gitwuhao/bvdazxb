@@ -133,15 +133,15 @@
     function isNumeric(value) {
         return !isNaN(parseFloat(value)) && isFinite(value);
     };
+    /*
+        function isElement(value) {
+            return value ? value.nodeType === 1 : false;
+        };
 
-    function isElement(value) {
-        return value ? value.nodeType === 1 : false;
-    };
-
-    function isTextNode(value) {
-        return value ? value.nodeName === "#text" : false;
-    };
-
+        function isTextNode(value) {
+            return value ? value.nodeName === "#text" : false;
+        };
+    */
     apply(util, {
         each: each,
         it: iterator,
@@ -152,7 +152,9 @@
         isArray: isArray,
         isEmpty: isEmpty,
         isObject: isObject,
-        isDate: isDate
+        isDate: isDate,
+        isFunction: isFunction,
+        isObject: isObject
     });
 
 })(window);

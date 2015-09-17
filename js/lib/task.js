@@ -9,19 +9,13 @@
         }
     }
     */
-    util.task = function(config) {
-        if (util.isInitPrototype(config)) {
-            return;
-        }
-        this.init.apply(this, arguments);
-    };
-
-    util.merger(util.task.prototype, {
+    classjs({
+        className: 'util.task',
+        extendEvent: true,
         index: 0,
         timeout: 0,
         autoRun: true,
-        init: function(config) {
-            util.merger(this, config);
+        ready: function() {
             if (this.autoRun) {
                 this.next();
             }
@@ -54,22 +48,11 @@
 
 
 
-    util.ajaxTask = function(config) {
-        if (util.isInitPrototype(config)) {
-            return;
-        }
-        this.init.apply(this, arguments);
-    };
-
-    util.extend(fs.AjaxTask, fs.Task, {
+    classjs({
+        className: 'ui.asyncTask',
+        extend: 'util.task',
         index: 0,
         autoRun: true,
-        init: function(config) {
-            util.merger(this, config);
-            if (this.autoRun) {
-                this.next();
-            }
-        },
         next: function() {
             var task = this.get();
             if (task) {
@@ -105,41 +88,4 @@
         }
     });
 
-    fs.localStorageTask = function(config) {
-        if (util.isInitPrototype(config)) {
-            return;
-        }
-        this.init.apply(this, arguments);
-    };
-
-    util.extend(fs.localStorageTask, fs.Task, {
-        id: 'my_task',
-        LS: localStorage,
-        get: function() {
-            var task;
-            this.index++;
-            util.it(this.map, function(key, value) {
-                task = {
-                    key: key,
-                    value: value
-                };
-                return false;
-            });
-            if (!task) {
-                delete this.LS[this.id];
-            }
-            return task;
-        },
-        complete: function(task) {
-            setTimeout(this.next.bind(this), this.timeout);
-            var key = task.key;
-            delete this.map[key];
-            if ((this.index + 1) % 10 == 0) {
-                this.pushStorage();
-            }
-        },
-        pushStorage: function() {
-            this.LS[this.id] = JSON.stringify(this.map);
-        }
-    });
 })(window);
