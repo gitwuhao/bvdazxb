@@ -1,0 +1,29 @@
+{
+    "background": {
+        "scripts": ["scripts/3p/jquery-2.1.1.min.js", "scripts/util.js", "scripts/fsHTML.js", "scripts/fsTask.js", "scripts/fsUtils.js", "scripts/bg/fsCommands.js", "scripts/bg/fsBackground.js", "scripts/bg/fsPlugin.js", "scripts/bg/fsMain.js", "scripts/bg/fsPage.js", "scripts/bg/fsNativeAPISupport.js", "scripts/3p/base64.js"]
+    },
+    "content_scripts": [{
+        "js": ["scripts/fsUtils.js", "scripts/tb/fsArrayBuffer.js", "scripts/tb/fsGallery.js"],
+        "matches": ["http://tadget.taobao.com/*", "https://tadget.taobao.com/*"],
+        "run_at": "document_start"
+    }],
+    // "default_locale": "en",
+    "description": "desc",
+    "icons": {
+        "128": "images/sss_128.png",
+        "16": "images/sss_16.png",
+        "32": "images/sss_32.png",
+        "48": "images/sss_48.png"
+    },
+    "key": "SDFLKJSDLKFJSDKLKFJSDLKF",
+    "manifest_version": 2,
+    "name": "shortCapture",
+    "offline_enabled": true,
+    "options_page": "fsOptions.html",
+    "permissions": ["\u003Call_urls>", "contextMenus", "nativeMessaging", "debugger",
+        "tabs", "http://*/*", "*://*/*"
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://*.tmall.com; object-src 'self'",
+    "short_name": "FireShot",
+    "version": "0.98.80"
+}
