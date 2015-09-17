@@ -22,8 +22,9 @@
     "content_scripts": [{
         "js": [
             "js/lib/util.js",
-            "js/bg/fsUtils.js",
             "js/lib/arraybuffer.js",
+            "js/bg/fsUtils.js",
+            "js/cfg/config.js",
             "js/tb/fsPictuer.js"
         ],
         "matches": ["http://tadget.taobao.com/*", "https://tadget.taobao.com/*"],

@@ -109,12 +109,31 @@ function pluginEvent(obj) {
 }
 
 
+function initPictuerInstance(tab) {
+    var port = chrome.tabs.connect(tab.id);
+    fs.pictuer = {
+        tab: tab,
+        port: port,
+        sendMessage: function(msg) {
+            port.postMessage(msg);
+        }
+    };
+    port.onMessage.addListener(function(request, sender) {
 
+
+    });
+}
 try {
     chrome.extension.onMessage.addListener(
         function(request, sender, sendResponse) {
-
+            var tab = sender.tab;
             switch (request.message) {
+                case "initPictuerDone":
+                    initPictuerInstance(tab);
+                    fs.pictuer.sendMessage({
+                        topic: 'hello'
+                    });
+                    break;
                 case "getPortName":
                     sendResponse({
                         portName: commPortName
@@ -442,16 +461,15 @@ function doCapturing(Action, Mode, CallbackCompleted) {
                             break;
                     }
                     break;
+                    // case "areaSelected":
+                    //     port.postMessage({
+                    //         topic: "scrollNext"
+                    //     });
+                    //     break;
 
-                case "areaSelected":
-                    port.postMessage({
-                        topic: "scrollNext"
-                    });
-                    break;
-
-                case "areaSelectionCanceled":
-                    port.onMessage.removeListener(arguments.callee);
-                    break;
+                    // case "areaSelectionCanceled":
+                    //     port.onMessage.removeListener(arguments.callee);
+                    //     break;
 
                 case "scrollDone":
                     chrome.tabs.captureVisibleTab(null, {

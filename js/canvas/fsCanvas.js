@@ -6,9 +6,10 @@
     fs.canvas = {
         type: 'pc',
         init: function() {
-            window.addEventListener('loadxx', function() {
+            var me = this;
+            window.addEventListener('load', function() {
                 chrome.runtime.getBackgroundPage(function(page) {
-                    fs.canvas.startup(page);
+                    me.startup(page);
                 });
             });
         },
@@ -20,7 +21,7 @@
             page.fs.page.getDescHTML(window, this.doDescHTML.bind(this));
         },
         doDescHTML: function(html) {
-            this.loadHTML(html.replace(/\s?\r\n\s?/g,'').replace(/\s+(<)/g,'$1'));
+            this.loadHTML(html.replace(/\s?\r\n\s?/g, '').replace(/\s+(<)/g, '$1'));
             $('table td a img').closest('table').remove();
             $('.desc_anchor').remove();
             this.initImageQueue();

@@ -4,16 +4,41 @@
         //pictureCategoryId
         'amh': '106141122482910215'
     };
-    var fs = global.fs || {};
-
-    global.fs = fs;
 
     var DIR_MAPING = {};
 
-    DIR_MAPING[fs.KEY.hd] = '106141122482859956';
-    DIR_MAPING[fs.KEY.amh] = '106141122482859956';
+    DIR_MAPING[config.KEY.hd] = '106141122482859956';
+    DIR_MAPING[config.KEY.amh] = '106141122482859956';
 
-    fs.pictuer = {
+    var pictuer = {
+        init: function() {
+            var me = this;
+
+            chrome.extension.sendMessage({
+                message: "initPictuerDone"
+            }, function(portId) {
+
+            });
+
+            chrome.extension.onConnect.addListener(function(port) {
+                me.startup(port);
+            });
+        },
+        startup: function(port) {
+            this.port = port;
+            var me = this;
+            port.onMessage.addListener(function(msg, sender) {
+                var topic = msg.topic;
+                if (topic == 'hello') {
+                    port.postMessage('hi');
+                } else if (topic == 'addDir') { 
+                    
+                } else if (topic == 'upload') { 
+
+
+                }
+            });
+        },
         /*
          *{
          *   type: hd,
@@ -112,5 +137,7 @@
         }
     };
 
+
+    pictuer.init();
 
 })(window);

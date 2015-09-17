@@ -25,6 +25,9 @@
             fsMain.getShopData(this.loadData.bind(this));
             setInterval(this.pushLocalStorage.bind(this), 3 * 60 * 1000);
         },
+        picInitDone: function() {
+
+        },
         loadLS: function() {
             this.type = this.PC_TYPE;
             var data = localStorage['items_map'];
@@ -36,18 +39,13 @@
             var me = this,
                 map = {};
             util.each(shops, function(i, shop) {
-                var data = localStorage[shop.id];
-                shop = JSON.parse(data);
-                if (!shop) {
-                    return;
-                }
                 util.it(shop.items, function(key, value) {
                     map[key] = {
                         id: key,
                         key: value,
                         shopId: shop.id
                     };
-                    // return false;
+                    return false;
                 });
             });
             this.itemsMap = map;
@@ -78,6 +76,7 @@
             }
             this.activeWin = win;
             this.activeItem = item;
+
             if (this.type == this.H5_TYPE) {
                 this.getH5DescHTML(item.id, handle);
             } else {
@@ -152,7 +151,7 @@
             console.info('captureTabPNG[' + index + ']', data);
         },
         captureDone: function() {
-            
+
         },
         captureDone2: function(captures) {
             var me = this;
