@@ -12,15 +12,6 @@ var ignoreShortcuts = false;
 var commPortName = "FireShot Comm Port #" + Math.ceil(Math.random() * 45309714203);
 var capResult, capResultDataURL, capResultFileNameLite, multiPDFMode;
 
-var PCSize = {
-        clientWidth: 790,
-        clientHeight: 0
-    },
-    MobileSize = {
-        clientWidth: 320,
-        clientHeight: 0
-    };
-
 
 
 
@@ -136,7 +127,7 @@ try {
                     }
 
                     chrome.tabs.executeScript(tabId, {
-                            file: "scripts/fsUtils.js",
+                            file: "js/bg/fsUtils.js",
                             runAt: "document_start"
                         },
                         function() {
@@ -321,7 +312,7 @@ function capturePage(Action, Mode, CallbackCompleted) {
             );
 
             chrome.tabs.executeScript(tabId, {
-                file: "scripts/fsScriptChecker.js",
+                file: "js/canvas/fsScriptChecker.js",
                 runAt: "document_start"
             }, function() {
                 if (chrome.runtime.lastError) {
@@ -412,20 +403,18 @@ function doCapturing(Action, Mode, CallbackCompleted) {
         };
 
         if (Mode == cModePC) {
-            util.merger(initMsg, PCSize, {
+            util.merger(initMsg, config.PCSize, {
                 mode: cModeSelected,
             });
             // Mode=cModeEntire;
         } else if (Mode == cModeMobile) {
-            util.merger(initMsg, MobileSize, {
+            util.merger(initMsg, config.MobileSize, {
                 mode: cModeSelected,
             });
-            /*
-                        document.body.innerHTML=document.all.description.innerHTML;
-                        document.body.style.width="790px";
-                        */
-            // Mode=cModeEntire;
+
         }
+
+        fsPlugin.clientWidth = initMsg.clientWidth;
 
         port.postMessage(initMsg);
         port.onMessage.addListener(function(msg) {
@@ -731,18 +720,7 @@ function genericOnClick(info, tab) {
     }
 }
 
-function updateLastActionInContextMenu() {
-    // chrome.contextMenus.update(mnuLastAction, {title: getLADescription() + "    " + getOption(cShortcutPref, cDefaultShortcut)});
-    chrome.contextMenus.update(mnuEntireEdit, {
-        title: "捕捉整个页面" + "...    " + getOption(cShortcutPrefEntire, cDefaultShortcutEntire)
-    });
-    chrome.contextMenus.update(mnuVisibleEdit, {
-        title: "捕捉可见部分" + "...    " + getOption(cShortcutPrefVisible, cDefaultShortcutVisible)
-    });
-    chrome.contextMenus.update(mnuSelectedEdit, {
-        title: "捕捉选定区域" + "...    " + getOption(cShortcutPrefSelection, cDefaultShortcutSelection)
-    });
-}
+
 
 var fEntered = false;
 var mnuLastAction, mnuVisibleEdit, mnuVisibleSave, mnuVisibleSavePDF, mnuVisibleSendOneNote, mnuVisibleUpload, mnuVisiblePrint, mnuVisibleCopy, mnuVisibleEMail, mnuVisibleExtEditor,
@@ -761,19 +739,8 @@ function restoreBadge() {
 
 //noinspection JSUnusedGlobalSymbols
 function executeGrabber(action, mode) {
-    //debugger;
-    if (guiItemsLocked) return;
-    setLastActionAndMode(action, mode);
 
-    if (mode === cModeTabs) captureTabs(action);
-    else {
-        if (multiPDFMode) {
-            pluginCommand("cancelMultiPagePDF");
-            multiPDFMode = undefined;
-        }
-
-        capturePage(action, mode);
-    }
+    capturePage(action, mode);
 }
 
 

@@ -148,7 +148,13 @@
             }
             return html;
         },
-        captureDone: function(captures) {
+        captureTabPNG: function(index, data) {
+            console.info('captureTabPNG[' + index + ']', data);
+        },
+        captureDone: function() {
+
+        },
+        captureDone2: function(captures) {
             var me = this;
             var item = this.activeItem;
             new fs.AjaxTask({

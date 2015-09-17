@@ -19,5 +19,17 @@
         amh: 'amh'
     };
 
+    global.config.PCSize = {
+        clientWidth: 790,
+        clientHeight: 0
+    };
+
+    global.config.MobileSize = {
+        clientWidth: 320,
+        clientHeight: 0
+    };
+
+
+
 
 })(this);

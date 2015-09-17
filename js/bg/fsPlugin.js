@@ -3,6 +3,7 @@ var fsPlugin = {
     port: undefined,
     inited: false,
     captures: undefined,
+    clientWidth: 100,
     init: function() {
         this.inited = true;
     },
@@ -17,6 +18,23 @@ var fsPlugin = {
     },
     captureTabPNG: function(data) {
         this.captures.push(data);
+        this.clipCaptureData(data.dataurl, fs.page.captureTabPNG.bind(fs.page));
+    },
+    clipCaptureData: function(dataurl, callback) {
+        var index = this.captures.length;
+        var img = new Image();
+        img.src = dataurl;
+        var me = this;
+        img.onload = function(index, img) {
+            return function() {
+                var canvas = document.createElement('canvas');
+                canvas.width = me.clientWidth;
+                canvas.height = img.height;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                callback(index, canvas.toDataURL(fsPlugin.defaultImageFormat === "png" ? "image/png" : "image/jpeg"));
+            };
+        }(index, img);
     },
     loadImages: function(data, callback) {
         var cntr;

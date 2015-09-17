@@ -271,23 +271,7 @@ function getFilenameLite() {
 
     return template;
 }
-/*
-function tabSupportedForCapturing(tabId)
-{
-    try
-    {
-        chrome.tabs.executeScript(tabId, {code:"{}"}, function (res)
-        {
-            return chrome.runtime.lastError === undefined;
-        });
-        //logToconsole(chrome.runtime.lastError);
-        return true;
-    }
-    catch (e)
-    {
-        return false;
-    }
-}*/
+
 
 function showBadge(url) {
     localStorage[cQueuedBadgeURLPref] = url;
@@ -315,65 +299,3 @@ function setLastActionAndMode(capAction, capMode) {
 function isProMode() {
     return localStorage[cPluginProModePref] == "true";
 }
-
-
-/*
-function waitForLoading(window, tabId, timeout, callback)
-{
-
-    function doneWaiting(tab)
-    {
-        chrome.tabs.executeScript({file: "scripts/fsNotificationOff.js", runAt: "document_start"});
-        callback(tab);
-    }
-
-    try {
-        if (window.tabs[tabId].status === "complete")
-            callback(window.tabs[tabId]);
-        else {
-
-            chrome.tabs.executeScript({file: "scripts/fsNotificationOn.js", runAt: "document_start"});
-            var cycle = new AsyncCycle(
-                function (iterator) {
-                    setTimeout(function () {
-                        chrome.tabs.query({windowId: window.id}, function (tabs) {
-                            try {
-                                if (tabs && tabs[tabId]) {
-                                    iterator.next(tabs[tabId]);
-                                }
-                                else doneWaiting();
-                            }
-                            catch (e) {
-                                logError(e.message);
-                                doneWaiting();
-                            }
-                        });
-                    }, 1000);
-                },
-
-                function (tab) {
-                    try {
-                        if (tab.status === "complete" || --timeout <= 0) {
-                            doneWaiting(tab);
-                            return true;
-                        }
-                        return false;
-                    }
-                    catch (e) {
-                        logError(e.message);
-                        doneWaiting();
-                        return true;
-                    }
-                }
-            );
-
-            cycle.next(window.tabs[tabId]);
-        }
-    }
-    catch (e) {
-        logError(e.message);
-        callback();
-    }
-}
-
-*/
