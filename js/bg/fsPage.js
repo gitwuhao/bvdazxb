@@ -152,7 +152,7 @@
             console.info('captureTabPNG[' + index + ']', data);
         },
         captureDone: function() {
-
+            
         },
         captureDone2: function(captures) {
             var me = this;

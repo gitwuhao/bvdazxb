@@ -288,7 +288,7 @@ chrome.extension.onConnect.addListener(function(port) {
     var rows = 1,
         cols = 1;
     var mode = 0;
-    var horzMoving = true,
+    var horzMoving = false,
         vertMoving = true;
     var clientWidth = 0,
         clientHeight = 0;
@@ -355,7 +355,7 @@ chrome.extension.onConnect.addListener(function(port) {
 
                 if (mode !== cModeVisible && mode !== cModeBrowser)
                     enableSomeElements(false);
-                //	disableFixedPositions();
+                //  disableFixedPositions();
 
                 if (divElement) {
                     clientWidth = divElement.clientWidth;
@@ -394,6 +394,8 @@ chrome.extension.onConnect.addListener(function(port) {
                             setTimeout(function() {
                                 port.postMessage({
                                     topic: "initDone",
+                                    clientWidth: clientWidth,
+                                    clientHeight: clientHeight,
                                     url: document.location.toString(),
                                     title: document.title
                                 });
@@ -404,6 +406,8 @@ chrome.extension.onConnect.addListener(function(port) {
                     setTimeout(function() {
                         port.postMessage({
                             topic: "initDone",
+                            clientWidth: clientWidth,
+                            clientHeight: clientHeight,
                             url: document.location.toString(),
                             title: document.title
                         });
@@ -480,32 +484,6 @@ chrome.extension.onConnect.addListener(function(port) {
 
                 var savedPos;
 
-                if (horzMoving && mode != cModeVisible && mode != cModeBrowser) {
-                    var
-                        maxWidth = mode == cModeSelected ? cropRect.right : docWidth;
-
-                    savedPos = body.scrollLeft;
-                    body.scrollLeft += Math.max(0, Math.min(clientWidth - 1, maxWidth - (body.scrollLeft + clientWidth) + 20));
-                    horzMoving = body.scrollLeft != savedPos && body.scrollLeft < docWidth;
-
-                    if (horzMoving) {
-                        if (rows == 1) cols++;
-                        logToConsole("scrollLeft:" + body.scrollLeft);
-                        setTimeout(function() {
-                            hideStubbornElements();
-                            setTimeout(function() {
-                                port.postMessage({
-                                    topic: "scrollDone",
-                                    x: body.scrollLeft,
-                                    y: body.scrollTop
-                                });
-                            }, timeout);
-                        }, 0);
-
-                        return;
-                    } else if (mode == cModeSelected)
-                        scrollEnd.left = body.scrollLeft;
-                }
 
                 if (vertMoving && mode != cModeVisible && mode != cModeBrowser) {
                     savedPos = body.scrollTop;
@@ -540,18 +518,10 @@ chrome.extension.onConnect.addListener(function(port) {
                     }
                 }
 
-                var zoom = (window.outerWidth) / (window.innerWidth);
-
-                var zoomFactors = [0.01, 0.25, 0.33, 0.5, 0.67, 0.75, 0.9, 1, 1.1, 1.25, 1.5, 1.75, 2, 2.5, 3, 4, 5];
-
-                for (var i = zoomFactors.length - 1; i >= 0; i--)
-                    if (zoom + 0.02 >= zoomFactors[i]) {
-                        zoom = zoomFactors[i];
-                        break;
-                    }
 
 
-                    //noinspection JSUnresolvedVariable
+
+                //noinspection JSUnresolvedVariable
                 msg = {
                     topic: "scrollFinished",
                     div: 0,
@@ -597,7 +567,7 @@ chrome.extension.onConnect.addListener(function(port) {
 
                 if (mode != cModeVisible && mode != cModeBrowser)
                     enableSomeElements(true);
-                //	enableFixedPositions();
+                //  enableFixedPositions();
 
                 showStubbornElements();
 

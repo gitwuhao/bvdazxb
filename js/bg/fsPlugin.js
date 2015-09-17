@@ -15,23 +15,39 @@ var fsPlugin = {
     captureInit: function(data) {
         this.captures = [];
         this.imagesLoaded = 0;
+        this.clientWidth = data.clientWidth;
+        this.clientHeight = data.clientHeight;
     },
     captureTabPNG: function(data) {
         this.captures.push(data);
-        this.clipCaptureData(data.dataurl, fs.page.captureTabPNG.bind(fs.page));
+        var clientHeight = this.clientHeight,
+            y = 0;
+        if (this.lastData) {
+            clientHeight = (data.y - this.lastData.y);
+            y = this.clientHeight - clientHeight;
+            data.clipY = y;
+        }
+        this.lastData = data;
+
+        this.clipCaptureData({
+            x: 0,
+            y: y,
+            clientHeight: clientHeight,
+            dataurl: data.dataurl
+        }, fs.page.captureTabPNG.bind(fs.page));
     },
-    clipCaptureData: function(dataurl, callback) {
+    clipCaptureData: function(data, callback) {
         var index = this.captures.length;
         var img = new Image();
-        img.src = dataurl;
+        img.src = data.dataurl;
         var me = this;
         img.onload = function(index, img) {
             return function() {
                 var canvas = document.createElement('canvas');
                 canvas.width = me.clientWidth;
-                canvas.height = img.height;
+                canvas.height = data.clientHeight;
                 var ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0);
+                ctx.drawImage(img, data.x, data.y, me.clientWidth, data.clientHeight, 0, 0, me.clientWidth, data.clientHeight);
                 callback(index, canvas.toDataURL(fsPlugin.defaultImageFormat === "png" ? "image/png" : "image/jpeg"));
             };
         }(index, img);

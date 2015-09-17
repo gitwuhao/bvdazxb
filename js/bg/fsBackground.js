@@ -414,8 +414,6 @@ function doCapturing(Action, Mode, CallbackCompleted) {
 
         }
 
-        fsPlugin.clientWidth = initMsg.clientWidth;
-
         port.postMessage(initMsg);
         port.onMessage.addListener(function(msg) {
             //debugger;
@@ -430,36 +428,16 @@ function doCapturing(Action, Mode, CallbackCompleted) {
                     connecting = false;
 
                     switch (Mode) {
-                        case cModeVisible:
-                        case cModeEntire:
-                            pluginCommand("captureInit");
-                            port.postMessage({
-                                topic: "scrollNext"
-                            });
-                            break;
-                        case cModeSelected:
-                            pluginCommand("captureInit");
-                            port.postMessage({
-                                topic: "selectArea"
-                            });
-                            break;
                         case cModePC:
-                            pluginCommand("captureInit");
+                            pluginCommand("captureInit", msg);
                             port.postMessage({
                                 topic: "selectPCArea"
                             });
                             break;
                         case cModeMobile:
-                            pluginCommand("captureInit");
+                            pluginCommand("captureInit", msg);
                             port.postMessage({
                                 topic: "selectMobileArea"
-                            });
-                            break;
-                        case cModeBrowser:
-                            pluginCommand("captureBrowser", {
-                                action: Action + ":-",
-                                url: tabURL,
-                                title: tabTitle
                             });
                             break;
                     }
