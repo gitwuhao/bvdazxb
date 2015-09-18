@@ -23,7 +23,6 @@
         init: function() {
             this.type = this.PC_TYPE;
             fsMain.getShopData(this.loadData.bind(this));
-            // setInterval(this.pushLocalStorage.bind(this), 30 * 1000);
         },
         picInitDone: function() {
 
@@ -44,6 +43,7 @@
                         return false;
                     }
                 });
+                // return false;
             });
             this.itemsMap = map;
             this.createTab();
@@ -93,19 +93,21 @@
         },
         getMetaItem: function(item) {
             var itemId = item.id;
-            item = item.shop.items[itemId] || {};
-            item.shop.items[itemId] = item;
-            return item;
+            var shop = item.shop;
+            var metaItem = shop.items[itemId] || {
+                key: item.itemKey
+            };
+            shop.items[itemId] = metaItem;
+            return metaItem;
         },
         doCreateDirSuccess: function(config) {
             var item = this.itemsMap[config.dir];
             item.dirId = config.id;
-            getMetaItem(item).dirId = config.id;
+            this.getMetaItem(item).dirId = config.id;
         },
         getPCDescHTML: function(id, handle) {
             var me = this;
             $.ajax({
-                // cache: false,
                 url: config.urls.pcdesc + id,
                 dataType: 'text',
                 success: function(html) {
@@ -136,7 +138,6 @@
         getH5DescHTML: function(id, handle) {
             var me = this;
             $.ajax({
-                // cache: false,
                 url: config.urls.h5desc + id,
                 dataType: 'text',
                 success: function(html) {
@@ -212,7 +213,7 @@
                 error: function() {}
             });
 
-            getMetaItem(activeItem).isUpload = 1;
+            this.getMetaItem(activeItem).isUpload = 1;
 
             $.ajax({
                 type: 'POST',
@@ -230,6 +231,30 @@
         testInit: function() {
             fsMain.getShopData(this.testLoadData.bind(this));
         },
+        buildShopData: function(shops) {
+            var me = this,
+                map = {};
+            util.each(shops, function(i, shop) {
+                util.it(shop.items, function(key, value) {
+                    if (value.isUpload) {
+
+                    } else if (value.key) {
+                        shop.items[key] = value.key;
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: config.urls.upload,
+                    data: {
+                        filename: 'shop_' + shop.id + '.json',
+                        dir: '',
+                        data: JSON.stringify(shop)
+                    },
+                    success: function(data) {},
+                    error: function() {}
+                });
+            });
+        },
         testLoadData: function(shops) {
             var me = this,
                 map = {};
@@ -237,19 +262,14 @@
             util.each(shops, function(i, shop) {
                 util.it(shop.items, function(key, value) {
                     if (!value.isUpload) {
-                        var item = {
-                            key: value
-                        };
-                        shop.items[key] = item;
                         map[key] = {
                             id: key,
                             itemKey: value,
                             shopId: shop.id,
-                            shop: shop,
-                            metaItem: item
+                            shop: shop
                         };
+                        // return false;
                     }
-                    return false;
                 });
             });
             this.itemsMap = map;
@@ -264,21 +284,21 @@
             }
 
             this.activeItem = item;
-            this.createDir(this.activeItem);
+            // this.createDir(this.activeItem);
         },
         testUploadPic: function() {
-            var item = this.activeItem;
-            var dirId = item.dirId;
-            for (var i = 0; i < 5; i++) {
-                fs.pictuer.sendMessage({
-                    topic: 'upload',
-                    itemId: item.id,
-                    index: i,
-                    dirId: item.dirId,
-                    file: localStorage['image_base64'],
-                    file_name: item.id + '_' + i + '.png'
-                });
-            }
+            // var item = this.activeItem;
+            // var dirId = item.dirId;
+            // for (var i = 0; i < 5; i++) {
+            //     fs.pictuer.sendMessage({
+            //         topic: 'upload',
+            //         itemId: item.id,
+            //         index: i,
+            //         dirId: item.dirId,
+            //         file: localStorage['image_base64'],
+            //         file_name: item.id + '_' + i + '.png'
+            //     });
+            // }
         }
     };
 
