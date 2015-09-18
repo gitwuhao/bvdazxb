@@ -23,7 +23,7 @@
         init: function() {
             this.type = this.PC_TYPE;
             fsMain.getShopData(this.loadData.bind(this));
-            setInterval(this.pushLocalStorage.bind(this), 30 * 1000);
+            // setInterval(this.pushLocalStorage.bind(this), 30 * 1000);
         },
         picInitDone: function() {
 
@@ -35,23 +35,18 @@
             util.each(shops, function(i, shop) {
                 util.it(shop.items, function(key, value) {
                     if (!value.isUpload) {
-                        var item = {
-                            key: value
-                        };
-                        shop.items[key] = item;
                         map[key] = {
                             id: key,
                             itemKey: value,
                             shopId: shop.id,
-                            shop: shop,
-                            metaItem: item
+                            shop: shop
                         };
                         return false;
                     }
                 });
             });
             this.itemsMap = map;
-            // this.createTab();
+            this.createTab();
         },
         createTab: function() {
             var type = this.type,
@@ -96,10 +91,16 @@
                 dir: item.id
             });
         },
+        getMetaItem: function(item) {
+            var itemId = item.id;
+            item = item.shop.items[itemId] || {};
+            item.shop.items[itemId] = item;
+            return item;
+        },
         doCreateDirSuccess: function(config) {
             var item = this.itemsMap[config.dir];
             item.dirId = config.id;
-            item.metaItem.dirId = config.id;
+            getMetaItem(item).dirId = config.id;
         },
         getPCDescHTML: function(id, handle) {
             var me = this;
@@ -187,10 +188,14 @@
             activeItem.picList[index] = config;
         },
         captureDone: function() {
+            this.uploadShopData();
+            this.activeWin.location.reload();
+        },
+        uploadShopData: function() {
             var activeItem = this.activeItem;
-            activeItem.metaItem.isUpload = 1;
-            delete this.itemsMap[this.activeItem.id];
+            var shop = activeItem.shop;
             var list = [];
+            delete this.itemsMap[this.activeItem.id];
             util.it(activeItem.picList, function(i, item) {
                 list.push(item);
             });
@@ -206,10 +211,9 @@
                 success: function(data) {},
                 error: function() {}
             });
-            this.activeWin.location.reload();
-        },
-        pushLocalStorage: function() {
-            var shop = this.activeItem.shop;
+
+            getMetaItem(activeItem).isUpload = 1;
+
             $.ajax({
                 type: 'POST',
                 url: config.urls.upload,
@@ -221,6 +225,7 @@
                 success: function(data) {},
                 error: function() {}
             });
+
         },
         testInit: function() {
             fsMain.getShopData(this.testLoadData.bind(this));
