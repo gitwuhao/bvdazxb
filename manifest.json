@@ -3,10 +3,12 @@
         "scripts": [
             "js/lib/jquery-2.1.1.min.js",
             "js/lib/util.js",
-            "js/lib/html.js",
             "js/lib/class.js",
             "js/lib/class.event.js",
+            "js/lib/html.js",
             "js/lib/task.js",
+            "js/lib/arraybuffer.js",
+            "js/lib/image.js",
             "js/cfg/config.js",
             "js/bg/fsUtils.js",
             "js/bg/fsNativeAPISupport.js",

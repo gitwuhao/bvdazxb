@@ -6,6 +6,13 @@
     DIR_MAPING[config.KEY.hd] = '106141122482859956';
     DIR_MAPING[config.KEY.amh] = '106141122482910215';
 
+    var dirMap = {
+        "handu_h5": "106141123103879340",
+        "amh_h5": "106141123103866088",
+        "amh_pc": "106141122482910215",
+        "handu_pc": "106141122482859956"
+    };
+
     var pictuer = {
         init: function() {
             var me = this;
