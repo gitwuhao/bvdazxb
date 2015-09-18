@@ -31,19 +31,17 @@
             var me = this,
                 map = {};
             this.shops = shops;
-            util.each(shops, function(i, shop) {
-                util.it(shop.items, function(key, value) {
-                    if (!value.isUpload) {
-                        map[key] = {
-                            id: key,
-                            itemKey: value,
-                            shopId: shop.id,
-                            shop: shop
-                        };
-                        return false;
-                    }
-                });
-                // return false;
+            var shop = shops[0];
+            util.it(shop.items, function(key, value) {
+                if (!value.isUpload) {
+                    map[key] = {
+                        id: key,
+                        itemKey: value,
+                        shopId: shop.id,
+                        shop: shop
+                    };
+                    // return false;
+                }
             });
             this.itemsMap = map;
             this.createTab();
