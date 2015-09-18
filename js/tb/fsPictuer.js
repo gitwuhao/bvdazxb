@@ -9,6 +9,8 @@
     var pictuer = {
         init: function() {
             var me = this;
+            document.body.style.display = 'none';
+            document.title = 'http://localhost:8080/wuhao/MyWork/upload-image/';
 
             chrome.extension.sendMessage({
                 message: "initPictuerDone"
@@ -169,8 +171,13 @@
             });
         }
     };
-
     global.pictuer = pictuer;
-    // pictuer.init();
+
+    window.addEventListener('load', function() {
+        if (window.top.location.href.match('#isDebug')) {
+            pictuer.init();
+        }
+    });
+
 
 })(window);
