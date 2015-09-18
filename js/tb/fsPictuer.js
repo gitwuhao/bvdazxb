@@ -1,14 +1,10 @@
 (function(global, undefined) {
-    var pictureCategory = {
-        'handu': '106141122482859956',
-        //pictureCategoryId
-        'amh': '106141122482910215'
-    };
+
 
     var DIR_MAPING = {};
 
     DIR_MAPING[config.KEY.hd] = '106141122482859956';
-    DIR_MAPING[config.KEY.amh] = '106141122482859956';
+    DIR_MAPING[config.KEY.amh] = '106141122482910215';
 
     var pictuer = {
         init: function() {
@@ -44,9 +40,10 @@
                 } else if (topic == 'upload') {
                     me.upload({
                         dirId: msg.dirId,
-                        file: fs.base642Blob(msg.data),
+                        file: util.base642Blob(msg.file),
                         file_name: msg.file_name,
                         index: msg.index,
+                        itemId: msg.itemId,
                         callback: function(data) {
                             data.topic = 'uploadSuccess';
                             /*
@@ -84,7 +81,16 @@
         },
         doAddDirSuccess: function(config, data) {
             data = JSON.parse(data);
-            if (config.callback) {
+            if (data.errorMessage) {
+                console.error(data.errorMessage);
+                //error
+            } else if (data.message) {
+                console.error(data.message);
+                //error
+            } else if (!data.module && !config.isError) {
+                config.isError = true;
+                this.addDir(config);
+            } else if (data.module && config.callback) {
                 config.callback({
                     id: data.module.pictureCategoryId,
                     dir: config.dir
@@ -138,9 +144,14 @@
         },
         doUploadSuccess: function(config, data) {
             data = JSON.parse(data);
-            if (config.callback) {
+            if (data.errorMessage) {
+                console.error(data.errorMessage);
+            } else if (data.message) {
+                console.error(data.message);
+            } else if (config.callback) {
                 var module = data.module;
                 config.callback({
+                    itemId: config.itemId,
                     index: config.index,
                     url: module.fullUrl,
                     picId: module.pictureId
@@ -159,7 +170,7 @@
         }
     };
 
-
-    pictuer.init();
+    global.pictuer = pictuer;
+    // pictuer.init();
 
 })(window);

@@ -138,7 +138,7 @@ try {
                     fs.pictuer.sendMessage({
                         topic: 'hello'
                     });
-                     fs.page.init();
+                    fs.page.init();
                     break;
                 case "getPortName":
                     sendResponse({
@@ -224,8 +224,8 @@ try {
 
 
                     checkKey(cShortcutPref, cDefaultShortcut, function() {
-                        captureLastUsedMode();
-                    }) ||
+                            captureLastUsedMode();
+                        }) ||
                         checkKey(cShortcutPrefVisible, cDefaultShortcutVisible, function() {
                             executeGrabber(getShortcutAction(cShortcutPrefVisibleAction, cDefaultShortcutVisibleAction), cModeVisible);
                         }) ||
@@ -236,8 +236,8 @@ try {
                             executeGrabber(getShortcutAction(cShortcutPrefSelectionAction, cDefaultShortcutSelectionAction), cModeSelected);
                         }) ||
                         (isNativeSupported() && checkKey(cShortcutPrefBrowser, cDefaultShortcutBrowser, function() {
-                        executeGrabber(getShortcutAction(cShortcutPrefBrowserAction, cDefaultShortcutBrowserAction), cModeBrowser);
-                    }));
+                            executeGrabber(getShortcutAction(cShortcutPrefBrowserAction, cDefaultShortcutBrowserAction), cModeBrowser);
+                        }));
 
                     break;
 
@@ -467,12 +467,11 @@ function doCapturing(Action, Mode, CallbackCompleted) {
                             break;
                     }
                     break;
-                    // case "areaSelected":
-                    //     port.postMessage({
-                    //         topic: "scrollNext"
-                    //     });
-                    //     break;
-
+                case "areaSelected":
+                    port.postMessage({
+                        topic: "scrollNext"
+                    });
+                    break;
                     // case "areaSelectionCanceled":
                     //     port.onMessage.removeListener(arguments.callee);
                     //     break;
@@ -812,7 +811,7 @@ function captureTabs(action) {
                                             tabs: currentTab++
                                         }, function() {
                                             capturePage(action, cModeEntire, function(result) {
-                                                if (result)++tabsCaptured;
+                                                if (result) ++tabsCaptured;
                                                 iterator.next();
                                             });
 

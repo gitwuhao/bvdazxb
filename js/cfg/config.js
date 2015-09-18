@@ -2,6 +2,7 @@
     var nodeURL = 'http://127.0.0.1:8901',
         urls = {
             'node': nodeURL,
+            // /shop/itemid/dir/filename
             'upload': nodeURL + '/upload/',
             'data': nodeURL + '/data/',
             'detail': 'https://detail.m.tmall.com/item.htm?id=',

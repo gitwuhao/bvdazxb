@@ -23,25 +23,18 @@
         init: function() {
             this.type = this.PC_TYPE;
             fsMain.getShopData(this.loadData.bind(this));
-            setInterval(this.pushLocalStorage.bind(this), 3 * 60 * 1000);
+            setInterval(this.pushLocalStorage.bind(this), 30 * 1000);
         },
         picInitDone: function() {
 
         },
-        loadLS: function() {
-            this.type = this.PC_TYPE;
-            var data = localStorage['items_map'];
-            this.itemsMap = JSON.parse(data);
-            this.createTab();
-            setInterval(this.pushLocalStorage.bind(this), 3 * 60 * 1000);
-        },
         loadData: function(shops) {
             var me = this,
                 map = {};
+            this.shops = shops;
             util.each(shops, function(i, shop) {
-                me.loadShopDirMap(shop);
                 util.it(shop.items, function(key, value) {
-                    if (!value.picList) {
+                    if (!value.isUpload) {
                         var item = {
                             key: value
                         };
@@ -51,22 +44,14 @@
                             itemKey: value,
                             shopId: shop.id,
                             shop: shop,
-                            item: item
+                            metaItem: item
                         };
+                        return false;
                     }
-                    return false;
                 });
             });
             this.itemsMap = map;
-            this.createTab();
-        },
-        loadShopDirMap: function(shop) {
-            shop.ls_dir_key = 'pic_dir_map' + shop.id;
-            var data = localStorage[shop.ls_dir_key];
-            if (data) {
-                data = JSON.parse(data);
-            }
-            shop.picDirMap = data || {};
+            // this.createTab();
         },
         createTab: function() {
             var type = this.type,
@@ -100,6 +85,21 @@
                 this.getPCDescHTML(item.id, handle);
             }
             this.createDir(item);
+        },
+        createDir: function(item) {
+            if (item.dirId) {
+                return;
+            }
+            fs.pictuer.sendMessage({
+                topic: 'createDir',
+                type: item.shop.name,
+                dir: item.id
+            });
+        },
+        doCreateDirSuccess: function(config) {
+            var item = this.itemsMap[config.dir];
+            item.dirId = config.id;
+            item.metaItem.dirId = config.id;
         },
         getPCDescHTML: function(id, handle) {
             var me = this;
@@ -167,91 +167,49 @@
         },
         captureTabPNG: function(index, data, format) {
             var item = this.activeItem;
-            var dirId = this.activeDirMap[item.id];
             fs.pictuer.sendMessage({
                 topic: 'upload',
                 index: index,
-                dirId: dirId,
+                dirId: item.dirId,
                 file: data,
-                file_name: item.itemKey + '.' + format
+                itemId: item.id,
+                file_name: item.itemKey + '_' + index + '.' + format
             });
             // console.info('captureTabPNG[' + index + ']', data);
         },
         doUploadSuccess: function(config) {
-            var item = this.itemsMap[config.itemId].item;
-            item.picList = item.picList || {};
+            var activeItem = this.activeItem;
+            activeItem.picList = activeItem.picList || {};
             var index = config.index;
             delete config.index;
-            item.picList[index] = config;
+            delete config.itemId;
+            delete config.topic;
+            activeItem.picList[index] = config;
         },
         captureDone: function() {
-
-        },
-        captureDone2: function(captures) {
-            var me = this;
-            var item = this.activeItem;
-            new fs.AjaxTask({
-                array: captures,
-                _index_: 0,
-                getAjaxcfg: function(capture) {
-                    return {
-                        type: 'POST',
-                        url: config.urls.upload,
-                        data: {
-                            id: item.key,
-                            shop: item.shopId,
-                            filename: item.id + '_' + (++this._index_) + '.png',
-                            dir: '',
-                            data: capture.data
-                        }
-                    };
-                },
-                handle: function(capture, data) {
-
-                },
-                finish: function() {
-                    me.finishCapture();
-                }
-            });
-        },
-        finishCapture: function() {
+            var activeItem = this.activeItem;
+            activeItem.metaItem.isUpload = 1;
             delete this.itemsMap[this.activeItem.id];
+            var list = [];
+            util.it(activeItem.picList, function(i, item) {
+                list.push(item);
+            });
+            $.ajax({
+                type: 'POST',
+                url: config.urls.upload,
+                data: {
+                    id: activeItem.itemKey,
+                    shop: activeItem.shopId,
+                    filename: activeItem.id + '_urls' + '.json',
+                    data: JSON.stringify(list)
+                },
+                success: function(data) {},
+                error: function() {}
+            });
             this.activeWin.location.reload();
         },
         pushLocalStorage: function() {
             var shop = this.activeItem.shop;
-            // var data = JSON.stringify(this.itemsMap);
-            // localStorage['items_map'] = data;
-
-            // $.ajax({
-            //     type: 'POST',
-            //     url: config.urls.upload,
-            //     data: {
-            //         filename: 'items_map.json',
-            //         dir: '',
-            //         data: data
-            //     },
-            //     success: function(data) {},
-            //     error: function() {}
-            // });
-
-
-            // var dirData = JSON.stringify(this.activeDirMap);
-            // localStorage[shop.ls_dir_key] = dirData;
-
-
-            // $.ajax({
-            //     type: 'POST',
-            //     url: config.urls.upload,
-            //     data: {
-            //         filename: shop.ls_dir_key + '.json',
-            //         dir: '',
-            //         data: dirData
-            //     },
-            //     success: function(data) {},
-            //     error: function() {}
-            // });
-
             $.ajax({
                 type: 'POST',
                 url: config.urls.upload,
@@ -264,18 +222,58 @@
                 error: function() {}
             });
         },
-        createDir: function(item) {
-            if (this.activeDirMap[item.id]) {
+        testInit: function() {
+            fsMain.getShopData(this.testLoadData.bind(this));
+        },
+        testLoadData: function(shops) {
+            var me = this,
+                map = {};
+            this.shops = shops;
+            util.each(shops, function(i, shop) {
+                util.it(shop.items, function(key, value) {
+                    if (!value.isUpload) {
+                        var item = {
+                            key: value
+                        };
+                        shop.items[key] = item;
+                        map[key] = {
+                            id: key,
+                            itemKey: value,
+                            shopId: shop.id,
+                            shop: shop,
+                            metaItem: item
+                        };
+                    }
+                    return false;
+                });
+            });
+            this.itemsMap = map;
+
+            var item;
+            util.it(this.itemsMap, function(key, value) {
+                item = value;
+                return false;
+            });
+            if (!item) {
                 return;
             }
-            fs.pictuer.sendMessage({
-                topic: 'createDir',
-                type: item.shop.name,
-                dir: item.id
-            });
+
+            this.activeItem = item;
+            this.createDir(this.activeItem);
         },
-        doCreateDirSuccess: function(config) {
-            this.activeDirMap[config.dir] = config.id;
+        testUploadPic: function() {
+            var item = this.activeItem;
+            var dirId = item.dirId;
+            for (var i = 0; i < 5; i++) {
+                fs.pictuer.sendMessage({
+                    topic: 'upload',
+                    itemId: item.id,
+                    index: i,
+                    dirId: item.dirId,
+                    file: localStorage['image_base64'],
+                    file_name: item.id + '_' + i + '.png'
+                });
+            }
         }
     };
 
