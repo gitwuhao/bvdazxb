@@ -32,7 +32,20 @@
         clientHeight: 0
     };
 
+    config.shops = [{
+        'id': '58501945',
+        'suid': '263817957',
+        'name': config.KEY.hd,
+        items: []
+    }, {
+        'id': '70986937',
+        'suid': '849727411',
+        'name': config.KEY.amh,
+        items: []
+    }];
 
-
+    config.getURL = function(fileName) {
+        return chrome.extension.getURL(fileName);
+    };
 
 })(this);

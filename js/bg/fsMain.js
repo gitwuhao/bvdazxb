@@ -1,15 +1,5 @@
 var fsMain = {
-    'shops': [{
-        'id': '58501945',
-        'suid': '263817957',
-        'name': config.KEY.hd,
-        items: []
-    }, {
-        'id': '70986937',
-        'suid': '849727411',
-        'name': config.KEY.amh,
-        items: []
-    }],
+    'shops': config.shops,
     getKey: function(title) {
         var array = (title || '').match(/\w{2}\d{4}/);
         return (array || [])[0];
@@ -206,76 +196,6 @@ var fsMain = {
             handle(html);
         }
         return html;
-    },
-    loadItemData: function() {
-        var me = this;
-        util.each(this.shops, function(i, shop) {
-            var newShop = {};
-            util.merger(newShop, shop);
-            newShop.items = [];
-            setTimeout(function() {
-                me.getShopList(newShop, 1, 'hotsell', 100);
-            }, 1000);
-        });
-    },
-    getShopList: function(shop, page, sort, maxLength) {
-
-
-        var me = this;
-        var url = 'https://' + shop.name + '.m.tmall.com/shop/shop_auction_search.do',
-            data = {
-                spm: 'a320p.7692171.0.0',
-                suid: shop.suid,
-                //default、hotsell、oldstarts
-                sort: sort || 'default',
-                p: page || 1,
-                page_size: 12,
-                from: 'h5',
-                shop_id: shop.id,
-                ajson: 1,
-                source: 'tmallsearch'
-            };
-
-        $.ajax({
-            url: url,
-            dataType: 'jsonp',
-            data: data,
-            success: function(json) {
-                me.doItemListJson(shop, json, data, maxLength);
-            },
-            error: function(msg) {
-
-            }
-        });
-    },
-    doItemListJson: function(shop, json, data, maxLength) {
-        var me = this;
-        if (!json.items) {
-            return;
-        }
-        util.each(json.items, function(i, item) {
-            shop.items.push({
-                id: item.item_id,
-                key: me.getKey(item.title)
-            });
-        });
-
-        if (parseInt(json.current_page) >= parseInt(json.total_page) || (maxLength && shop.items.length >= maxLength)) {
-            $.ajax({
-                type: 'POST',
-                url: config.urls.upload,
-                data: {
-                    filename: shop.id + '_' + data.sort + '.json',
-                    data: JSON.stringify(shop.items)
-                },
-                success: function() {},
-                error: function() {}
-            });
-        } else {
-            setTimeout(function() {
-                me.getShopList(shop, data.p + 1, data.sort, maxLength);
-            }, 3000);
-        }
     }
 };
 

@@ -5,6 +5,7 @@
             "js/lib/util.js",
             "js/lib/class.js",
             "js/lib/class.event.js",
+            "js/lib/connect.js",
             "js/lib/html.js",
             "js/lib/task.js",
             "js/lib/arraybuffer.js",
@@ -16,7 +17,8 @@
             "js/bg/fsBackground.js",
             "js/bg/fsPlugin.js",
             "js/bg/fsMain.js",
-            "js/bg/fsPage.js"
+            "js/bg/fsPage.js",
+            "js/bg/fsData.js"
             // "js/bg/fsNativeAPISupport.js",
             // "js/3p/base64.js"
         ]
@@ -25,12 +27,28 @@
         "js": [
             "js/lib/jquery-2.1.1.min.js",
             "js/lib/util.js",
+            "js/lib/class.js",
+            "js/lib/class.event.js",
             "js/lib/arraybuffer.js",
             "js/bg/fsUtils.js",
             "js/cfg/config.js",
-            "js/tb/fsPictuer.js"
+            "js/tb/pictuer.js"
         ],
         "matches": ["http://tadget.taobao.com/*", "https://tadget.taobao.com/*"],
+        "run_at": "document_start"
+    }, {
+        "js": [
+            "js/lib/jquery-2.1.1.min.js",
+            "js/lib/util.js",
+            "js/lib/class.js",
+            "js/lib/class.event.js",
+            "js/lib/html.js",
+            "js/lib/connect.js",
+            "js/cfg/config.js",
+            "js/cfg/data.js",
+            "js/tb/publish.js"
+        ],
+        "matches": ["http://upload.taobao.com/auction/publish/*", "https://upload.taobao.com/auction/publish/*"],
         "run_at": "document_start"
     }],
     // "default_locale": "en",
@@ -41,6 +59,9 @@
         "32": "images/sss_32.png",
         "48": "images/sss_48.png"
     },
+    "web_accessible_resources": [
+        "css/tb/main.css"
+    ],
     "key": "SDFLKJSDLKFJSDKLKFJSDLKF",
     "manifest_version": 2,
     "name": "shortCapture",

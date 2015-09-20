@@ -1,58 +1,116 @@
 (function(global, undefined) {
 
     classjs({
-        className: 'fs.data',
+        className: 'util.data',
         extendEvent: true,
-        statics: {
-            reloadHotSell: function(index) {
+        singleton: true,
+        getShopList: function(index, page, sort) {
+            var me = this;
+            var shop = this.shops[index],
+                url = 'https://' + shop.name + '.m.tmall.com/shop/shop_auction_search.do',
+                data = {
+                    index: index,
+                    spm: 'a320p.7692171.0.0',
+                    suid: shop.suid,
+                    sort: sort || 'hotsell',
+                    p: page || 1,
+                    page_size: 12,
+                    from: 'h5',
+                    shop_id: shop.id,
+                    ajson: 1,
+                    source: 'tmallsearch'
+                };
 
-            },
-            getShopList: function(index, page, sort) {
-                var me = this;
-                var shop = this.shops[index],
-                    url = 'https://' + shop.name + '.m.tmall.com/shop/shop_auction_search.do',
-                    data = {
-                        index: index,
-                        spm: 'a320p.7692171.0.0',
-                        suid: shop.suid,
-                        sort: sort || 'hotsell',
-                        p: page || 1,
-                        page_size: 12,
-                        from: 'h5',
-                        shop_id: shop.id,
-                        ajson: 1,
-                        source: 'tmallsearch'
-                    };
+            $.ajax({
+                url: url,
+                dataType: 'jsonp',
+                data: data,
+                success: function(json) {
+                    me.doItemListJson(json, data);
+                },
+                error: function(msg) {
 
-                $.ajax({
-                    url: url,
-                    dataType: 'jsonp',
-                    data: data,
-                    success: function(json) {
-                        me.doItemListJson(json, data);
-                    },
-                    error: function(msg) {
-
-                    }
+                }
+            });
+        },
+        doItemListJson: function(json, data) {
+            var me = this;
+            var shop = this.shops[data.index];
+            if (json.items) {
+                util.each(json.items, function(i, item) {
+                    shop.items[item.item_id] = me.getKey(item.title);
                 });
-            },
-            doItemListJson: function(json, data) {
-                var me = this;
-                var shop = this.shops[data.index];
-                if (json.items) {
-                    util.each(json.items, function(i, item) {
-                        shop.items[item.item_id] = me.getKey(item.title);
-                    });
 
-                    if (json.items.length == json.page_size) {
-                        setTimeout(function() {
-                            me.getShopList(data.index, data.p + 1, data.sort);
-                        }, 3000);
-                    } else {
-                        localStorage[shop.id] = JSON.stringify(shop);
-                    }
+                if (json.items.length == json.page_size) {
+                    setTimeout(function() {
+                        me.getShopList(data.index, data.p + 1, data.sort);
+                    }, 3000);
+                } else {
+                    localStorage[shop.id] = JSON.stringify(shop);
                 }
             }
+        },
+        getAttrUL: function(itemId, handle) {
+            var me = this;
+            $.ajax({
+                url: config.urls.pcDetail + itemId,
+                dataType: 'text',
+                success: function(html) {
+                    me.doAttrULHTML(itemId, html, handle);
+                },
+                error: function(msg) {
+
+                }
+            });
+        },
+        doAttrULHTML: function(itemId, html, handle) {
+            var fsHTML = new util.html(html);
+            var ul = fsHTML.getById('J_AttrUL');
+            var html = util.html.decodeHTML(ul.outerHTML);
+            if (handle) {
+                handle(html);
+            }
+            return html;
+        },
+        getDetail: function(itemId, handle) {
+            var me = this;
+            $.ajax({
+                url: config.urls.detail + itemId,
+                dataType: 'text',
+                success: function(html) {
+                    me.doDetailHTML(itemId, html, handle);
+                },
+                error: function(msg) {
+
+                }
+            });
+        },
+        doDetailHTML: function(itemId, html, handle) {
+            var fsHTML = new util.html(html);
+            // var array = this.getMainImageArray(fsHTML);
+            var mainData = this.getDetailData(fsHTML) || {};
+            if (handle) {
+                handle(mainData);
+            }
+            return mainData;
+        },
+        getDetailData: function(fsHTML) {
+            var array = fsHTML.getTagContext('script');
+            if (array.length < 1) {
+                return null;
+            }
+            return {
+                detail: fsHTML.getDataByKey('_DATA_Detail', array),
+                mdskip: fsHTML.getDataByKey('_DATA_Mdskip', array)
+            };
+        },
+        getDetailMainImageArray: function(fsHTML) {
+            var array = [];
+            util.each(fsHTML.doc.getElementsByClassName('itbox'), function(i, div) {
+                var img = div.getElementsByTagName(fsHTML.getTagName('img'));
+                array.push($(img[0]).attr('data-src').replace(/\.(jpg|png|gif)_.+/i, '.$1'));
+            });
+            return array;
         }
     });
 
