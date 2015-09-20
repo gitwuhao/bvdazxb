@@ -3,12 +3,12 @@ var fsMain = {
         'id': '58501945',
         'suid': '263817957',
         'name': config.KEY.hd,
-        items: {}
+        items: []
     }, {
         'id': '70986937',
         'suid': '849727411',
         'name': config.KEY.amh,
-        items: {}
+        items: []
     }],
     getKey: function(title) {
         var array = (title || '').match(/\w{2}\d{4}/);
@@ -119,26 +119,8 @@ var fsMain = {
             }
         });
     },
-    getData: function(fsHTML) {
-        var array = fsHTML.getTagContext('script');
-        if (array.length < 1) {
-            return null;
-        }
-        return {
-            detail: fsHTML.getDataByKey('_DATA_Detail', array),
-            mdskip: fsHTML.getDataByKey('_DATA_Mdskip', array)
-        };
-    },
-    getMainImageArray: function(fsHTML) {
-        var array = [];
-        util.each(fsHTML.doc.getElementsByClassName('itbox'), function(i, div) {
-            var img = div.getElementsByTagName(fsHTML.getTagName('img'));
-            array.push($(img[0]).attr('data-src').replace(/\.(jpg|png|gif)_.+/i, '.$1'));
-        });
-        return array;
-    },
     doDetailHTML: function(item, html) {
-        var fsHTML = new fs.html(html);
+        var fsHTML = new util.html(html);
         var list = [];
         var array = this.getMainImageArray(fsHTML);
         var mainData = this.getData(fsHTML) || {};
@@ -184,15 +166,68 @@ var fsMain = {
             });
         });
     },
-    getShopList: function(index, page, sort) {
+    getData: function(fsHTML) {
+        var array = fsHTML.getTagContext('script');
+        if (array.length < 1) {
+            return null;
+        }
+        return {
+            detail: fsHTML.getDataByKey('_DATA_Detail', array),
+            mdskip: fsHTML.getDataByKey('_DATA_Mdskip', array)
+        };
+    },
+    getMainImageArray: function(fsHTML) {
+        var array = [];
+        util.each(fsHTML.doc.getElementsByClassName('itbox'), function(i, div) {
+            var img = div.getElementsByTagName(fsHTML.getTagName('img'));
+            array.push($(img[0]).attr('data-src').replace(/\.(jpg|png|gif)_.+/i, '.$1'));
+        });
+        return array;
+    },
+    getAttrUL: function(itemId, handle) {
         var me = this;
-        var shop = this.shops[index],
-            url = 'https://' + shop.name + '.m.tmall.com/shop/shop_auction_search.do',
+        $.ajax({
+            cache: false,
+            url: config.urls.pcDetail + itemId,
+            dataType: 'text',
+            success: function(html) {
+                me.doPCDetailHTML(itemId, html, handle);
+            },
+            error: function(msg) {
+
+            }
+        });
+    },
+    doPCDetailHTML: function(itemId, html, handle) {
+        var fsHTML = new util.html(html);
+        var ul = fsHTML.getById('J_AttrUL');
+        var html = util.html.decodeHTML(ul.outerHTML);
+        if (handle) {
+            handle(html);
+        }
+        return html;
+    },
+    loadItemData: function() {
+        var me = this;
+        util.each(this.shops, function(i, shop) {
+            var newShop = {};
+            util.merger(newShop, shop);
+            newShop.items = [];
+            setTimeout(function() {
+                me.getShopList(newShop, 1, 'hotsell', 100);
+            }, 1000);
+        });
+    },
+    getShopList: function(shop, page, sort, maxLength) {
+
+
+        var me = this;
+        var url = 'https://' + shop.name + '.m.tmall.com/shop/shop_auction_search.do',
             data = {
-                index: index,
                 spm: 'a320p.7692171.0.0',
                 suid: shop.suid,
-                sort: sort || 'hotsell',
+                //default、hotsell、oldstarts
+                sort: sort || 'default',
                 p: page || 1,
                 page_size: 12,
                 from: 'h5',
@@ -206,28 +241,40 @@ var fsMain = {
             dataType: 'jsonp',
             data: data,
             success: function(json) {
-                me.doItemListJson(json, data);
+                me.doItemListJson(shop, json, data, maxLength);
             },
             error: function(msg) {
 
             }
         });
     },
-    doItemListJson: function(json, data) {
+    doItemListJson: function(shop, json, data, maxLength) {
         var me = this;
-        var shop = this.shops[data.index];
-        if (json.items) {
-            util.each(json.items, function(i, item) {
-                shop.items[item.item_id] = me.getKey(item.title);
+        if (!json.items) {
+            return;
+        }
+        util.each(json.items, function(i, item) {
+            shop.items.push({
+                id: item.item_id,
+                key: me.getKey(item.title)
             });
+        });
 
-            if (json.items.length == json.page_size) {
-                setTimeout(function() {
-                    me.getShopList(data.index, data.p + 1, data.sort);
-                }, 3000);
-            } else {
-                localStorage[shop.id] = JSON.stringify(shop);
-            }
+        if (parseInt(json.current_page) >= parseInt(json.total_page) || (maxLength && shop.items.length >= maxLength)) {
+            $.ajax({
+                type: 'POST',
+                url: config.urls.upload,
+                data: {
+                    filename: shop.id + '_' + data.sort + '.json',
+                    data: JSON.stringify(shop.items)
+                },
+                success: function() {},
+                error: function() {}
+            });
+        } else {
+            setTimeout(function() {
+                me.getShopList(shop, data.p + 1, data.sort, maxLength);
+            }, 3000);
         }
     }
 };

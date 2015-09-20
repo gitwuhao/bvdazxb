@@ -51,6 +51,15 @@
                 }
             }
             return array;
+        },
+        getById: function(id) {
+            return this.query('[id="' + id + '"]');
+        },
+        query: function(seleter) {
+            return this.doc.querySelector(seleter);
+        },
+        queryAll: function(seleter) {
+            return this.doc.querySelectorAll(seleter);
         }
     });
 })(window);
