@@ -2,8 +2,6 @@
 position: absolute;
 right: 10px;
 }
-#helper{right: 10px;
-}
 .fs-detail-info{
 position: fixed;
 top: 0px;
@@ -47,3 +45,6 @@ line-height: 30px;
 border-color: #DEDEDE;
 border: 1px solid #DEDEDE;
 }
+.fs-detail-info .publish{
+padding: 6px 20px;
+margin-top: 10px;}

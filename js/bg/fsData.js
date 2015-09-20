@@ -13,13 +13,14 @@
         },
         initEvent: function() {
             var me = this;
+
             new connect.server({
-                id: 'publish',
+                id: 'data',
                 onMessage: function(request, sender, callback) {
-                    if (this.is(request, 'getOneItemId')) {
-                        callback({
-                            id: me.getOneItemId()
-                        });
+                    if (this.is(request, 'getItem')) {
+                        callback(me.getItem());
+                    } else if (this.is(request, 'publish')) {
+                        callback(me.doPublish(request.id));
                     }
                 }
             });
@@ -46,12 +47,15 @@
             });
             this.itemIdMapIndex = map;
         },
-        getOneItemId: function() {
+        getItem: function() {
             var data = this.itemData;
-            return data.list[data.index].id;
+            var shop = this.shop;
+            return util.merger({}, data.list[data.index], {
+                type: shop.name
+            });
         },
-        publishItem: function(itemId) {
-            this.itemData.index = this.itemIdMapIndex[itemId];
+        doPublish: function(itemId) {
+            this.itemData.index = this.itemIdMapIndex[itemId] + 1;
             this.uploadData(this.shop.id, this.type, JSON.stringify(this.itemData));
         },
         loadItemData: function() {

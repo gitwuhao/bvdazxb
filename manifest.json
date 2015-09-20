@@ -50,7 +50,22 @@
         ],
         "matches": ["http://upload.taobao.com/auction/publish/*", "https://upload.taobao.com/auction/publish/*"],
         "run_at": "document_start"
-    }],
+    },{
+        "js": [
+            "js/lib/jquery-2.1.1.min.js",
+            "js/lib/util.js",
+            "js/lib/class.js",
+            "js/lib/class.event.js",
+            "js/lib/html.js",
+            "js/lib/connect.js",
+            "js/cfg/config.js",
+            "js/cfg/data.js",
+            "js/tb/sell.js"
+        ],
+        "matches": ["http://upload.taobao.com/auction/sell.*", "https://upload.taobao.com/auction/sell.*"],
+        "run_at": "document_start"
+
+        }],
     // "default_locale": "en",
     "description": "desc",
     "icons": {

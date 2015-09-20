@@ -1,13 +1,28 @@
 (function(global, undefined) {
 
+
+    var metaData = {
+        brand: {
+            'handu': {
+                key: 'HSTYLE/韩都衣舍',
+                value: '20000:8598007'
+            },
+            'amh': {
+                key: 'AMH',
+                value: '20000:4533216'
+            }
+
+        }
+    };
+
     classjs({
-        className: 'fs.publish',
+        className: 'tb.publish',
         extendEvent: true,
         singleton: true,
         init: function() {
             var me = this;
             this.client = new connect.client({
-                id: 'publish',
+                id: 'data',
                 onConnect: function() {
                     me.doClientInitDone();
                 }
@@ -15,10 +30,10 @@
         },
         doClientInitDone: function() {
             var me = this;
-            this.itemId = $('#outerIdId').val();
-            if (!this.itemId) {
-                this.client.send('getOneItemId', {}, function(data) {
-                    me.itemId = data.id;
+            var itemId = $('#outerIdId').val();
+            if (!itemId) {
+                this.client.send('getItem', {}, function(item) {
+                    me.metaItem = item;
                     me.initDetailInfo();
                 });
             } else {
@@ -30,7 +45,6 @@
             this.includeCSS();
             this.initDetailBox();
             if (!this.isPublish) {
-                this.initValues();
                 this.initEvents();
             }
         },
@@ -56,6 +70,7 @@
                 '<tbody>',
                 '</tbody>',
                 '</table>',
+                '<button class="publish">发布</button>',
                 '</div>'
             ];
             $(document.body).append(html.join(''));
@@ -65,32 +80,53 @@
             this.$attrUL = fsBox.children('.attr-ul:first');
             this.$skuTable = fsBox.children('.sku-info:first');
             this.$skuTbody = this.$skuTable.children('tbody:first');
-
+            var $publish = fsBox.children('.publish:first');
+            var me = this;
+            $publish.on('click', function(event) {
+                me.onSubmit();
+            });
             this.loadFSBox();
         },
         initValues: function() {
             var item = this.itemData;
+            var metaItem = this.metaItem;
+
+            $('#prop_13021751').val(metaItem.key);
+
+            var brand = metaData.brand[metaItem.type];
+            $('#simulate-prop_20000').val(brand.key);
+            $('#prop_20000').html(['<option value="', brand.value, '">', brand.key, '</option>'].join(''));
+
+            $('#simulate-prop_13328588').val('');
+
+
             $('#TitleID').val(item.title);
             $('#buynow').val(item.price);
             $('#quantityId').val(10);
             $('#outerIdId').val(item.itemId);
+
+
         },
         initEvents: function() {
             var me = this;
             $('#J_MainForm').on('submit', function(event) {
                 me.onSubmit();
             });
+
         },
         onSubmit: function() {
-
+            this.client.send('publish', {
+                id: this.metaItem.id
+            });
         },
         loadFSBox: function() {
             var me = this;
-            util.data.getAttrUL(this.itemId, function(html) {
+            var itemId = this.metaItem.id;
+            util.data.getAttrUL(itemId, function(html) {
                 me.$attrUL.html(html);
             });
 
-            util.data.getDetail(this.itemId, function(data) {
+            util.data.getDetail(itemId, function(data) {
                 me.doDetailData(data);
             });
 
@@ -151,7 +187,7 @@
     });
 
     window.addEventListener('load', function() {
-        fs.publish.init();
+        tb.publish.init();
     });
 
 })(window);
