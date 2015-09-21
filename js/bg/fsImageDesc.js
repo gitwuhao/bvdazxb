@@ -11,7 +11,6 @@
         data_type: 'images',
         dir_suffix: 'desc',
         init: function() {
-
             this.type = this.PC_TYPE;
             this.loadItem();
             this.initEvent();
@@ -43,13 +42,19 @@
                 rate: '0.95',
                 itemId: item.id,
                 index: event.index,
-                file_name: item.key + '_main_' + event.index + '.' + event.format
+                file_name: item.key + '_desc_' + event.index + '.' + event.format
             }, function() {
 
             });
         },
-        doCaptureDone: function(event) {
-
+        doCaptureDone: function() {
+            var me = this;
+            setTimeout(function() {
+                var item = me.activeItem;
+                me.itemData.index = me.itemIdMapIndex[item.id] + 1;
+                me.uploadData();
+                me.activeWin.location.reload();
+            }, 30 * 1000);
         },
         createTab: function() {
             var type = this.type,
@@ -147,11 +152,9 @@
         url: 
         */
         doUploadSuccess: function(request) {
-
-        },
-        uploadItem: function(itemId) {
-            this.itemData.index = this.itemIdMapIndex[itemId] + 1;
-            this.uploadData();
+            var item = this.metaItemMap[request.itemId];
+            item.urls = item.urls || [];
+            item.urls.push(request.url);
         },
         getItemDirMapFileName: function() {
             return this.shop.id + '_dir.json';
@@ -189,10 +192,14 @@
         doLoadItems: function(data) {
             this.itemData = data;
             var map = {};
+            var metaItemMap = {};
+
             util.each(data.list, function(i, item) {
                 map[item.id] = i;
+                metaItemMap[item.id] = item;
             });
             this.itemIdMapIndex = map;
+            this.metaItemMap = metaItemMap;
             this.loadItemDirMap();
         },
         getItemDirMapFileName: function() {
@@ -226,14 +233,10 @@
                 type: shop.name
             });
         },
-        uploadItem: function(itemId) {
-            this.itemData.index = this.itemIdMapIndex[itemId] + 1;
-            this.uploadData();
-        },
         getItemDataFileName: function() {
             return this.shop.id + '_' + this.dir_suffix + '_' + this.data_type + '.json';
         },
-        uploadData: function(shopId, data) {
+        uploadData: function() {
             $.ajax({
                 type: 'POST',
                 url: config.urls.upload,
