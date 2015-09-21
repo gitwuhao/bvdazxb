@@ -26,6 +26,9 @@
         uploadMainImage: function() {
             var me = this;
             var item = this.getItem();
+            if (!item) {
+                return;
+            }
             var dir = this.itemDirMap[item.id];
             util.data.getDetailMainImage(item.id, function(array) {
                 new util.task({
@@ -131,6 +134,7 @@
             var shop = this.shop;
             var item = data.list[data.index];
             if (!item || data.index >= 200) {
+                alert('finish...');
                 return null;
             }
             return util.merger({}, item, {

@@ -99,6 +99,7 @@
         getPCDesc: function(fsHTML) {
             var array = fsHTML.getTagContext('script');
             if (array.length < 1) {
+                alert('finish...');
                 return null;
             }
             return fsHTML.getDataByKey('wdescData', array);
