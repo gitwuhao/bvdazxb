@@ -32,7 +32,7 @@
                     item: item,
                     dir_id: dir.dir_id,
                     array: array,
-                    timeout: 300,
+                    timeout: 0,
                     autoRun: true,
                     execute: function(src) {
                         var index = this.index;
@@ -50,7 +50,7 @@
                             }, function() {
 
                             });
-                            setTimeout(task.complete.bind(task, src), 1000);
+                            setTimeout(task.complete.bind(task, src), 300);
                         }, format);
                     },
                     finish: function() {

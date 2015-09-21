@@ -54,7 +54,7 @@
                 me.itemData.index = me.itemIdMapIndex[item.id] + 1;
                 me.uploadData();
                 me.activeWin.location.reload();
-            }, 30 * 1000);
+            }, 1000);
         },
         createTab: function() {
             var type = this.type,
