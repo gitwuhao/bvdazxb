@@ -18,7 +18,7 @@
         },
         startup: function(page) {
             this.page = page;
-            page.fs.page.getDescHTML(window, this.doDescHTML.bind(this));
+            page.fsPlugin.client.getDescHTML(window, this.doDescHTML.bind(this));
         },
         doDescHTML: function(html) {
             this.loadHTML(html.replace(/\s?\r\n\s?/g, '').replace(/\s+(<)/g, '$1'));

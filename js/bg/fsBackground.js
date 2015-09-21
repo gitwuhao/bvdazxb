@@ -303,7 +303,7 @@ function capturePage(Action, Mode, CallbackCompleted) {
     capId++;
 
 
-    var tab = fs.page.activeTab;
+    var tab = fsPlugin.client.activeTab;
     tabId = tab.id;
 
     chrome.tabs.executeScript(tab.id, {
@@ -412,7 +412,7 @@ function doCapturing(Action, Mode, CallbackCompleted) {
         return;
     }
 
-    var tab = fs.page.activeTab;
+    var tab = fsPlugin.client.activeTab;
     tabId = tab.id;
 
     try {

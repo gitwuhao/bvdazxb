@@ -4,8 +4,12 @@ var fsPlugin = {
     inited: false,
     captures: undefined,
     clientWidth: 100,
+    client: {},
     init: function() {
         this.inited = true;
+    },
+    register: function(client) {
+        this.client = client;
     },
     launchFunction: function(cmd, obj) {
         if (cmd == "captureInit") this.captureInit(obj);
@@ -19,7 +23,8 @@ var fsPlugin = {
         this.clientHeight = data.clientHeight;
     },
     captureTabPNG: function(data) {
-        var clientHeight = this.clientHeight,
+        var me = this,
+            clientHeight = this.clientHeight,
             y = 0,
             lastData = this.captures[this.captures.length - 1];
         if (lastData) {
@@ -35,13 +40,22 @@ var fsPlugin = {
             y: y,
             clientHeight: clientHeight,
             dataurl: data.dataurl
-        }, fs.page.captureTabPNG.bind(fs.page));
+        }, function(index, data, format) {
+            if (me.client) {
+                me.client.emit('captureImage', {
+                    index: index,
+                    data: data,
+                    format: format
+                });
+            }
+        });
     },
     clipCaptureData: function(data, callback) {
         var index = this.captures.length;
         var img = new Image();
-        img.src = data.dataurl;
         var me = this;
+        var format = me.defaultImageFormat;
+        img.src = data.dataurl;
         img.onload = function(index, img) {
             return function() {
                 var canvas = document.createElement('canvas');
@@ -49,14 +63,14 @@ var fsPlugin = {
                 canvas.height = data.clientHeight;
                 var ctx = canvas.getContext('2d');
                 ctx.drawImage(img, data.x, data.y, me.clientWidth, data.clientHeight, 0, 0, me.clientWidth, data.clientHeight);
-                callback(index, canvas.toDataURL(me.defaultImageFormat === "png" ? "image/png" : "image/jpeg"), me.defaultImageFormat);
+                callback(index, canvas.toDataURL(format === "png" ? "image/png" : "image/jpeg"), format);
             };
         }(index, img);
     },
     loadImages: function(data, callback) {
         var cntr;
         var imagesPending = this.captures.length;
-
+        var me = this;
         for (cntr = 0; cntr < this.captures.length; ++cntr) {
             var img = new Image,
                 captures = this.captures;
@@ -66,9 +80,9 @@ var fsPlugin = {
                     captures[id].dataurl = "";
                     captures[id].img = img;
 
-                    fsPlugin.clipCapture(data, captures[id]);
+                    me.clipCapture(data, captures[id]);
                     if (--imagesPending == 0)
-                        fsPlugin.captureDone(data);
+                        me.captureDone(data);
                 }
             }(cntr, img);
 
@@ -90,7 +104,11 @@ var fsPlugin = {
 
     },
     captureDone: function(data) {
-        fs.page.captureDone(fsPlugin.captures);
+        if (this.client) {
+            this.client.emit('captureDone', {
+                list: this.captures
+            });
+        }
     }
 }
 
