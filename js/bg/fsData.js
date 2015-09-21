@@ -37,7 +37,7 @@
                     me.doLoadItems(JSON.parse(data));
                 },
                 error: function() {}
-            })
+            });
         },
         doLoadItems: function(data) {
             this.itemData = data;
@@ -58,7 +58,7 @@
             this.itemData.index = this.itemIdMapIndex[itemId] + 1;
             this.uploadData(this.shop.id, this.type, JSON.stringify(this.itemData));
         },
-        loadItemData: function() {
+        downloadItemData: function() {
             var me = this;
             util.each(this.shops, function(i, shop) {
                 var newShop = {};

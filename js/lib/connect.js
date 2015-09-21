@@ -116,6 +116,8 @@
         className: 'connect.server',
         extend: 'connect.port',
         id: 'server',
+        queueIndex: Date.now(),
+        msgQueue: {},
         ready: function() {
             connect.port.register(this);
         },
@@ -123,13 +125,29 @@
             var me = this;
             this.port.onMessage.addListener(function(request, sender) {
                 me.onMessage(request, sender, function(data) {
-                    me.send(request, data);
+                    me.response(request, data);
                 });
+                var callback = me.msgQueue[request.__request_id__];
+                if (callback) {
+                    callback(request);
+                }
             });
         },
-        send: function(request, data) {
+        response: function(request, data) {
             var message = this.createMessage(request.__topic__, data);
             message.__request_id__ = request.__request_id__;
+            this.port.postMessage(message);
+        },
+        request: function(topic, data, callback) {
+            var message = this.createMessage(topic, data);
+            message.__request_id__ = 'queue::' + (this.queueIndex++);
+            if (callback) {
+                this.msgQueue[message.__request_id__] = callback;
+            }
+            this.port.postMessage(message);
+        },
+        send: function(topic, data) {
+            var message = this.createMessage(topic, data);
             this.port.postMessage(message);
         },
         create: function(config) {

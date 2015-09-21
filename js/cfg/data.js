@@ -72,20 +72,26 @@
             }
             return html;
         },
-        getDetail: function(itemId, handle) {
+        getDetailHTML: function(itemId, handle) {
             var me = this;
             $.ajax({
                 url: config.urls.detail + itemId,
                 dataType: 'text',
                 success: function(html) {
-                    me.doDetailHTML(itemId, html, handle);
+                    handle(html);
                 },
                 error: function(msg) {
 
                 }
             });
         },
-        doDetailHTML: function(itemId, html, handle) {
+        getDetail: function(itemId, handle) {
+            var me = this;
+            this.getDetailHTML(itemId, function(html) {
+                me.doDetailHTML(html, handle);
+            });
+        },
+        doDetailHTML: function(html, handle) {
             var fsHTML = new util.html(html);
             // var array = this.getMainImageArray(fsHTML);
             var mainData = this.getDetailData(fsHTML) || {};
@@ -104,12 +110,27 @@
                 mdskip: fsHTML.getDataByKey('_DATA_Mdskip', array)
             };
         },
-        getDetailMainImageArray: function(fsHTML) {
+        getDetailMainImage: function(itemId, handle) {
+            var me = this;
+            this.getDetailHTML(itemId, function(html) {
+                me.doDetailMainImageArray(html, handle);
+            });
+        },
+        getURL: function(url) {
+            return url.replace(/^(\/\/)/, 'http://');
+        },
+        doDetailMainImageArray: function(html, handle) {
+            var fsHTML = new util.html(html);
             var array = [];
+            var me = this;
             util.each(fsHTML.doc.getElementsByClassName('itbox'), function(i, div) {
                 var img = div.getElementsByTagName(fsHTML.getTagName('img'));
-                array.push($(img[0]).attr('data-src').replace(/\.(jpg|png|gif)_.+/i, '.$1'));
+                var url = $(img[0]).attr('data-src').replace(/\.(jpg|png|gif)_.+/i, '.$1');
+                array.push(me.getURL(url));
             });
+            if (handle) {
+                handle(array);
+            }
             return array;
         }
     });

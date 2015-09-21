@@ -299,3 +299,8 @@ function setLastActionAndMode(capAction, capMode) {
 function isProMode() {
     return localStorage[cPluginProModePref] == "true";
 }
+
+
+// $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
+//     options.async = true;
+// });

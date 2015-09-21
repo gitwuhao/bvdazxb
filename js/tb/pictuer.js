@@ -44,7 +44,6 @@
                             data.topic = 'createDirSuccess';
                             port.postMessage(data);
                         }
-
                     });
                 } else if (topic == 'upload') {
                     me.upload({
@@ -90,19 +89,15 @@
         },
         doAddDirSuccess: function(config, data) {
             data = JSON.parse(data);
-            if (data.errorMessage) {
-                console.error(data.errorMessage);
-                //error
-            } else if (data.message) {
-                console.error(data.message);
-                //error
-            } else if (!data.module && !config.isError) {
-                config.isError = true;
-                this.addDir(config);
-            } else if (data.module && config.callback) {
+            if (data.module && data.module.pictureCategoryId) {
                 config.callback({
                     id: data.module.pictureCategoryId,
                     dir: config.dir
+                });
+            } else {
+                console.error(data.errorMessage);
+                config.callback({
+                    id: ''
                 });
             }
         },
@@ -167,6 +162,32 @@
                 });
             }
         },
+        delDir: function(config) {
+            $.ajax({
+                url: 'https://tadget.taobao.com/redaction/redaction/json.json',
+                data: {
+                    'cmd': 'json_batch_delete',
+                    'dir_ids': config.dir_id
+                },
+                dataType: 'text',
+                success: this.doDelDirSuccess.bind(this, config),
+                error: this.doError.bind(this, config)
+            });
+        },
+        doDelDirSuccess: function(config, data) {
+            data = JSON.parse(data);
+            if (data.module && data.module.dir_success_module) {
+                config.callback({
+                    id: config.dir_id,
+                    dir: config.dir
+                });
+            } else {
+                console.error(data.errorMessage);
+                config.callback({
+                    id: ''
+                });
+            }
+        },
         testUpload: function(data) {
             this.upload({
                 dirId: '106141122490019253',
@@ -174,6 +195,15 @@
                 file_name: 'adfxc',
                 callback: function(item) {
                     console.info(item);
+                }
+            });
+        },
+        initDirData: function() {
+            var me = this;
+            this.client = new connect.client({
+                id: 'data',
+                onConnect: function() {
+                    me.doClientInitDone();
                 }
             });
         }

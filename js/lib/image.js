@@ -45,6 +45,14 @@
                     var array = util.base642Blob(data);
                     callback(array.size);
                 });
+            },
+            getDataBySrc: function(src, callback, format) {
+                var me = this;
+                var format = format ? format : this.getFormat(src);
+                this.toCanvas(src, function(canvas, img) {
+                    var data = canvas.toDataURL(me.MIME_TYPE[format || 'png']);
+                    callback(data);
+                });
             }
         }
     });

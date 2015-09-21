@@ -1,7 +1,7 @@
 {
     "background": {
         "scripts": [
-            "js/lib/jquery-2.1.1.min.js",
+            "js/lib/jquery-2.1.1.js",
             "js/lib/util.js",
             "js/lib/class.js",
             "js/lib/class.event.js",
@@ -11,13 +11,15 @@
             "js/lib/arraybuffer.js",
             "js/lib/image.js",
             "js/cfg/config.js",
+            "js/cfg/data.js",
             "js/bg/fsUtils.js",
             "js/bg/fsNativeAPISupport.js",
             "js/bg/fsCommands.js",
             "js/bg/fsBackground.js",
             "js/bg/fsPlugin.js",
             "js/bg/fsMain.js",
-            "js/bg/fsPage.js",
+            "js/bg/fsDir.js",
+            "js/bg/fsImageMain.js",
             "js/bg/fsData.js"
             // "js/bg/fsNativeAPISupport.js",
             // "js/3p/base64.js"
@@ -25,20 +27,22 @@
     },
     "content_scripts": [{
         "js": [
-            "js/lib/jquery-2.1.1.min.js",
+            "js/lib/jquery-2.1.1.js",
             "js/lib/util.js",
             "js/lib/class.js",
             "js/lib/class.event.js",
+            "js/lib/connect.js",
             "js/lib/arraybuffer.js",
             "js/bg/fsUtils.js",
             "js/cfg/config.js",
-            "js/tb/pictuer.js"
+            // "js/tb/pictuer.js"
+            "js/tb/image.js"
         ],
         "matches": ["http://tadget.taobao.com/*", "https://tadget.taobao.com/*"],
         "run_at": "document_start"
     }, {
         "js": [
-            "js/lib/jquery-2.1.1.min.js",
+            "js/lib/jquery-2.1.1.js",
             "js/lib/util.js",
             "js/lib/class.js",
             "js/lib/class.event.js",
@@ -50,9 +54,9 @@
         ],
         "matches": ["http://upload.taobao.com/auction/publish/*", "https://upload.taobao.com/auction/publish/*"],
         "run_at": "document_start"
-    },{
+    }, {
         "js": [
-            "js/lib/jquery-2.1.1.min.js",
+            "js/lib/jquery-2.1.1.js",
             "js/lib/util.js",
             "js/lib/class.js",
             "js/lib/class.event.js",
@@ -65,7 +69,7 @@
         "matches": ["http://upload.taobao.com/auction/sell.*", "https://upload.taobao.com/auction/sell.*"],
         "run_at": "document_start"
 
-        }],
+    }],
     // "default_locale": "en",
     "description": "desc",
     "icons": {
