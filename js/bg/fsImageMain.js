@@ -54,7 +54,6 @@
                         }, format);
                     },
                     finish: function() {
-                        me.uploadMainImage();
                         me.uploadItem(this.item.id);
                     }
                 });
@@ -63,6 +62,7 @@
         uploadItem: function(itemId) {
             this.itemData.index = this.itemIdMapIndex[itemId] + 1;
             this.uploadData();
+            this.uploadMainImage();
         },
         initLoadItemData: function() {
             var me = this;
@@ -137,14 +137,10 @@
                 type: shop.name
             });
         },
-        uploadItem: function(itemId) {
-            this.itemData.index = this.itemIdMapIndex[itemId] + 1;
-            this.uploadData();
-        },
         getItemDataFileName: function() {
             return this.shop.id + '_' + this.dir_suffix + '_' + this.data_type + '.json';
         },
-        uploadData: function(shopId, data) {
+        uploadData: function() {
             $.ajax({
                 type: 'POST',
                 url: config.urls.upload,
