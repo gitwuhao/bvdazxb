@@ -7,12 +7,15 @@
                 'png': 'image/png',
                 'jpg': 'image/jpeg'
             },
+            getURL: function(url) {
+                return url.replace(/^(\/\/)/, 'http://');
+            },
             load: function(src, handle) {
                 var img = new Image();
                 img.onload = function() {
                     handle(this);
                 };
-                img.src = src;
+                img.src = this.getURL(src);
             },
             getFormat: function(src) {
                 var m = (src || '').match(/(image\/|\.)(png|jpg)/);

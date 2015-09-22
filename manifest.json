@@ -21,6 +21,7 @@
             "js/bg/fs.job.js",
             "js/bg/fs.dir.js",
             "js/bg/fs.image.desc.js",
+            "js/bg/fs.image.desc.h5.js",
             "js/bg/fs.image.main.js",
             // "js/bg/fsImageDesc.js",
             "js/bg/fs.data.js"

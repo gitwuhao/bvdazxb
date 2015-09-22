@@ -35,8 +35,13 @@
         getDataByKey: function(key, array) {
             for (var n = 0, len = array.length; n < len; n++) {
                 if (new RegExp(key, 'gi').test(array[n])) {
-                    var fn = new Function(array[n] + '; return ' + key + ';');
-                    return fn();
+                    try {
+                        var fn = new Function(array[n] + '; return ' + key + ';');
+                        return fn();
+                    } catch (err) {
+                        console.error(err);
+                        return null;
+                    }
                 }
             }
         },
