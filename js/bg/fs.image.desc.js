@@ -3,8 +3,6 @@
     classjs({
         className: 'fs.image.desc',
         extend: 'fs.job',
-        shops: config.shops,
-        shop: config.shops[0],
         desc_type: 'pc',
         PC_TYPE: 'pc',
         H5_TYPE: 'h5',

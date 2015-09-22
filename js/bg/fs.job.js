@@ -4,7 +4,7 @@
         className: 'fs.job',
         extendEvent: true,
         shops: config.shops,
-        shop: config.shops[0],
+        // shop: config.shops[0],
         task_type: 'dir',
         data_type: 'handu_pc',
         index: 0,

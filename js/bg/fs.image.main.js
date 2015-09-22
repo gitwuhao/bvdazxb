@@ -3,8 +3,6 @@
     classjs({
         className: 'fs.image.main',
         extend: 'fs.job',
-        shops: config.shops,
-        shop: config.shops[0],
         data_type: 'handu_pc',
         task_type: 'main',
         initServer: function() {
