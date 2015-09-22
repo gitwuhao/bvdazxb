@@ -72,6 +72,7 @@
             this.doLoadJob(jobData);
         },
         doLoadJob: function(data) {
+            var me = this;
             var map = {};
             var metaItemMap = this.metaItemMap;
             if (!metaItemMap) {
@@ -80,11 +81,11 @@
             this.itemData = data;
             util.each(data.list, function(i, item) {
                 map[item.id] = i;
-                if (metaItemMap) {
+                if (!me.metaItemMap) {
                     metaItemMap[item.id] = util.merger({}, item);
                 }
             });
-            if (this.metaItemMap != metaItemMap) {
+            if (!this.metaItemMap) {
                 this.metaItemMap = metaItemMap;
             }
             this.itemIdMapIndex = map;
