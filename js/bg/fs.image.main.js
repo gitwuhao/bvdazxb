@@ -5,12 +5,6 @@
         shops: config.shops,
         shop: config.shops[0],
         data_type: 'images',
-        dir_suffix: 'main',
-        statics: {
-            init: function() {
-                new fs.image.main();
-            }
-        },
         ready: function() {
             this.loadItem();
         },
@@ -86,15 +80,12 @@
                 error: function() {}
             });
         },
-        getItemDirMapFileName: function() {
-            return this.shop.id + '_dir.json';
-        },
         loadItem: function() {
             var me = this;
             $.ajax({
                 type: 'POST',
                 async: false,
-                url: config.urls.data + this.getItemDataFileName(),
+                url: config.urls.data + this.getMainJobFileName(),
                 dataType: 'text',
                 success: function(data) {
                     me.doLoadItems(JSON.parse(data));
@@ -114,7 +105,7 @@
             this.loadItemDirMap();
         },
         getItemDirMapFileName: function() {
-            return this.shop.id + '_dir.json';
+            return this.shop.id + '_dir_' + this.data_type + '.json';
         },
         loadItemDirMap: function() {
             var me = this;
@@ -145,15 +136,15 @@
                 type: shop.name
             });
         },
-        getItemDataFileName: function() {
-            return this.shop.id + '_' + this.dir_suffix + '_' + this.data_type + '.json';
+        getMainJobFileName: function() {
+            return this.shop.id + '_main_job_' + this.data_type + '.json';
         },
         uploadData: function() {
             $.ajax({
                 type: 'POST',
                 url: config.urls.upload,
                 data: {
-                    filename: this.getItemDataFileName(),
+                    filename: this.getMainJobFileName(),
                     data: JSON.stringify(this.itemData)
                 },
                 success: function() {},
@@ -161,5 +152,22 @@
             });
         }
     });
+
+
+    classjs({
+        className: 'fs.image.main.handu',
+        extend: 'fs.image.main',
+        shop: config.shops[0],
+        data_type: 'handu_pc'
+    });
+
+
+    classjs({
+        className: 'fs.image.main.amh',
+        extend: 'fs.image.main',
+        shop: config.shops[1],
+        data_type: 'amh_pc'
+    });
+
 
 })(window);

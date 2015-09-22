@@ -9,7 +9,7 @@
         PC_TYPE: 'pc',
         H5_TYPE: 'h5',
         data_type: 'handu_pc',
-        init: function() {
+        ready: function() {
             this.loadItem();
             this.initEvent();
             fsPlugin.register(this);
@@ -154,9 +154,6 @@
             var item = this.metaItemMap[request.itemId];
             item.urls = item.urls || {};
             item.urls[request.index] = request.url;
-        },
-        getItemDirMapFileName: function() {
-            return this.shop.id + '_dir.json';
         },
         loadItem: function() {
             var me = this;
