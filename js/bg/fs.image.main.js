@@ -31,7 +31,7 @@
             var dir = this.itemDirMap[item.id];
             var shop = this.shop;
             util.data.getDetailMainImage(item.id, function(array) {
-                new util.task({
+                me.task = new util.task({
                     item: item,
                     dir_id: dir.dir_id,
                     shop: shop,
@@ -56,7 +56,7 @@
                             }, function() {
 
                             });
-                            setTimeout(task.complete.bind(task, src), 3 * 1000);
+                            setTimeout(task.complete.bind(task, src), 1 * 1000);
                         }, format);
                     },
                     finish: function() {
