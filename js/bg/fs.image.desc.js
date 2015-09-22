@@ -5,7 +5,7 @@
         extend: 'fs.job',
         shops: config.shops,
         shop: config.shops[0],
-        type: 'pc',
+        desc_type: 'pc',
         PC_TYPE: 'pc',
         H5_TYPE: 'h5',
         data_type: 'handu_pc',
@@ -36,7 +36,7 @@
             var item = this.activeItem;
             var dir = this.itemDirMap[item.id];
             var shop_name = this.shop.name;
-            var file_name = item.key + '_' + shop_name + '_desc_' + event.index + '.' + event.format;
+            var file_name = item.key + '_' + shop_name + '_desc_' + this.desc_type + '_' + event.index + '.' + event.format;
             this.activeWin.document.title = file_name;
             this.server.request('uploadImage', {
                 dirId: dir.dir_id,
@@ -59,10 +59,9 @@
             }, 1000);
         },
         createTab: function() {
-            var type = this.type,
-                me = this,
+            var me = this,
                 url = 'fsPCCanvas.html';
-            if (type == this.H5_TYPE) {
+            if (this.desc_type == this.H5_TYPE) {
                 url = 'fsH5Canvas.html';
             }
 
@@ -79,7 +78,7 @@
             }
             this.activeWin = win;
             this.activeItem = item;
-            if (this.type == this.H5_TYPE) {
+            if (this.desc_type == this.H5_TYPE) {
                 this.getH5DescHTML(item.id, handle);
             } else {
                 this.getPCDescHTML(item.id, handle);
