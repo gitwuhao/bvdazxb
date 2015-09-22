@@ -16,6 +16,8 @@
                         me.uploadMainImage();
                     } else if (this.is(request, 'uploadSuccess')) {
                         me.doUploadSuccess(request);
+                    } else {
+                        console.error('no request handle:', request);
                     }
                 }
             });
@@ -54,7 +56,7 @@
                             }, function() {
 
                             });
-                            setTimeout(task.complete.bind(task, src), 300);
+                            setTimeout(task.complete.bind(task, src), 3 * 1000);
                         }, format);
                     },
                     finish: function() {

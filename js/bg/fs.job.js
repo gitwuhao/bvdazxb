@@ -116,6 +116,7 @@
             var shop = this.shop;
             var item = data.list[data.index];
             if (!item) {
+                console.error("no item job...");
                 return null;
             }
             return util.merger({}, item, {

@@ -28,6 +28,8 @@
                         me.createTab();
                     } else if (this.is(request, 'uploadSuccess')) {
                         me.doUploadSuccess(request);
+                    } else {
+                        console.error('no request handle:', request);
                     }
                 }
             });
