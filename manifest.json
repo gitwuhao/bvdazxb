@@ -18,6 +18,7 @@
             "js/bg/fsBackground.js",
             "js/bg/fsPlugin.js",
             "js/bg/fsMain.js",
+            "js/bg/fs.job.js",
             "js/bg/fs.dir.js",
             "js/bg/fs.image.desc.js",
             "js/bg/fs.image.main.js",

@@ -99,6 +99,8 @@
         var clazz = classMap[className];
         if (clazz && !clazz.__isSingleton__) {
             return clazz;
+        } else if (className && !clazz) {
+            console.error('no find class:' + className);
         }
     };
 

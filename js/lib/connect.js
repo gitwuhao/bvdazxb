@@ -9,6 +9,7 @@
             connects: {},
             register: function(connect) {
                 this.connects[connect.id] = connect;
+                console.info('server #' + connect.id + ' register success', connect);
             },
             /*
              *{
