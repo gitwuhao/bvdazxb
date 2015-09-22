@@ -3,14 +3,12 @@
     classjs({
         className: 'fs.image.desc',
         extendEvent: true,
-        singleton: true,
         shops: config.shops,
         shop: config.shops[0],
+        type: 'pc',
         PC_TYPE: 'pc',
         H5_TYPE: 'h5',
-        type : 'pc',
-        data_type: 'images',
-        dir_suffix: 'desc',
+        data_type: 'handu_pc',
         init: function() {
             this.loadItem();
             this.initEvent();
@@ -52,7 +50,7 @@
             setTimeout(function() {
                 var item = me.activeItem;
                 me.itemData.index = me.itemIdMapIndex[item.id] + 1;
-                me.uploadData();
+                me.uploadDescJobData();
                 me.activeWin.location.reload();
             }, 1000);
         },
@@ -154,8 +152,8 @@
         */
         doUploadSuccess: function(request) {
             var item = this.metaItemMap[request.itemId];
-            item.urls = item.urls || [];
-            item.urls.push(request.url);
+            item.urls = item.urls || {};
+            item.urls[request.index] = request.url;
         },
         getItemDirMapFileName: function() {
             return this.shop.id + '_dir.json';
@@ -165,7 +163,7 @@
             $.ajax({
                 type: 'POST',
                 async: false,
-                url: config.urls.data + this.getItemDataFileName(),
+                url: config.urls.data + this.getDescJobFileName(),
                 dataType: 'text',
                 success: function(data) {
                     me.doLoadItems(JSON.parse(data));
@@ -204,7 +202,7 @@
             this.loadItemDirMap();
         },
         getItemDirMapFileName: function() {
-            return this.shop.id + '_dir.json';
+            return this.shop.id + '_dir_' + this.data_type + '.json';
         },
         loadItemDirMap: function() {
             var me = this;
@@ -234,15 +232,15 @@
                 type: shop.name
             });
         },
-        getItemDataFileName: function() {
-            return this.shop.id + '_' + this.dir_suffix + '_' + this.data_type + '.json';
+        getDescJobFileName: function() {
+            return this.shop.id + '_desc_job_' + this.data_type + '.json';
         },
-        uploadData: function() {
+        uploadDescJobData: function() {
             $.ajax({
                 type: 'POST',
                 url: config.urls.upload,
                 data: {
-                    filename: this.getItemDataFileName(),
+                    filename: this.getDescJobFileName(),
                     data: JSON.stringify(this.itemData)
                 },
                 success: function() {},
@@ -250,5 +248,31 @@
             });
         }
     });
+    classjs({
+        className: 'fs.image.desc.handu',
+        extend: 'fs.image.desc',
+        shop: config.shops[0],
+        data_type: 'handu_pc'
+    });
 
+    classjs({
+        className: 'fs.image.desc.handuh5',
+        extend: 'fs.image.desc',
+        shop: config.shops[0],
+        data_type: 'handu_h5'
+    });
+
+    classjs({
+        className: 'fs.image.desc.amh',
+        extend: 'fs.image.desc',
+        shop: config.shops[1],
+        data_type: 'amh_pc'
+    });
+
+    classjs({
+        className: 'fs.image.desc.amhh5',
+        extend: 'fs.image.desc',
+        shop: config.shops[1],
+        data_type: 'amh_h5'
+    });
 })(window);

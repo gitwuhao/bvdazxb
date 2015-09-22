@@ -2,12 +2,16 @@
 
     classjs({
         className: 'fs.image.main',
-        singleton: true,
         shops: config.shops,
         shop: config.shops[0],
         data_type: 'images',
         dir_suffix: 'main',
-        init: function() {
+        statics: {
+            init: function() {
+                new fs.image.main();
+            }
+        },
+        ready: function() {
             this.loadItem();
         },
         initServer: function() {

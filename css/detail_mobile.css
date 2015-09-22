@@ -43,6 +43,11 @@ img {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASAQMAAABsABwUAAAAA3NCSVQICAjb4U/gAAAABlBMVEX///9fZG6ZuVgPAAAAAnRSTlMA/1uRIrUAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAD0lEQVQImWOw4WdgoAIGAMJYBUc0a7QUAAAAAElFTkSuQmCC)
 }
 
+.pages {
+    width: 750px;
+    overflow: hidden;
+}
+
 .pages>p>img {
     width: 100%
 }

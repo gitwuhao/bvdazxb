@@ -28,7 +28,7 @@
     };
 
     config.MobileSize = {
-        clientWidth: 320,
+        clientWidth: 750,
         clientHeight: 0
     };
 

@@ -5,9 +5,7 @@
         extendEvent: true,
         shops: config.shops,
         shop: config.shops[0],
-        parent_dir_name: 'handu_pc',
-        data_type: 'images',
-        dir_suffix: 'desc',
+        data_type: 'handu_pc',
         ready: function() {
             this.loadItem();
         },
@@ -31,7 +29,7 @@
             $.ajax({
                 type: 'POST',
                 async: false,
-                url: config.urls.data + this.getItemDataFileName(),
+                url: config.urls.data + this.getDirJobFileName(),
                 dataType: 'text',
                 success: function(data) {
                     me.doLoadItems(JSON.parse(data));
@@ -66,7 +64,7 @@
             this.loadItemDirMap();
         },
         getItemDirMapFileName: function() {
-            return this.shop.id + '_dir.json';
+            return this.shop.id + '_dir_' + this.data_type + '.json';
         },
         loadItemDirMap: function() {
             var me = this;
@@ -107,8 +105,8 @@
             this.activeItem = util.merger({}, item);
             this.server.send('createDir', {
                 itemId: item.id,
-                dir_name: item.id + '_' + this.dir_suffix,
-                parent_dir_name: this.parent_dir_name
+                dir_name: item.id,
+                parent_dir_name: this.data_type
             });
         },
         doCreateDirSuccess: function(request) {
@@ -134,17 +132,17 @@
         },
         uploadItem: function(itemId) {
             this.itemData.index = this.itemIdMapIndex[itemId] + 1;
-            this.uploadData();
+            this.uploadDirJobData();
         },
-        getItemDataFileName: function() {
-            return this.shop.id + '_' + this.dir_suffix + '_' + this.data_type + '.json';
+        getDirJobFileName: function() {
+            return this.shop.id + '_dir_job_' + this.data_type + '.json';
         },
-        uploadData: function(shopId, data) {
+        uploadDirJobData: function(shopId, data) {
             $.ajax({
                 type: 'POST',
                 url: config.urls.upload,
                 data: {
-                    filename: this.getItemDataFileName(),
+                    filename: this.getDirJobFileName(),
                     data: JSON.stringify(this.itemData)
                 },
                 success: function() {},
@@ -153,5 +151,31 @@
         }
     });
 
-    // fs.dir.init();
+    classjs({
+        className: 'fs.dir.handu',
+        extend: 'fs.dir',
+        shop: config.shops[0],
+        data_type: 'handu_pc'
+    });
+
+    classjs({
+        className: 'fs.dir.handuh5',
+        extend: 'fs.dir',
+        shop: config.shops[0],
+        data_type: 'handu_h5'
+    });
+
+    classjs({
+        className: 'fs.dir.amh',
+        extend: 'fs.dir',
+        shop: config.shops[1],
+        data_type: 'amh_pc'
+    });
+
+    classjs({
+        className: 'fs.dir.amhh5',
+        extend: 'fs.dir',
+        shop: config.shops[1],
+        data_type: 'amh_h5'
+    });
 })(window);

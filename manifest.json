@@ -18,10 +18,11 @@
             "js/bg/fsBackground.js",
             "js/bg/fsPlugin.js",
             "js/bg/fsMain.js",
-            "js/bg/fsDir.js",
-            "js/bg/fsImageMain.js",
-            "js/bg/fsImageDesc.js",
-            "js/bg/fsData.js"
+            "js/bg/fs.dir.js",
+            "js/bg/fs.image.desc.js",
+            "js/bg/fs.image.main.js",
+            // "js/bg/fsImageDesc.js",
+            "js/bg/fs.data.js"
             // "js/bg/fsNativeAPISupport.js",
             // "js/3p/base64.js"
         ]
