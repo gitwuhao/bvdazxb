@@ -1,7 +1,7 @@
 (function(global, undefined) {
 
     classjs({
-        className: 'util.cfg.data',
+        className: 'cfg.data',
         extendEvent: true,
         singleton: true,
         getKey: function(title) {

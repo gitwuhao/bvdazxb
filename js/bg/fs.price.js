@@ -18,7 +18,7 @@
             if (!item) {
                 return;
             }
-            util.cfg.data.getDetail(item.id, function(data) {
+            cfg.data.getDetail(item.id, function(data) {
                 me.doDetailData(data);
             });
         },

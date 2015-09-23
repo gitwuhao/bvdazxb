@@ -28,7 +28,7 @@
             }
             var dir = this.itemDirMap[item.id];
             var shop = this.shop;
-            util.cfg.data.getDetailMainImage(item.id, function(array) {
+            cfg.data.getDetailMainImage(item.id, function(array) {
                 me.task = new util.task({
                     item: item,
                     dir_id: dir.dir_id,
