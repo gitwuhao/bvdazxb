@@ -57,7 +57,6 @@
                     }
                 });
             });
-
             this.doUploadSale(itemData);
         },
         doUploadSale: function(data) {
@@ -67,7 +66,7 @@
             item.price = data.price;
             item.list = data.list;
             this.uploadJob(item.id);
-            this.loadSale();
+            setTimeout(this.loadSale.bind(this), 1 * 1000);
         }
     });
 
