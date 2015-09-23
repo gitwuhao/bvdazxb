@@ -16,8 +16,7 @@
             if (!item) {
                 return;
             }
-
-            util.data.getDetail(item.id, function(data) {
+            util.cfg.data.getDetail(item.id, function(data) {
                 me.doDetailData(item, data);
             });
         },
@@ -30,18 +29,18 @@
                 id: item.itemId,
                 reservePrice: item.reservePrice,
                 price: item.reservePrice,
-                data: {
-
-                }
+                list: []
             };
 
-            var skuMap = itemData.data;
-            var skuQuantity = mdskip.defaultModel.inventoryDO.skuQuantity;
+            var array = itemData.list,
+                skuMap = {},
+                skuQuantity = mdskip.defaultModel.inventoryDO.skuQuantity;
 
             util.each(detail.valItemInfo.skuList, function(i, sku) {
                 skuMap[sku.skuId] = sku;
                 sku.quantity = skuQuantity[sku.skuId].quantity;
                 sku.price = itemData.price;
+                array.push(sku);
             });
 
             util.it(mdskip.defaultModel.itemPriceResultDO.priceInfo, function(key, priceInfo) {
@@ -64,6 +63,7 @@
             item.price = data.price;
             item.data = data.data;
             this.uploadJob(item.id);
+            // this.loadSale();
         }
     });
 

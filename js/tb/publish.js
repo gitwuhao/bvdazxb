@@ -122,11 +122,11 @@
         loadFSBox: function() {
             var me = this;
             var itemId = this.metaItem.id;
-            util.data.getAttrUL(itemId, function(html) {
+            util.cfg.data.getAttrUL(itemId, function(html) {
                 me.$attrUL.html(html);
             });
 
-            util.data.getDetail(itemId, function(data) {
+            util.cfg.data.getDetail(itemId, function(data) {
                 me.doDetailData(data);
             });
 
