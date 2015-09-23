@@ -19,10 +19,10 @@
                 return;
             }
             util.cfg.data.getDetail(item.id, function(data) {
-                me.doDetailData(item, data);
+                me.doDetailData(data);
             });
         },
-        doDetailData: function(item, data) {
+        doDetailData: function(data) {
             classjs.log();
             var detail = data.detail;
             var mdskip = data.mdskip;
@@ -31,6 +31,7 @@
                 id: item.itemId,
                 reservePrice: item.reservePrice,
                 price: item.reservePrice,
+                priceType: '',
                 list: []
             };
 
@@ -40,35 +41,33 @@
 
             util.each(detail.valItemInfo.skuList, function(i, sku) {
                 var newSku = {
-                    name: itemData.names,
-                    quantity: skuQuantity[sku.skuId].quantity,
-                    price: itemData.price,
+                    name: sku.names,
+                    quantity: skuQuantity[sku.skuId].quantity
                 };
                 skuMap[sku.skuId] = newSku;
                 array.push(newSku);
             });
 
             util.it(mdskip.defaultModel.itemPriceResultDO.priceInfo, function(key, priceInfo) {
-                var sku = skuMap[key];
                 var promotionList = priceInfo.promotionList || priceInfo.suggestivePromotionList
                 util.each(promotionList, function(i, promotion) {
-                    if (parseFloat(sku.price) > parseFloat(promotion.price)) {
-                        sku.price = promotion.price;
-                        sku.priceType = promotion.type;
+                    if (parseFloat(itemData.price) > parseFloat(promotion.price)) {
+                        itemData.price = promotion.price;
+                        itemData.priceType = promotion.type;
                     }
                 });
             });
 
-            this.doUploadSale(data);
+            this.doUploadSale(itemData);
         },
         doUploadSale: function(data) {
             classjs.log();
-            var item = this.metaItemMap[data.id] || {};
+            var item = this.metaItemMap[data.id];
             item.oldPrice = item.price;
             item.price = data.price;
-            item.data = data.data;
+            item.list = data.list;
             this.uploadJob(item.id);
-            // this.loadSale();
+            this.loadSale();
         }
     });
 
