@@ -412,8 +412,8 @@ function doCapturing(Action, Mode, CallbackCompleted) {
         return;
     }
 
-    var tab = fsPlugin.client.activeTab;
-    tabId = tab.id;
+    var activeTab = fsPlugin.client.activeTab;
+    tabId = activeTab.id;
 
     try {
         var port = chrome.tabs.connect(tabId, {
@@ -477,7 +477,7 @@ function doCapturing(Action, Mode, CallbackCompleted) {
                     //     break;
 
                 case "scrollDone":
-                    chrome.tabs.captureVisibleTab(null, {
+                    chrome.tabs.captureVisibleTab(activeTab.windowId, {
                             format: "png"
                         },
                         function(data) {

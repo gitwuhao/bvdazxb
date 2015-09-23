@@ -33,7 +33,7 @@
             var itemId = $('#outerIdId').val();
             if (!itemId) {
                 this.client.send('getItem', {}, function(item) {
-                    me.metaItem = item;
+                    me.activeItem = item;
                     me.initDetailInfo();
                 });
             } else {
@@ -44,9 +44,6 @@
         initDetailInfo: function() {
             this.includeCSS();
             this.initDetailBox();
-            if (!this.isPublish) {
-                this.initEvents();
-            }
         },
         includeCSS: function() {
             var css = config.getURL('css/tb/main.css');
@@ -89,11 +86,11 @@
         },
         initValues: function() {
             var item = this.itemData;
-            var metaItem = this.metaItem;
+            var activeItem = this.activeItem;
 
-            $('#prop_13021751').val(metaItem.key);
+            $('#prop_13021751').val(activeItem.key);
 
-            var brand = metaData.brand[metaItem.type];
+            var brand = metaData.brand[activeItem.type];
             $('#simulate-prop_20000').val(brand.key);
             $('#prop_20000').html(['<option value="', brand.value, '">', brand.key, '</option>'].join(''));
 
@@ -107,26 +104,19 @@
 
 
         },
-        initEvents: function() {
-            var me = this;
-            $('#J_MainForm').on('submit', function(event) {
-                me.onSubmit();
-            });
-
-        },
         onSubmit: function() {
             this.client.send('publish', {
-                id: this.metaItem.id
+                id: this.activeItem.id
             });
         },
         loadFSBox: function() {
             var me = this;
-            var itemId = this.metaItem.id;
-            util.cfg.data.getAttrUL(itemId, function(html) {
+            var itemId = this.activeItem.id;
+            cfg.data.getAttrUL(itemId, function(html) {
                 me.$attrUL.html(html);
             });
 
-            util.cfg.data.getDetail(itemId, function(data) {
+            cfg.data.getDetail(itemId, function(data) {
                 me.doDetailData(data);
             });
 
@@ -176,10 +166,14 @@
             });
             this.$skuTbody.html(html.join(''));
 
-
-            this.$title.html([itemData.itemId, '&nbsp;&nbsp;&nbsp;<a href="https://detail.tmall.com/item.htm?id=', itemData.itemId, '" target="_detail">',
+            var activeItem = this.activeItem;
+            this.$title.html(['<a href="https://detail.tmall.com/item.htm?id=', itemData.itemId, '" target="_detail">',
                 itemData.title,
-                '</a>'
+                '</a>',
+                '<br/>',
+                activeItem.id,
+                '<br/>',
+                activeItem.key,
             ].join(''));
 
             this.initValues();
