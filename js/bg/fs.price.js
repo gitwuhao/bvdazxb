@@ -39,10 +39,13 @@
                 skuQuantity = mdskip.defaultModel.inventoryDO.skuQuantity;
 
             util.each(detail.valItemInfo.skuList, function(i, sku) {
-                skuMap[sku.skuId] = sku;
-                sku.quantity = skuQuantity[sku.skuId].quantity;
-                sku.price = itemData.price;
-                array.push(sku);
+                var newSku = {
+                    name: itemData.names,
+                    quantity: skuQuantity[sku.skuId].quantity,
+                    price: itemData.price,
+                };
+                skuMap[sku.skuId] = newSku;
+                array.push(newSku);
             });
 
             util.it(mdskip.defaultModel.itemPriceResultDO.priceInfo, function(key, priceInfo) {
