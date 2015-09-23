@@ -2,7 +2,7 @@
 
     classjs({
         className: 'fs.image.desc',
-        extend: 'fs.job',
+        extend: 'fs.dir',
         desc_type: 'pc',
         PC_TYPE: 'pc',
         H5_TYPE: 'h5',

@@ -27,9 +27,9 @@
                     classjs.log();
                     this.callPrototype();
                     if (this.is(request, 'createDir')) {
-                        me.doCreateDir(request);
+                        // me.doCreateDir(request);
                     } else if (this.is(request, 'uploadImage')) {
-                        me.doUploadImage(request);
+                        // me.doUploadImage(request);
                     }
                 }
             });

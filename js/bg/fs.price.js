@@ -5,9 +5,11 @@
         extend: 'fs.job',
         data_type: 'handu',
         task_type: 'price',
-        initEvent: function() {
-            classjs.log();
-            this.loadSale();
+        ready: function() {
+            this.on('loadJobAfter', function() {
+                this.loadSale();
+            });
+            this.callSuper();
         },
         loadSale: function() {
             classjs.log();

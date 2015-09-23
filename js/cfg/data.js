@@ -1,7 +1,7 @@
 (function(global, undefined) {
 
     classjs({
-        className: 'util.data',
+        className: 'util.cfg.data',
         extendEvent: true,
         singleton: true,
         getShopList: function(index, page, sort) {

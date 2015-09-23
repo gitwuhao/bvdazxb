@@ -2,7 +2,7 @@
 
     classjs({
         className: 'fs.image.desc.h5',
-        extend: 'fs.job',
+        extend: 'fs.dir',
         desc_type: 'h5',
         data_type: 'handu_pc',
         task_type: 'desc',

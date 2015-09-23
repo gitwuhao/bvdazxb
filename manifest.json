@@ -19,16 +19,13 @@
             "js/bg/fsCommands.js",
             "js/bg/fsBackground.js",
             "js/bg/fsPlugin.js",
-            "js/bg/fsMain.js",
             "js/bg/fs.job.js",
             "js/bg/fs.dir.js",
+            "js/bg/fs.data.js",
             "js/bg/fs.image.desc.js",
             "js/bg/fs.image.desc.h5.js",
             "js/bg/fs.image.main.js",
-            // "js/bg/fsImageDesc.js",
-            "js/bg/fs.data.js"
-            // "js/bg/fsNativeAPISupport.js",
-            // "js/3p/base64.js"
+            "js/bg/fs.price.js"
         ]
     },
     "content_scripts": [{
@@ -42,7 +39,6 @@
             "js/lib/arraybuffer.js",
             "js/bg/fsUtils.js",
             "js/cfg/config.js",
-            // "js/tb/pictuer.js"
             "js/tb/image.js"
         ],
         "matches": ["http://tadget.taobao.com/*", "https://tadget.taobao.com/*"],

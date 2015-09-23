@@ -2,7 +2,7 @@
 
     classjs({
         className: 'fs.image.main',
-        extend: 'fs.job',
+        extend: 'fs.dir',
         data_type: 'handu_pc',
         task_type: 'main',
         initEvent: function() {
@@ -28,7 +28,7 @@
             }
             var dir = this.itemDirMap[item.id];
             var shop = this.shop;
-            util.data.getDetailMainImage(item.id, function(array) {
+            util.cfg.data.getDetailMainImage(item.id, function(array) {
                 me.task = new util.task({
                     item: item,
                     dir_id: dir.dir_id,
