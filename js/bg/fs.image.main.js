@@ -5,7 +5,7 @@
         extend: 'fs.job',
         data_type: 'handu_pc',
         task_type: 'main',
-        initServer: function() {
+        initEvent: function() {
             var me = this;
             this.server = new connect.server({
                 id: 'image',
@@ -54,7 +54,6 @@
                             }, function() {
 
                             });
-                            setTimeout(task.complete.bind(task, src), 1 * 1000);
                         }, format);
                     },
                     finish: function() {
@@ -74,6 +73,7 @@
             var item = this.metaItemMap[request.itemId];
             item.urls = item.urls || {};
             item.urls[request.index] = request.url;
+            this.task.next();
         }
     });
 

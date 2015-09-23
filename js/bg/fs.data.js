@@ -36,7 +36,9 @@
                 success: function(data) {
                     me.doLoadItems(JSON.parse(data));
                 },
-                error: function() {}
+                error: function() {
+                    console.error('node server no start up...')
+                }
             });
         },
         doLoadItems: function(data) {
@@ -135,7 +137,7 @@
         }
     });
 
-    fs.data.init();
+    // fs.data.init();
 
 
 })(window);

@@ -26,8 +26,8 @@
             toCanvas: function(src, handle) {
                 this.load(src, function(img) {
                     var canvas = document.createElement('canvas');
-                    canvas.width = img.naturalHeight;
-                    canvas.height = img.naturalWidth;
+                    canvas.width = img.naturalWidth;
+                    canvas.height = img.naturalHeight;
                     var ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0);
                     handle(canvas, img);

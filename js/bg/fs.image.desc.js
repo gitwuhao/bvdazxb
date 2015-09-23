@@ -10,14 +10,14 @@
         task_type: 'desc',
         ready: function() {
             this.callSuper();
-            this.initEvent();
+            this.initPlugin();
+        },
+        initPlugin: function() {
+            this.on('captureImage', this.doCaptureImage);
+            this.on('captureDone', this.doCaptureDone);
             fsPlugin.register(this);
         },
         initEvent: function() {
-            this.on('captureImage', this.doCaptureImage);
-            this.on('captureDone', this.doCaptureDone);
-        },
-        initServer: function() {
             var me = this;
             this.server = new connect.server({
                 id: 'image',
@@ -204,7 +204,7 @@
         data_type: 'handu_pc'
     });
 
- 
+
 
     classjs({
         className: 'fs.image.desc.amh',
@@ -213,5 +213,5 @@
         data_type: 'amh_pc'
     });
 
- 
+
 })(window);

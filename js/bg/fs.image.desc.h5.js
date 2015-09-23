@@ -5,12 +5,14 @@
         extend: 'fs.job',
         desc_type: 'h5',
         data_type: 'handu_pc',
-        task_type: 'desc_h5',
-        initServer: function() {
+        task_type: 'desc',
+        initEvent: function() {
+            classjs.log();
             var me = this;
             this.server = new connect.server({
                 id: 'image',
                 onMessage: function(request, sender, callback) {
+                    classjs.log();
                     if (this.is(request, 'imageInitDone')) {
                         me.uploadImage();
                     } else if (this.is(request, 'uploadSuccess')) {
@@ -22,6 +24,7 @@
             });
         },
         uploadImage: function() {
+            classjs.log();
             var item = this.getItem();
             if (!item) {
                 return;
@@ -31,14 +34,15 @@
                 url: config.urls.h5desc + item.id,
                 dataType: 'text',
                 success: function(html) {
-                    me.doH5DescHTML(item, html);
+                    me.doH5DescHTML(item.id, html);
                 },
                 error: function(msg) {
 
                 }
             });
         },
-        doH5DescHTML: function(item, html) {
+        doH5DescHTML: function(itemId, html) {
+            var item = this.metaItemMap[itemId];
             var fsHTML = new util.html(html);
             var data = this.getH5Desc(fsHTML);
             if (data) {
@@ -46,8 +50,8 @@
                 fsHTML = new util.html(html);
                 this.doUploadH5DescImage(item, fsHTML.getTagContext('img'));
             } else {
-                console.error('no find h5 desc', item);
                 item.isUrls = false;
+                console.error('no find h5 desc', item);
                 this.uploadJob(item.id);
                 this.uploadImage();
             }
@@ -88,12 +92,14 @@
                         }, function() {
 
                         });
-                        setTimeout(task.complete.bind(task, src), 1 * 1000);
                     }, format);
                 },
                 finish: function() {
+                    classjs.log();
                     me.uploadJob(this.item.id);
-                    me.uploadImage();
+                    setTimeout(function() {
+                        me.uploadImage();
+                    }, 1000);
                 }
             });
         },
@@ -107,6 +113,7 @@
             var item = this.metaItemMap[request.itemId];
             item.urls = item.urls || {};
             item.urls[request.index] = request.url;
+            this.task.next();
         }
     });
 

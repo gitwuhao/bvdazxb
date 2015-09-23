@@ -10,9 +10,10 @@
         index: 0,
         maxSize: 200,
         ready: function() {
+            classjs.log();
             this.loadJobData();
         },
-        initServer: function() {},
+        initEvent: function() {},
         loadJobData: function() {
             var me = this;
             $.ajax({
@@ -109,9 +110,10 @@
         },
         doLoadDirMap: function(data) {
             this.itemDirMap = data;
-            this.initServer();
+            this.initEvent();
         },
         getItem: function() {
+            classjs.log();
             var data = this.itemData;
             var shop = this.shop;
             var item = data.list[data.index];
@@ -136,6 +138,7 @@
             });
         },
         uploadJob: function(itemId) {
+            classjs.log();
             this.itemData.index = this.itemIdMapIndex[itemId] + 1;
             $.ajax({
                 type: 'POST',
@@ -148,6 +151,7 @@
                 error: function() {}
             });
             this.uploadJobData();
+            console.info('>>upload job' + new Date().formatDateTime() + '...');
         },
         getJobFileName: function() {
             return this.shop.id + '_' + this.task_type + '_job_' + this.data_type + '.json';

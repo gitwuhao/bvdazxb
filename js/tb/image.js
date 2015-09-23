@@ -24,6 +24,7 @@
                     me.doClientInitDone();
                 },
                 onMessage: function(request, sender) {
+                    classjs.log();
                     this.callPrototype();
                     if (this.is(request, 'createDir')) {
                         me.doCreateDir(request);
@@ -90,7 +91,7 @@
             formData.append('notify', 'null');
             formData.append('privateKey', 'null');
             formData.append('isPublic', 'false');
-            formData.append('compressRate', request.rate||'0.75');
+            formData.append('compressRate', request.rate || '0.75');
             formData.append('compressMaxWidth', '0');
             formData.append('compress', 'false');
             formData.append('watermark', 'false');
@@ -102,9 +103,11 @@
             xhr.send(formData);
         },
         doComplete: function() {
+            classjs.log();
 
         },
         doUploadSuccess: function(request, data) {
+            classjs.log();
             data = JSON.parse(data);
             var module = data.module;
             if (module && module.fullUrl) {
@@ -119,6 +122,7 @@
             }
         },
         doUploadError: function() {
+            classjs.log();
             this.client.send('uploadError');
         },
         delDir: function(config) {

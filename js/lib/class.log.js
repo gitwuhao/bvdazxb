@@ -7,6 +7,9 @@
         isObject = util.isObject,
         ArraySlice = Array.prototype.slice;
 
+
+    classjs.debug = true;
+
     function dateFormat(date, f) {
         var format = f || 'yyyy-MM-dd hh:mm:ss',
             o = {
@@ -28,6 +31,7 @@
         }
         return format;
     };
+
 
     //重写并实现log方法
     var data = {
