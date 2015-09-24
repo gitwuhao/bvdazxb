@@ -37,7 +37,7 @@
                     me.initDetailInfo();
                 });
             } else {
-                this.initDetailInfo();
+                // this.initDetailInfo();
                 this.isPublish = true;
             }
         },
