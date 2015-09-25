@@ -129,54 +129,18 @@
             });
         },
         doH5DescHTML: function(itemId, html, handle) {
+            var item = this.metaItemMap[itemId];
             var fsHTML = new util.html(html);
             var data = this.getH5Desc(fsHTML);
-            var html = data.wdescContent.pages.join('');
-            fsHTML = new util.html(html);
-            var array = fsHTML.getTagContext('img');
-            html = array.join('');
-            // if (handle) {
-            this.doUploadH5DescImage(itemId, array);
-            // }
-            // return html;
-        },
-        doUploadH5DescImage: function(itemId, array) {
-            var item = this.getItem();
-            var dir = this.itemDirMap[item.id];
-            var shop = this.shop;
-            this.task = new util.task({
-                item: item,
-                dir_id: dir.dir_id,
-                shop: shop,
-                array: array,
-                timeout: 0,
-                autoRun: true,
-                execute: function(src) {
-                    var index = this.index;
-                    var dir_id = this.dir_id;
-                    var format = 'jpg';
-                    var activeItem = this.item;
-                    var task = this;
-                    var shop_name = this.shop.name;
-                    util.image.getDataBySrc(src, function(data) {
-                        me.server.request('uploadImage', {
-                            dirId: dir_id,
-                            data: data,
-                            rate: '0.95',
-                            index: index,
-                            itemId: activeItem.id,
-                            file_name: activeItem.key + '_' + shop_name + '_main_' + index + '.' + format
-                        }, function() {
-
-                        });
-                        setTimeout(task.complete.bind(task, src), 1 * 1000);
-                    }, format);
-                },
-                finish: function() {
-                    me.uploadJob(this.item.id);
-                    me.uploadMainImage();
-                }
-            });
+            if (data) {
+                html = data.wdescContent.pages.join('');
+                fsHTML = new util.html(html);
+                handle(fsHTML.getTagContext('img'));
+            } else {
+                item.isUrls = false;
+                console.error('no find h5 desc', item);
+                this.doCaptureDone();
+            }
         },
         getH5Desc: function(fsHTML) {
             var array = fsHTML.getTagContext('script');
@@ -200,6 +164,7 @@
     classjs({
         className: 'fs.image.desc.handu',
         extend: 'fs.image.desc',
+        desc_type: 'pc',
         shop: config.shops[0],
         data_type: 'handu_pc'
     });
@@ -209,8 +174,26 @@
     classjs({
         className: 'fs.image.desc.amh',
         extend: 'fs.image.desc',
+        desc_type: 'pc',
         shop: config.shops[1],
         data_type: 'amh_pc'
+    });
+
+    classjs({
+        className: 'fs.image.desc.handuh5',
+        extend: 'fs.image.desc',
+        desc_type: 'h5',
+        shop: config.shops[0],
+        data_type: 'handu_h5'
+    });
+
+
+    classjs({
+        className: 'fs.image.desc.amhh5',
+        extend: 'fs.image.desc',
+        desc_type: 'h5',
+        shop: config.shops[1],
+        data_type: 'amh_h5'
     });
 
 

@@ -2,45 +2,10 @@
 
     classjs({
         className: 'fs.image.desc.h5',
-        extend: 'fs.dir',
+        extend: 'fs.image.desc',
         desc_type: 'h5',
         data_type: 'handu_pc',
         task_type: 'desc',
-        initEvent: function() {
-            classjs.log();
-            var me = this;
-            this.server = new connect.server({
-                id: 'image',
-                onMessage: function(request, sender, callback) {
-                    classjs.log();
-                    if (this.is(request, 'imageInitDone')) {
-                        me.uploadImage();
-                    } else if (this.is(request, 'uploadSuccess')) {
-                        me.doUploadSuccess(request);
-                    } else {
-                        console.error('no request handle:', request);
-                    }
-                }
-            });
-        },
-        uploadImage: function() {
-            classjs.log();
-            var item = this.getItem();
-            if (!item) {
-                return;
-            }
-            var me = this;
-            $.ajax({
-                url: config.urls.h5desc + item.id,
-                dataType: 'text',
-                success: function(html) {
-                    me.doH5DescHTML(item.id, html);
-                },
-                error: function(msg) {
-
-                }
-            });
-        },
         doH5DescHTML: function(itemId, html) {
             var item = this.metaItemMap[itemId];
             var fsHTML = new util.html(html);

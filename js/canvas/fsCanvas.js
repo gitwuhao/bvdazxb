@@ -21,13 +21,13 @@
             page.fsPlugin.client.getDescHTML(window, this.doDescHTML.bind(this));
         },
         doDescHTML: function(html) {
-            this.loadHTML(html.replace(/\s?\r\n\s?/g, '').replace(/\s+(<)/g, '$1'));
+            this.loadHTML(html);
             $('table td a img').closest('table').remove();
             $('.desc_anchor').remove();
             this.initImageQueue();
         },
         loadHTML: function(html) {
-            document.body.innerHTML = html;
+            document.body.innerHTML = html.replace(/\s?\r\n\s?/g, '').replace(/\s+(<)/g, '$1');
         },
         initImageQueue: function() {
             new util.task({

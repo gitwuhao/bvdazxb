@@ -24,7 +24,7 @@
             "js/bg/fs.data.js",
             "js/bg/fs.image.dir.js",
             "js/bg/fs.image.desc.js",
-            "js/bg/fs.image.desc.h5.js",
+            // "js/bg/fs.image.desc.h5.js",
             "js/bg/fs.image.main.js",
             "js/bg/fs.price.js"
         ]
