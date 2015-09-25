@@ -34,12 +34,16 @@
             if (!itemId) {
                 this.client.send('getItem', {}, function(item) {
                     me.activeItem = item;
-                    me.initDetailInfo();
+                    me.initProperty();
                 });
             } else {
                 // this.initDetailInfo();
                 this.isPublish = true;
             }
+        },
+        initProperty:function(){
+            
+            this.initDetailInfo();
         },
         initDetailInfo: function() {
             this.includeCSS();
@@ -90,9 +94,9 @@
 
             $('#prop_13021751').val(activeItem.key);
 
-            var brand = metaData.brand[activeItem.type];
-            $('#simulate-prop_20000').val(brand.key);
-            $('#prop_20000').html(['<option value="', brand.value, '">', brand.key, '</option>'].join(''));
+            // var brand = metaData.brand[activeItem.type];
+            // $('#simulate-prop_20000').val(brand.key);
+            // $('#prop_20000').html(['<option value="', brand.value, '">', brand.key, '</option>'].join(''));
 
             $('#simulate-prop_13328588').val('');
 
@@ -102,6 +106,126 @@
             $('#quantityId').val(10);
             $('#outerIdId').val(item.itemId);
 
+            this.initSelectValues();
+        },
+        initSelectValues: function() {
+            var property = {
+                "success": true,
+                "model": {
+                    "list": [{
+                        "k": "主要参数",
+                        "v": [{
+                            "k": "廓形",
+                            "v": "A型"
+                        }, {
+                            "k": "材质成分",
+                            "v": "聚酯纤维100%"
+                        }, {
+                            "k": "销售渠道类型",
+                            "v": "纯电商(只在线上销售)"
+                        }, {
+                            "k": "货号",
+                            "v": "MY4676"
+                        }, {
+                            "k": "风格",
+                            "v": "通勤"
+                        }, {
+                            "k": "通勤",
+                            "v": "韩版"
+                        }, {
+                            "k": "组合形式",
+                            "v": "单件"
+                        }, {
+                            "k": "裙长",
+                            "v": "短裙"
+                        }, {
+                            "k": "款式",
+                            "v": "其他/other"
+                        }, {
+                            "k": "袖长",
+                            "v": "长袖"
+                        }, {
+                            "k": "领型",
+                            "v": "立领"
+                        }, {
+                            "k": "袖型",
+                            "v": "常规"
+                        }, {
+                            "k": "腰型",
+                            "v": "宽松腰"
+                        }, {
+                            "k": "衣门襟",
+                            "v": "套头"
+                        }, {
+                            "k": "裙型",
+                            "v": "A字裙"
+                        }, {
+                            "k": "图案",
+                            "v": "纯色"
+                        }, {
+                            "k": "流行元素/工艺",
+                            "v": "褶皱镂空纽扣拼接抽褶"
+                        }, {
+                            "k": "品牌",
+                            "v": "HSTYLE/韩都衣舍"
+                        }, {
+                            "k": "面料",
+                            "v": "其他"
+                        }, {
+                            "k": "成分含量",
+                            "v": "95%以上"
+                        }, {
+                            "k": "材质",
+                            "v": "涤纶"
+                        }, {
+                            "k": "适用年龄",
+                            "v": "25-29周岁"
+                        }, {
+                            "k": "年份季节",
+                            "v": "2015年秋季"
+                        }, {
+                            "k": "颜色分类",
+                            "v": "灰色炭黑色"
+                        }, {
+                            "k": "尺码",
+                            "v": "SML"
+                        }]
+                    }]
+                }
+            };
+
+            var label_map = {};
+
+            $('.label-title').each(function(i, label) {
+                var key = label.innerText.replace('：', '');
+                label_map[key] = $(label).closest('li');
+            });
+            util.each(property.model.list, function(i, item) {
+                util.each(item.v, function(n, pro) {
+                    var $li = label_map[pro.k];
+                    if ($li) {
+                        util.each($li.find('option'), function(m, option) {
+                            if (selectedOption(option, pro.v)) {
+                                delete label_map[pro.k];
+                                return false;
+                            }
+                        });
+                    }
+                });
+            });
+
+            function selectedOption(option, text) {
+                var select = option.parentElement;
+                var value = option.value;
+                if (option.innerText == text) {
+                    $('#simulate-' + select.id).val(text);
+                    $(select).html(['<option value="', value, '">', text, '</option>'].join(''));
+                    E.dispatch(select, "change");
+                    return true;
+                }
+            };
+        },
+        initCheckBox: function() {
 
         },
         onSubmit: function() {

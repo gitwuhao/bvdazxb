@@ -1,15 +1,21 @@
 (function(global, undefined) {
+    var protocol = 'http:';
+    if (window.location.protocol.match(/chrome\-extension:/i)) {
+
+    } else if (window.location && window.location.protocol) {
+        protocol = window.location.protocol;
+    }
     var nodeURL = 'http://127.0.0.1:8901',
         urls = {
             'node': nodeURL,
             // /shop/itemid/dir/filename
             'upload': nodeURL + '/upload/',
             'data': nodeURL + '/data/',
-            'propertyUrl': "http://mdetail.tmall.com/mobile/itemPackage.do?itemId=",
-            'pcDetail': 'http://detail.tmall.com/item.htm?id=',
-            'detail': 'http://detail.m.tmall.com/item.htm?id=',
-            'pcdesc': 'http://hws.m.taobao.com/cache/wdesc/5.0?id=',
-            'h5desc': 'http://hws.m.taobao.com/cache/mdesc/5.0?id='
+            'propertyUrl': protocol + "//mdetail.tmall.com/mobile/itemPackage.do?itemId=",
+            'pcDetail': protocol + '//detail.tmall.com/item.htm?id=',
+            'detail': protocol + '//detail.m.tmall.com/item.htm?id=',
+            'pcdesc': protocol + '//hws.m.taobao.com/cache/wdesc/5.0?id=',
+            'h5desc': protocol + '//hws.m.taobao.com/cache/mdesc/5.0?id='
         };
 
     var config = global.config || {};
@@ -22,6 +28,8 @@
         hd: 'handu',
         amh: 'amh'
     };
+
+    config.protocol = protocol;
 
     config.PCSize = {
         clientWidth: 790,

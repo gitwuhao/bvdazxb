@@ -15,7 +15,7 @@
         getShopList: function(index, page, sort) {
             var me = this;
             var shop = this.shops[index],
-                url = 'https://' + shop.name + '.m.tmall.com/shop/shop_auction_search.do',
+                url = config.protocol + '//' + shop.name + '.m.tmall.com/shop/shop_auction_search.do',
                 data = {
                     index: index,
                     spm: 'a320p.7692171.0.0',
@@ -65,6 +65,19 @@
                 dataType: 'text',
                 success: function(html) {
                     me.doAttrULHTML(itemId, html, handle);
+                },
+                error: function(msg) {
+
+                }
+            });
+        },
+        getProperty: function(itemId, handle) {
+            var me = this;
+            $.ajax({
+                url: config.urls.propertyUrl + itemId,
+                dataType: 'text',
+                success: function(data) {
+                    handle(itemId, JSON.parse(data));
                 },
                 error: function(msg) {
 
