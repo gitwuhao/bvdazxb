@@ -5,8 +5,9 @@
             // /shop/itemid/dir/filename
             'upload': nodeURL + '/upload/',
             'data': nodeURL + '/data/',
-            'pcDetail': 'https://detail.tmall.com/item.htm?id=',
-            'detail': 'https://detail.m.tmall.com/item.htm?id=',
+            'propertyUrl': "http://mdetail.tmall.com/mobile/itemPackage.do?itemId=",
+            'pcDetail': 'http://detail.tmall.com/item.htm?id=',
+            'detail': 'http://detail.m.tmall.com/item.htm?id=',
             'pcdesc': 'http://hws.m.taobao.com/cache/wdesc/5.0?id=',
             'h5desc': 'http://hws.m.taobao.com/cache/mdesc/5.0?id='
         };
