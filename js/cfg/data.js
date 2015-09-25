@@ -77,7 +77,7 @@
                 url: config.urls.propertyUrl + itemId,
                 dataType: 'text',
                 success: function(data) {
-                    handle(itemId, JSON.parse(data));
+                    handle(JSON.parse(data));
                 },
                 error: function(msg) {
 

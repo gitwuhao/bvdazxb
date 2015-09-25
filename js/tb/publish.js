@@ -34,16 +34,12 @@
             if (!itemId) {
                 this.client.send('getItem', {}, function(item) {
                     me.activeItem = item;
-                    me.initProperty();
+                    me.initDetailInfo();
                 });
             } else {
                 // this.initDetailInfo();
                 this.isPublish = true;
             }
-        },
-        initProperty:function(){
-            
-            this.initDetailInfo();
         },
         initDetailInfo: function() {
             this.includeCSS();
@@ -106,127 +102,73 @@
             $('#quantityId').val(10);
             $('#outerIdId').val(item.itemId);
 
+        },
+        initProperty: function(data) {
+            this.property = data;
+            var propMap = {};
+
+            util.each(data.model.list, function(i, item) {
+                util.each(item.v, function(n, pro) {
+                    propMap[pro.k] = pro.v;
+                });
+            });
+            this.propMap = propMap;
             this.initSelectValues();
+            this.initCheckBoxValues();
+        },
+        selectedOption: function(option, text) {
+            var select = option.parentElement;
+            var value = option.value;
+            if (option.innerText == text) {
+                $('#simulate-' + select.id).val(text);
+                $(select).html(['<option value="', value, '">', text, '</option>'].join(''));
+                E.dispatch(select, "change");
+                E.dispatch(select, "click");
+                return true;
+            }
         },
         initSelectValues: function() {
-            var property = {
-                "success": true,
-                "model": {
-                    "list": [{
-                        "k": "主要参数",
-                        "v": [{
-                            "k": "廓形",
-                            "v": "A型"
-                        }, {
-                            "k": "材质成分",
-                            "v": "聚酯纤维100%"
-                        }, {
-                            "k": "销售渠道类型",
-                            "v": "纯电商(只在线上销售)"
-                        }, {
-                            "k": "货号",
-                            "v": "MY4676"
-                        }, {
-                            "k": "风格",
-                            "v": "通勤"
-                        }, {
-                            "k": "通勤",
-                            "v": "韩版"
-                        }, {
-                            "k": "组合形式",
-                            "v": "单件"
-                        }, {
-                            "k": "裙长",
-                            "v": "短裙"
-                        }, {
-                            "k": "款式",
-                            "v": "其他/other"
-                        }, {
-                            "k": "袖长",
-                            "v": "长袖"
-                        }, {
-                            "k": "领型",
-                            "v": "立领"
-                        }, {
-                            "k": "袖型",
-                            "v": "常规"
-                        }, {
-                            "k": "腰型",
-                            "v": "宽松腰"
-                        }, {
-                            "k": "衣门襟",
-                            "v": "套头"
-                        }, {
-                            "k": "裙型",
-                            "v": "A字裙"
-                        }, {
-                            "k": "图案",
-                            "v": "纯色"
-                        }, {
-                            "k": "流行元素/工艺",
-                            "v": "褶皱镂空纽扣拼接抽褶"
-                        }, {
-                            "k": "品牌",
-                            "v": "HSTYLE/韩都衣舍"
-                        }, {
-                            "k": "面料",
-                            "v": "其他"
-                        }, {
-                            "k": "成分含量",
-                            "v": "95%以上"
-                        }, {
-                            "k": "材质",
-                            "v": "涤纶"
-                        }, {
-                            "k": "适用年龄",
-                            "v": "25-29周岁"
-                        }, {
-                            "k": "年份季节",
-                            "v": "2015年秋季"
-                        }, {
-                            "k": "颜色分类",
-                            "v": "灰色炭黑色"
-                        }, {
-                            "k": "尺码",
-                            "v": "SML"
-                        }]
-                    }]
+            var propMap = this.propMap;
+            var me = this;
+            $('.J_spu-property select').each(function(i, select) {
+                var $li = $(select).closest('.J_spu-property');
+                var $label = $li.find('.label-title:first');
+                var key = $.trim($label.text().replace('：', ''));
+                var value = propMap[key];
+                if (value) {
+                    util.each($li.find('option'), function(m, option) {
+                        if (me.selectedOption(option, value)) {
+                            delete propMap[key];
+                            return false;
+                        }
+                    });
+                } else {
+                    $li.addClass('no-find-property');
                 }
-            };
-
-            var label_map = {};
-
-            $('.label-title').each(function(i, label) {
-                var key = label.innerText.replace('：', '');
-                label_map[key] = $(label).closest('li');
             });
-            util.each(property.model.list, function(i, item) {
-                util.each(item.v, function(n, pro) {
-                    var $li = label_map[pro.k];
-                    if ($li) {
-                        util.each($li.find('option'), function(m, option) {
-                            if (selectedOption(option, pro.v)) {
-                                delete label_map[pro.k];
-                                return false;
-                            }
-                        });
+        },
+        initCheckBoxValues: function() {
+            var propMap = this.propMap;
+            var valueMap = {};
+            util.it(propMap, function(key, value) {
+                valueMap[value] = key;
+            });
+            var me = this;
+            $('.J_spu-property .ul-checkbox ').each(function(i, ul) {
+                util.each(ul.children, function(n, li) {
+                    var $li = $(li);
+                    var $label = $li.find('label:first');
+                    var key = $.trim($label.text());
+                    var value = valueMap[key];
+                    if (value) {
+                        var $checkbox = $li.find(':checkbox:first');
+                        $checkbox.attr('checked', 'checked');
+                        E.dispatch($checkbox[0], "click");
+                        delete propMap[value];
+                        return false;
                     }
                 });
             });
-
-            function selectedOption(option, text) {
-                var select = option.parentElement;
-                var value = option.value;
-                if (option.innerText == text) {
-                    $('#simulate-' + select.id).val(text);
-                    $(select).html(['<option value="', value, '">', text, '</option>'].join(''));
-                    E.dispatch(select, "change");
-                    return true;
-                }
-            };
-        },
-        initCheckBox: function() {
-
         },
         onSubmit: function() {
             this.client.send('publish', {
@@ -236,11 +178,22 @@
         loadFSBox: function() {
             var me = this;
             var itemId = this.activeItem.id;
-            cfg.data.getAttrUL(itemId, function(html) {
+
+            this.client.send('getProperty', {
+                itemId: itemId
+            }, function(data) {
+                me.initProperty(data);
+            });
+
+            this.client.send('getAttrUL', {
+                itemId: itemId
+            }, function(html) {
                 me.$attrUL.html(html);
             });
 
-            cfg.data.getDetail(itemId, function(data) {
+            this.client.send('getDetail', {
+                itemId: itemId
+            }, function(data) {
                 me.doDetailData(data);
             });
 

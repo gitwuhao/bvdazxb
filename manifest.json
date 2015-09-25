@@ -55,7 +55,7 @@
             "js/lib/html.js",
             "js/lib/connect.js",
             "js/cfg/config.js",
-            "js/cfg/data.js",
+            // "js/cfg/data.js",
             "js/tb/publish.js"
         ],
         "matches": ["http://upload.taobao.com/auction/publish/*", "https://upload.taobao.com/auction/publish/*"],
@@ -77,8 +77,8 @@
 
     }, {
         "js": [
-            "js/lib/jquery-2.1.1.js",
-            "js/test/test.js"
+            "js/lib/jquery-2.1.1.js"
+            // "js/test/test.js"
         ],
         "matches": ["http://*/*", "https://*/*"],
         "run_at": "document_start"

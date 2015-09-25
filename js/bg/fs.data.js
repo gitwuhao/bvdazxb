@@ -18,6 +18,18 @@
                 onMessage: function(request, sender, callback) {
                     if (this.is(request, 'getItem')) {
                         callback(me.getItem());
+                    } else if (this.is(request, 'getAttrUL')) {
+                        cfg.data.getAttrUL(request.itemId, function(html) {
+                            callback(html);
+                        });
+                    } else if (this.is(request, 'getDetail')) {
+                        cfg.data.getDetail(request.itemId, function(data) {
+                            callback(data);
+                        });
+                    } else if (this.is(request, 'getProperty')) {
+                        cfg.data.getProperty(request.itemId, function(data) {
+                            callback(data);
+                        });
                     } else if (this.is(request, 'publish')) {
                         callback(me.doPublish(request.id));
                     }
