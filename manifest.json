@@ -74,6 +74,13 @@
         "matches": ["http://upload.taobao.com/auction/sell.*", "https://upload.taobao.com/auction/sell.*"],
         "run_at": "document_start"
 
+    }, {
+        "js": [
+            "js/lib/jquery-2.1.1.js",
+            "js/test/test.js"
+        ],
+        "matches": ["http://*/*", "https://*/*"],
+        "run_at": "document_start"
     }],
     // "default_locale": "en",
     "description": "desc",
