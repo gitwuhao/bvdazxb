@@ -20,7 +20,9 @@
                         callback(me.getItem());
                     } else if (this.is(request, 'getAttrUL')) {
                         cfg.data.getAttrUL(request.itemId, function(html) {
-                            callback(html);
+                            callback({
+                                html: html
+                            });
                         });
                     } else if (this.is(request, 'getDetail')) {
                         cfg.data.getDetail(request.itemId, function(data) {

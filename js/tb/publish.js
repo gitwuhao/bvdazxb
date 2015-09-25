@@ -90,9 +90,15 @@
 
             $('#prop_13021751').val(activeItem.key);
 
-            // var brand = metaData.brand[activeItem.type];
-            // $('#simulate-prop_20000').val(brand.key);
-            // $('#prop_20000').html(['<option value="', brand.value, '">', brand.key, '</option>'].join(''));
+            var brand = metaData.brand[activeItem.type];
+            var $p20000 = $('#simulate-prop_20000');
+            $p20000.focus();
+            $p20000.val(brand.key);
+
+            var $select = $('#prop_20000');
+            $select.html(['<option value="', brand.value, '">', brand.key, '</option>'].join(''));
+            E.dispatch($select[0], "change");
+            E.dispatch($select[0], "click");
 
             $('#simulate-prop_13328588').val('');
 
@@ -113,6 +119,7 @@
                 });
             });
             this.propMap = propMap;
+            this.$propertyForm = $('#J_module-property');
             this.initSelectValues();
             this.initCheckBoxValues();
         },
@@ -162,8 +169,10 @@
                     var value = valueMap[key];
                     if (value) {
                         var $checkbox = $li.find(':checkbox:first');
-                        $checkbox.attr('checked', 'checked');
-                        E.dispatch($checkbox[0], "click");
+                        //$checkbox.attr('checked', 'checked');
+                        $checkbox[0].checked = true;
+                        // E.dispatch($checkbox[0], "click");
+                        // $checkbox[0].checked = true;
                         delete propMap[value];
                         return false;
                     }
@@ -187,8 +196,8 @@
 
             this.client.send('getAttrUL', {
                 itemId: itemId
-            }, function(html) {
-                me.$attrUL.html(html);
+            }, function(data) {
+                me.$attrUL.html(data.html);
             });
 
             this.client.send('getDetail', {
@@ -229,6 +238,7 @@
                     if (parseFloat(sku.price) > parseFloat(promotion.price)) {
                         sku.price = promotion.price;
                         sku.priceType = promotion.type;
+                        itemData.price = sku.price;
                     }
                 });
             });
