@@ -9,6 +9,9 @@
         type: 'default',
         init: function() {
             this.initData();
+            this.initPCDescImageData();
+            this.initH5DescImageData();
+            this.initMainImageData();
             this.initEvent();
         },
         initEvent: function() {
@@ -16,24 +19,29 @@
             new connect.server({
                 id: 'data',
                 onMessage: function(request, sender, callback) {
+                    var id = request.id;
                     if (this.is(request, 'getItem')) {
                         callback(me.getItem());
                     } else if (this.is(request, 'getAttrUL')) {
-                        cfg.data.getAttrUL(request.itemId, function(html) {
+                        cfg.data.getAttrUL(id, function(html) {
                             callback({
                                 html: html
                             });
                         });
                     } else if (this.is(request, 'getDetail')) {
-                        cfg.data.getDetail(request.itemId, function(data) {
+                        cfg.data.getDetail(id, function(data) {
+                            data.h5DescUrls = me.h5DescImageMap[id].urls;
+                            data.pcDescUrls = me.pcDescImageMap[id].urls;
+                            data.mainImageUrls = me.mainImageMap[id].urls;
+                            data.shop = me.shop;
                             callback(data);
                         });
                     } else if (this.is(request, 'getProperty')) {
-                        cfg.data.getProperty(request.itemId, function(data) {
+                        cfg.data.getProperty(id, function(data) {
                             callback(data);
                         });
                     } else if (this.is(request, 'publish')) {
-                        callback(me.doPublish(request.id));
+                        callback(me.doPublish(id));
                     }
                 }
             });
@@ -62,6 +70,57 @@
             });
             this.itemIdMapIndex = map;
         },
+        getDataURL: function(shop, dataType, type) {
+            return config.urls.data + shop.id + '_' + dataType + '_' + shop.name + '_' + type + '.json';
+        },
+        initPCDescImageData: function() {
+            var me = this;
+            var shop = this.shop;
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: this.getDataURL(shop, 'desc', 'pc'),
+                dataType: 'text',
+                success: function(data) {
+                    me.pcDescImageMap = JSON.parse(data);
+                },
+                error: function() {
+                    console.error('node server no start up...')
+                }
+            });
+        },
+        initH5DescImageData: function() {
+            var me = this;
+            var shop = this.shop;
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: this.getDataURL(shop, 'desc', 'h5'),
+                dataType: 'text',
+                success: function(data) {
+                    me.h5DescImageMap = JSON.parse(data);
+                },
+                error: function() {
+                    console.error('node server no start up...')
+                }
+            });
+        },
+        initMainImageData: function() {
+            var me = this;
+            var shop = this.shop;
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: this.getDataURL(shop, 'main', 'pc'),
+                dataType: 'text',
+                success: function(data) {
+                    me.mainImageMap = JSON.parse(data);
+                },
+                error: function() {
+                    console.error('node server no start up...')
+                }
+            });
+        },
         getItem: function() {
             var data = this.itemData;
             var shop = this.shop;
@@ -85,6 +144,9 @@
                 success: function() {},
                 error: function() {}
             });
+        },
+        getPCDescHTML: function(itemId, handel) {
+
         }
     });
 

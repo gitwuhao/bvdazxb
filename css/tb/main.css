@@ -2,7 +2,6 @@
     position: absolute;
     right: 10px;
 }
-
 .fs-detail-info {
     position: fixed;
     top: 0px;
@@ -14,13 +13,11 @@
     width: 654px;
     color: #666;
 }
-
 .fs-detail-info .title {
     text-align: center;
     font-weight: bold;
     color: #000;
 }
-
 .fs-detail-info .attr-ul {
     overflow: hidden;
     text-indent: 0;
@@ -30,7 +27,6 @@
     padding: 0px;
     margin: 0px 0px 20px 0px;
 }
-
 .fs-detail-info .attr-ul li {
     display: inline;
     float: left;
@@ -43,7 +39,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-
 .fs-detail-info .sku-info {
     width: 100%;
     border-spacing: 0;
@@ -52,12 +47,31 @@
     border-color: #DEDEDE;
     border: 1px solid #DEDEDE;
 }
-
+.fs-detail-info .sku-info .other-size {
+    display: none;
+}
+.fs-detail-info .sku-info .s-size {
+}
+.fs-detail-info .sku-info .m-size {
+}
+.fs-detail-info .sku-info .l-size {
+}
+.fs-detail-info .sku-info .zero-quantity {
+    color: #FF4343;
+    font-weight: bold;
+}
+.fs-detail-info .sku-info .low-quantity {
+    color: #FFD400;
+    font-weight: bold;
+}
+.fs-detail-info .sku-info .ample-quantity {
+    color: #58D250;
+    font-weight: bold;
+}
 .fs-detail-info .publish {
     padding: 6px 20px;
     margin-top: 10px;
 }
-
 .no-find-property {
     outline: 1px solid #FFB7B7;
     outline-offset: -1px;

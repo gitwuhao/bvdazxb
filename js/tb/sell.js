@@ -17,9 +17,10 @@
             var me = this;
             this.client.send('getItem', {}, function(data) {
                 $('#J_SearchKeyWord,#J_SearchKey').val(data.key);
-                $('#J_SearchButton').click(function() {
-                    $('#J_CatePubBtn').click();
-                });
+                setTimeout(function() {
+                    E.dispatch($('#J_SearchButton')[0], "click");
+                    // E.dispatch($('#J_CatePubBtn')[0], "click");
+                }, 3000);
             });
         }
     });

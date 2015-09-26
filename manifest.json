@@ -33,6 +33,7 @@
         "js": [
             "js/lib/jquery-2.1.1.js",
             "js/lib/util.js",
+            "js/lib/E.js",
             "js/lib/class.js",
             "js/lib/class.event.js",
             "js/lib/class.log.js",
@@ -64,6 +65,7 @@
         "js": [
             "js/lib/jquery-2.1.1.js",
             "js/lib/util.js",
+            "js/lib/E.js",
             "js/lib/class.js",
             "js/lib/class.event.js",
             "js/lib/html.js",

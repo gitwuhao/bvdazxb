@@ -31,25 +31,60 @@
         doClientInitDone: function() {
             var me = this;
             var itemId = $('#outerIdId').val();
-            if (!itemId) {
-                this.client.send('getItem', {}, function(item) {
-                    me.activeItem = item;
-                    me.initDetailInfo();
-                });
-            } else {
-                // this.initDetailInfo();
-                this.isPublish = true;
+            if (itemId) {
+                this.isEdit = true;
             }
+            this.client.send('getItem', {}, function(item) {
+                me.activeItem = item;
+                me.initDetailInfo();
+            });
         },
         initDetailInfo: function() {
             this.includeCSS();
-            this.initDetailBox();
+            this.initDescInfo();
+            this.loadDetailData();
+        },
+        loadDetailData: function() {
+            var me = this;
+            var id = this.activeItem.id;
+
+            this.client.send('getProperty', {
+                id: id
+            }, function(data) {
+                me.initProperty(data);
+            });
+
+            this.client.send('getAttrUL', {
+                id: id
+            }, function(data) {
+                me.$attrUL.html(data.html);
+            });
+
+            this.client.send('getDetail', {
+                id: id
+            }, function(data) {
+                me.doDetailData(data);
+            });
+
+        },
+        doDetailData: function(data) {
+            this.mainData = data;
+            this.initDescInfoData();
+            if (!this.isEdit) {
+                this.initValues();
+
+                // this.initH5DescImage();
+
+                this.initPCDescImage();
+
+                this.initMainImage();
+            }
         },
         includeCSS: function() {
             var css = config.getURL('css/tb/main.css');
             $(document.body).append('<link rel="stylesheet" href="' + css + '"/>');
         },
-        initDetailBox: function() {
+        initDescInfo: function() {
             var fsboxId = 'fs_d_b' + Date.now();
             var html = ['<div id="', fsboxId, '" class="fs-detail-info">',
                 '<div class="title">',
@@ -82,7 +117,82 @@
             $publish.on('click', function(event) {
                 me.onSubmit();
             });
-            this.loadFSBox();
+        },
+        initDescInfoData: function() {
+            var data = this.mainData;
+            var detail = data.detail;
+            var mdskip = data.mdskip;
+            var item = detail.itemDO;
+            var shop = data.shop;
+
+            var itemData = {
+                title: item.title,
+                itemId: item.itemId,
+                price: item.reservePrice,
+                list: []
+            };
+
+            this.itemData = itemData;
+            var skuMap = {};
+            var array = itemData.list,
+                skuQuantity = mdskip.defaultModel.inventoryDO.skuQuantity;
+
+            util.each(detail.valItemInfo.skuList, function(i, sku) {
+                skuMap[sku.skuId] = sku;
+                sku.quantity = skuQuantity[sku.skuId].quantity;
+                sku.price = itemData.price;
+                array.push(sku);
+            });
+
+            util.it(mdskip.defaultModel.itemPriceResultDO.priceInfo, function(key, priceInfo) {
+                var sku = skuMap[key];
+                var promotionList = priceInfo.promotionList || priceInfo.suggestivePromotionList
+                util.each(promotionList, function(i, promotion) {
+                    if (parseFloat(sku.price) > parseFloat(promotion.price)) {
+                        sku.price = promotion.price;
+                        sku.priceType = promotion.type;
+                        itemData.price = sku.price;
+                    }
+                });
+            });
+
+            var html = [];
+            util.each(array, function(i, sku) {
+                var sizeClass;
+                var array = sku.names.match(/\s?(S|M|[^X]L)\s?/i);
+                if (array && array[1]) {
+                    sizeClass = array[1].toLowerCase() + '-size';
+                } else {
+                    sizeClass = 'other-size';
+                }
+                html.push('<tr class="', sizeClass, '">');
+                html.push('<td align="center">', sku.names, '</td>');
+                html.push('<td align="center">', sku.price, '[', sku.priceType, ']', '</td>');
+                var quantityClass;
+                if (sku.quantity == 0) {
+                    quantityClass = "zero-quantity";
+                } else if (sku.quantity < 10) {
+                    quantityClass = "low-quantity";
+                } else {
+                    quantityClass = "ample-quantity";
+                }
+                html.push('<td align="center" class="', quantityClass, '">', sku.quantity, '</td>');
+                html.push('</tr>');
+            });
+            this.$skuTbody.html(html.join(''));
+
+            var activeItem = this.activeItem;
+            this.$title.html(['<a href="https://detail.tmall.com/item.htm?id=', itemData.itemId, '" target="_detail">',
+                itemData.title,
+                '</a>',
+                '<br/>',
+                activeItem.id,
+                '<br/>',
+                //_handu_desc_h5_6.jpg
+                activeItem.key + '_' + shop.name + '_desc_h5',
+                '<br/>',
+                activeItem.key
+            ].join(''));
         },
         initValues: function() {
             var item = this.itemData;
@@ -107,6 +217,9 @@
             $('#buynow').val(item.price);
             $('#quantityId').val(10);
             $('#outerIdId').val(item.itemId);
+
+            $('#J_Internal').attr('checked', true);
+            $('[name=item_qualification_check]').attr('checked', false);
 
         },
         initProperty: function(data) {
@@ -170,7 +283,7 @@
                     if (value) {
                         var $checkbox = $li.find(':checkbox:first');
                         //$checkbox.attr('checked', 'checked');
-                        $checkbox[0].checked = true;
+                        $checkbox.attr('checked', true);
                         // E.dispatch($checkbox[0], "click");
                         // $checkbox[0].checked = true;
                         delete propMap[value];
@@ -184,86 +297,50 @@
                 id: this.activeItem.id
             });
         },
-        loadFSBox: function() {
-            var me = this;
-            var itemId = this.activeItem.id;
-
-            this.client.send('getProperty', {
-                itemId: itemId
-            }, function(data) {
-                me.initProperty(data);
-            });
-
-            this.client.send('getAttrUL', {
-                itemId: itemId
-            }, function(data) {
-                me.$attrUL.html(data.html);
-            });
-
-            this.client.send('getDetail', {
-                itemId: itemId
-            }, function(data) {
-                me.doDetailData(data);
-            });
-
+        eachUrls: function(urls, handle) {
+            if (!urls) {
+                return;
+            }
+            for (var i = 1; i < 100; i++) {
+                if (!urls[i] || handle(i, urls[i]) === false) {
+                    return false;
+                }
+            }
         },
-        doDetailData: function(data) {
-            var detail = data.detail;
-            var mdskip = data.mdskip;
-            var item = detail.itemDO;
-            var itemData = {
-                title: item.title,
-                itemId: item.itemId,
-                price: item.reservePrice,
-                list: []
-            };
+        initH5DescImage: function() {
+            var urls = this.mainData.h5DescUrls;
 
-            this.itemData = itemData;
+            util.it(urls, function(key, value) {
 
-            var skuMap = {};
-            var array = itemData.list,
-                skuQuantity = mdskip.defaultModel.inventoryDO.skuQuantity;
 
-            util.each(detail.valItemInfo.skuList, function(i, sku) {
-                skuMap[sku.skuId] = sku;
-                sku.quantity = skuQuantity[sku.skuId].quantity;
-                sku.price = itemData.price;
-                array.push(sku);
             });
-
-            util.it(mdskip.defaultModel.itemPriceResultDO.priceInfo, function(key, priceInfo) {
-                var sku = skuMap[key];
-                var promotionList = priceInfo.promotionList || priceInfo.suggestivePromotionList
-                util.each(promotionList, function(i, promotion) {
-                    if (parseFloat(sku.price) > parseFloat(promotion.price)) {
-                        sku.price = promotion.price;
-                        sku.priceType = promotion.type;
-                        itemData.price = sku.price;
-                    }
-                });
+        },
+        initPCDescImage: function() {
+            var urls = this.mainData.pcDescUrls;
+            var html = ['<div style="width:790px;">'];
+            this.eachUrls(urls, function(key, value) {
+                html.push('<div><img src="', value, '"/></div>');
             });
+            html.push('</div>');
 
-            var html = [];
-            util.each(array, function(i, sku) {
-                html.push('<tr>',
-                    '<td align="center">', sku.names, '</td>',
-                    '<td align="center">', sku.price, '[', sku.priceType, ']', '</td>',
-                    '<td align="center">', sku.quantity, '</td>',
-                    '</tr>');
+            var $textarea = $('#J_ItemDescTextarea_newer');
+            $textarea.show();
+            $textarea.focus();
+            $textarea.val(html.join(''));
+            // setTimeout(function(){
+            // $textarea.blur();
+            // $textarea.hide();
+            // },200);
+        },
+        initMainImage: function() {
+            var urls = this.mainData.mainImageUrls;
+            this.eachUrls(urls, function(key, value) {
+                var $picUrl = $('input[name=picUrl' + key + ']');
+                $picUrl.next().remove();
+                $picUrl.closest('li').addClass('has-img');
+                $picUrl.val(value);
+                $picUrl.after('<img src="' + value + '_100x100.jpg"/>');
             });
-            this.$skuTbody.html(html.join(''));
-
-            var activeItem = this.activeItem;
-            this.$title.html(['<a href="https://detail.tmall.com/item.htm?id=', itemData.itemId, '" target="_detail">',
-                itemData.title,
-                '</a>',
-                '<br/>',
-                activeItem.id,
-                '<br/>',
-                activeItem.key,
-            ].join(''));
-
-            this.initValues();
         }
     });
 
