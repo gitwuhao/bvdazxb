@@ -30,6 +30,12 @@
         },
         doClientInitDone: function() {
             var me = this;
+            var isPublishItemSuccess = window.location.href.indexOf('publishItemSuccess.htm') > -1;
+            if (isPublishItemSuccess) {
+                this.client.send('publish');
+                return;
+            }
+
             var itemId = $('#outerIdId').val();
             if (itemId) {
                 this.isEdit = true;
@@ -50,12 +56,6 @@
             var me = this;
             var id = this.activeItem.id;
 
-            this.client.send('getProperty', {
-                id: id
-            }, function(data) {
-                me.initProperty(data);
-            });
-
             this.client.send('getAttrUL', {
                 id: id
             }, function(data) {
@@ -75,7 +75,7 @@
             if (!this.isEdit) {
                 this.initValues();
 
-                // this.initH5DescImage();
+                this.initH5DescImage();
 
                 this.initPCDescImage();
 
@@ -105,7 +105,9 @@
                 '</tbody>',
                 '</table>',
                 '<button class="main-image fs-btn">主图</button>',
+                '<button class="h5-desc fs-btn">H5描述 </button>',
                 '<button class="desc-image fs-btn">描述</button>',
+                '<button class="reset-value fs-btn">重置属性</button>',
                 '<button class="publish fs-btn">发布</button>',
                 '</div>'
             ];
@@ -118,13 +120,21 @@
             this.$skuTbody = this.$skuTable.children('tbody:first');
             var $mainImage = fsBox.children('.main-image:first');
             var $descImage = fsBox.children('.desc-image:first');
+            var $h5Desc = fsBox.children('.h5-desc:first');
+            var $resetValue = fsBox.children('.reset-value:first');
             var $publish = fsBox.children('.publish:first');
             var me = this;
             $mainImage.on('click', function(event) {
                 me.initMainImage();
             });
+            $h5Desc.on('click', function(event) {
+                me.initH5DescImage();
+            });
             $descImage.on('click', function(event) {
                 me.initPCDescImage();
+            });
+            $resetValue.on('click', function(event) {
+                me.initValues();
             });
             $publish.on('click', function(event) {
                 me.onSubmit();
@@ -136,6 +146,7 @@
             var mdskip = data.mdskip;
             var item = detail.itemDO;
             var shop = data.shop;
+
 
             var itemData = {
                 title: item.title,
@@ -171,7 +182,7 @@
             var html = [];
             util.each(array, function(i, sku) {
                 var sizeClass;
-                var array = sku.names.match(/\s?(S|M|[^X]L)\s?/i);
+                var array = sku.names.match(/\s?([^X]S|[^X]M|[^X]L)\s?/i);
                 if (array && array[1]) {
                     sizeClass = array[1].toLowerCase() + '-size';
                 } else {
@@ -231,10 +242,28 @@
             $('#outerIdId').val(item.itemId);
 
             $('#J_Internal').attr('checked', true);
-            $('[name=item_qualification_check]').attr('checked', false);
+            var $item_qualification_check = $('[name=item_qualification_check]');
+            $item_qualification_check.attr('checked', false);
+            $item_qualification_check.val(false);
+
+            // var $inStock = $('#inStock');
+            // $inStock.attr('checked', true);
+            // E.dispatch($inStock[0], "click");
+            // $inStock.attr('checked', true);
+
+            this.initProperty();
 
         },
-        initProperty: function(data) {
+        initProperty: function() {
+            var me = this;
+            this.client.send('getProperty', {
+                id: me.activeItem.id
+            }, function(data) {
+                me.doInitProperty(data);
+            });
+        },
+        doInitProperty: function(data) {
+
             this.property = data;
             var propMap = {};
 
@@ -281,26 +310,21 @@
         },
         initCheckBoxValues: function() {
             var propMap = this.propMap;
-            var valueMap = {};
-            util.it(propMap, function(key, value) {
-                valueMap[value] = key;
-            });
+            var removeList = [];
             var me = this;
             $('.J_spu-property .ul-checkbox ').each(function(i, ul) {
                 util.each(ul.children, function(n, li) {
                     var $li = $(li);
                     var $label = $li.find('label:first');
                     var key = $.trim($label.text());
-                    var value = valueMap[key];
-                    if (value) {
-                        var $checkbox = $li.find(':checkbox:first');
-                        //$checkbox.attr('checked', 'checked');
-                        $checkbox.attr('checked', true);
-                        // E.dispatch($checkbox[0], "click");
-                        // $checkbox[0].checked = true;
-                        delete propMap[value];
-                        return false;
-                    }
+                    util.it(propMap, function(_key, _value) {
+                        if (_value.indexOf(key) > -1) {
+                            var $checkbox = $li.find(':checkbox:first');
+                            $checkbox.attr('checked', true);
+                            removeList.push(_key);
+                            return false;
+                        }
+                    });
                 });
             });
         },
@@ -321,11 +345,24 @@
         },
         initH5DescImage: function() {
             var urls = this.mainData.h5DescUrls;
-
+            var list = [];
+            var data = {
+                data: list
+            };
             util.it(urls, function(key, value) {
-
-
+                list.push({
+                    "type": "image",
+                    "value": value,
+                    "size": 122186
+                });
             });
+
+            E.dispatch(document.getElementById('J_MobileTab'), "click");
+            setTimeout(function() {
+                var $textarea = $('#J_MobileDetail');
+                $textarea.val(JSON.stringify(data));
+                $textarea.show();
+            }, 300);
         },
         initPCDescImage: function() {
             var urls = this.mainData.pcDescUrls;

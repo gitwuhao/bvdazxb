@@ -21,13 +21,7 @@
                 onMessage: function(request, sender, callback) {
                     var id = request.id;
                     if (this.is(request, 'getItem')) {
-                        var item;
-                        if (id) {
-                            item = me.metaItemMap[id];
-                        } else {
-                            item = me.getItem();
-                        }
-                        callback(item);
+                        callback(me.getItem(id));
                     } else if (this.is(request, 'getAttrUL')) {
                         cfg.data.getAttrUL(id, function(html) {
                             callback({
@@ -70,6 +64,7 @@
         },
         doInitData: function(data) {
             var metaItemMap = {};
+            var map = {};
             this.itemData = data;
             util.each(data.list, function(i, item) {
                 map[item.id] = i;
@@ -129,14 +124,23 @@
                 }
             });
         },
-        getItem: function() {
-            var data = this.itemData;
+        getItem: function(id) {
+            var item;
             var shop = this.shop;
-            return util.merger({}, data.list[data.index], {
-                type: shop.name
-            });
+            if (id) {
+                item = this.metaItemMap[id];
+            } else {
+                var data = this.itemData;
+                item = data.list[data.index];
+            }
+            item.type = shop.name;
+            this.activeItem = item;
+            return util.merger({}, item);
         },
         doPublish: function(itemId) {
+            if (!itemId) {
+                itemId = this.activeItem.id;
+            }
             this.itemData.index = this.itemIdMapIndex[itemId] + 1;
             this.uploadData();
         },
