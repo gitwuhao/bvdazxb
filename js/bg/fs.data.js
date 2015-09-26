@@ -21,7 +21,13 @@
                 onMessage: function(request, sender, callback) {
                     var id = request.id;
                     if (this.is(request, 'getItem')) {
-                        callback(me.getItem());
+                        var item;
+                        if (id) {
+                            item = me.metaItemMap[id];
+                        } else {
+                            item = me.getItem();
+                        }
+                        callback(item);
                     } else if (this.is(request, 'getAttrUL')) {
                         cfg.data.getAttrUL(id, function(html) {
                             callback({
@@ -63,11 +69,13 @@
             });
         },
         doInitData: function(data) {
+            var metaItemMap = {};
             this.itemData = data;
-            var map = {};
             util.each(data.list, function(i, item) {
                 map[item.id] = i;
+                metaItemMap[item.id] = item;
             });
+            this.metaItemMap = metaItemMap;
             this.itemIdMapIndex = map;
         },
         getDataURL: function(shop, dataType, type) {

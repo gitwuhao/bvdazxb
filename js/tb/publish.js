@@ -34,7 +34,9 @@
             if (itemId) {
                 this.isEdit = true;
             }
-            this.client.send('getItem', {}, function(item) {
+            this.client.send('getItem', {
+                id: itemId
+            }, function(item) {
                 me.activeItem = item;
                 me.initDetailInfo();
             });
@@ -102,7 +104,9 @@
                 '<tbody>',
                 '</tbody>',
                 '</table>',
-                '<button class="publish">发布</button>',
+                '<button class="main-image fs-btn">主图</button>',
+                '<button class="desc-image fs-btn">描述</button>',
+                '<button class="publish fs-btn">发布</button>',
                 '</div>'
             ];
             $(document.body).append(html.join(''));
@@ -112,8 +116,16 @@
             this.$attrUL = fsBox.children('.attr-ul:first');
             this.$skuTable = fsBox.children('.sku-info:first');
             this.$skuTbody = this.$skuTable.children('tbody:first');
+            var $mainImage = fsBox.children('.main-image:first');
+            var $descImage = fsBox.children('.desc-image:first');
             var $publish = fsBox.children('.publish:first');
             var me = this;
+            $mainImage.on('click', function(event) {
+                me.initMainImage();
+            });
+            $descImage.on('click', function(event) {
+                me.initPCDescImage();
+            });
             $publish.on('click', function(event) {
                 me.onSubmit();
             });

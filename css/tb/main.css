@@ -68,9 +68,10 @@
     color: #58D250;
     font-weight: bold;
 }
-.fs-detail-info .publish {
-    padding: 6px 20px;
+.fs-detail-info .fs-btn {
+    padding: 10px 20px;
     margin-top: 10px;
+    margin-right: 20px;
 }
 .no-find-property {
     outline: 1px solid #FFB7B7;
