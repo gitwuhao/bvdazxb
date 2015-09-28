@@ -1,5 +1,14 @@
 (function(global, undefined) {
 
+// 韩都衣舍韩版2015秋装新款女装破洞宽松背带裤牛仔裤LZ4102烎
+// https://detail.tmall.com/item.htm?spm=686.1000924.0.0.ZCOva6&id=43855851787
+// https://detail.tmall.com/item.htm?spm=686.1000924.0.0.SgQ5tq&id=520491439885
+    var color_key = '1627207';
+    var size_key = '20509';
+    var size_type = '27013';
+    var size_type_text = '中国码';
+    var REG_COLOR = new RegExp(color_key + ':(\\d+)');
+    var REG_SIZE = new RegExp(size_key + ':(\\d+)');
 
     var metaData = {
         brand: {
@@ -156,11 +165,14 @@
             };
 
             this.itemData = itemData;
-            var skuMap = {};
-            var array = itemData.list,
+            var skuMap = {},
+                colorMap = {},
+                sizeMap = {},
+                array = itemData.list,
+                valItemInfo = detail.valItemInfo,
                 skuQuantity = mdskip.defaultModel.inventoryDO.skuQuantity;
 
-            util.each(detail.valItemInfo.skuList, function(i, sku) {
+            util.each(valItemInfo.skuList, function(i, sku) {
                 skuMap[sku.skuId] = sku;
                 sku.quantity = skuQuantity[sku.skuId].quantity;
                 sku.price = itemData.price;
@@ -174,6 +186,9 @@
                     if (parseFloat(sku.price) > parseFloat(promotion.price)) {
                         sku.price = promotion.price;
                         sku.priceType = promotion.type;
+                        sku.names = "  " + sku.names;
+                        // sku.colorId = pvs.match(/20509:(\d+)/);
+                        // sku.sizeId = pvs.match(/20509:(\d+)/);
                         itemData.price = sku.price;
                     }
                 });
@@ -242,9 +257,6 @@
             $('#outerIdId').val(item.itemId);
 
             $('#J_Internal').attr('checked', true);
-            var $item_qualification_check = $('[name=item_qualification_check]');
-            $item_qualification_check.attr('checked', false);
-            $item_qualification_check.val(false);
 
             // var $inStock = $('#inStock');
             // $inStock.attr('checked', true);
@@ -252,6 +264,8 @@
             // $inStock.attr('checked', true);
 
             this.initProperty();
+
+            this.initSKUValues();
 
         },
         initProperty: function() {
@@ -276,6 +290,166 @@
             this.$propertyForm = $('#J_module-property');
             this.initSelectValues();
             this.initCheckBoxValues();
+        },
+        initSKUValues: function() {
+
+            var skuArray = this.mainData.detail.valItemInfo.skuName;
+
+
+
+            $('#sku-color-tab-contents .color-list').show();
+
+            // $('.size-content:first .size-pannel').show();
+
+
+
+            var skuMap = {};
+
+            util.each(skuArray, function(i, item) {
+                skuMap[item.id] = item;
+            });
+
+            var array = [];
+
+
+            util.each($('.size-type [name=sizeGroupType]'), function(i, radio) {
+                if (radio.value.indexOf(size_type) > -1 || radio.parentElement.innerText.indexOf(size_type_text) > -1) {
+                    var f = (function(r) {
+                        return function() {
+                            r.checked = true;
+                            E.dispatch(r, "click");
+                            r.checked = true;
+                        };
+                    })(radio);
+                    array.push(f);
+                    return false;
+                }
+            });
+            util.each(["28314", "28315", "28316"], function(i, id) {
+                var $checkbox = $('#prop_' + size_key + '-' + id);
+                if ($checkbox[0]) {
+                    var f = (function($c) {
+                        return function() {
+                            $c[0].checked = true;
+                            E.dispatch($c[0], "click");
+                            $c[0].checked = true;
+                        };
+                    })($checkbox);
+                    array.push(f);
+                }
+            });
+
+
+
+            var colorItem = skuMap[color_key];
+            if (colorItem) {
+                util.each(colorItem.values, function(i, item) {
+                    var $checkbox = $('#prop_' + color_key + '-' + item.id);
+                    if ($checkbox[0]) {
+                        var f = (function($c) {
+                            return function() {
+                                // $c[0].checked = true;
+                                // E.dispatch($c[0], "change");
+                                // $c[0].checked = true;
+                                E.dispatch($c[0], "click");
+                            };
+                        })($checkbox);
+                        array.push(f);
+                    }
+                });
+            }
+
+
+            var data = this.itemData;
+
+            util.each(data.list, function(i, item) {
+                var pvs = item.pvs,
+                    mArray,
+                    color_value,
+                    size_value;
+                //"-1:-1;20509:28314;1627207:28320"
+                mArray = pvs.match(REG_SIZE) || [];
+                if (mArray[1]) {
+                    size_value = mArray[1];
+                }
+                mArray = pvs.match(REG_COLOR) || [];
+                if (mArray[1]) {
+                    color_value = mArray[1];
+                }
+                var fieldKey = color_key + '-' + color_value + '_' + size_key + '-' + size_value;
+
+
+
+                array.push((function(i, fKey) {
+                    return function() {
+                        var $text = $('#J_SkuField_price_' + fKey);
+                        $text.focus();
+                        $text.val(i.price);
+                    };
+                })(item, fieldKey));
+
+
+                array.push((function(i, fKey) {
+                    return function() {
+                        var $text = $('#J_SkuField_quantity_' + fKey);
+                        $text.focus();
+                        var quantity = i.quantity;
+                        if (quantity > 10) {
+                            quantity = 10;
+                        } else {
+                            quantity = 0;
+                        }
+                        $text.val(quantity);
+                    };
+                })(item, fieldKey));
+
+            });
+
+            array.push(this.setSKUValuesAfter.bind(this));
+
+            new util.task({
+                array: array,
+                timeout: 500,
+                handle: function(task) {
+                    task();
+                }
+            });
+        },
+        setSKUValuesAfter: function() {
+            var $item_qualification_check = $('[name=item_qualification_check]');
+            $item_qualification_check.attr('checked', false);
+            $item_qualification_check.val(false);
+        },
+        setSKUValues: function() {
+            var data = this.itemData;
+
+            util.each(data.list, function(i, item) {
+                var pvs = item.pvs,
+                    array,
+                    color_value,
+                    size_value;
+                //"-1:-1;20509:28314;1627207:28320"
+                array = pvs.match(REG_SIZE) || [];
+                if (array[1]) {
+                    size_value = array[1];
+                }
+                array = pvs.match(REG_COLOR) || [];
+                if (array[1]) {
+                    color_value = array[1];
+                }
+                var fieldKey = color_key + '-' + color_value + '_' + size_key + '-' + size_value;
+
+                $('#J_SkuField_price_' + fieldKey).val(item.price);
+
+                var quantity = item.quantity;
+                if (quantity > 10) {
+                    quantity = 10;
+                } else {
+                    quantity = 0;
+                }
+                $('#J_SkuField_quantity_' + fieldKey).val(quantity);
+            });
+
         },
         selectedOption: function(option, text) {
             var select = option.parentElement;

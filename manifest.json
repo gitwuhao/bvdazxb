@@ -54,6 +54,7 @@
             "js/lib/class.event.js",
             "js/lib/class.log.js",
             "js/lib/html.js",
+            "js/lib/task.js",
             "js/lib/connect.js",
             "js/cfg/config.js",
             // "js/cfg/data.js",
