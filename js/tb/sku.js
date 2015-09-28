@@ -46,8 +46,8 @@ util.each(skuArray,function(i,item){
 	skuMap[item.id]=item;
 });
 
-util.each(skuMap[size_key].values,function(i,item){
-	var $checkbox=$('#prop_'+size_key+'-'+item.id);
+util.each(["28314","28315","28316"],function(i,id){
+	var $checkbox=$('#prop_'+size_key+'-'+id);
 	if($checkbox[0]){
 		$checkbox.attr('checked',true);
 		E.dispatch($checkbox[0], "click");
