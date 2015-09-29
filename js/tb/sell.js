@@ -40,7 +40,7 @@
             });
 
 
-            array.push(this.checkSelected.bind(this));
+            // array.push(this.checkSelected.bind(this));
 
 
 
