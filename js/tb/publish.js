@@ -459,6 +459,7 @@
 
             array.push(this.setSKUValuesAfter.bind(this));
 
+
             new util.task({
                 array: array,
                 timeout: 500,
@@ -468,9 +469,12 @@
             });
         },
         setSKUValuesAfter: function() {
-            var $item_qualification_check = $('[name=item_qualification_check]');
+            var $item_qualification_check = $('#J_module-property [name=item_qualification_check]:first');
             $item_qualification_check.attr('checked', false);
-            $item_qualification_check.val(false);
+            $item_qualification_check.val('false');
+            if ($item_qualification_check.val() != 'false') {
+                setTimeout(this.setSKUValuesAfter.bind(this), 500);
+            }
         },
         setSKUValues: function() {
             var data = this.itemData;
