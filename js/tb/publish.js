@@ -41,7 +41,7 @@
         goSell: function() {
             setTimeout(function() {
                 window.location.href = "https://upload.taobao.com/auction/sell.jhtml";
-            }, 15 * 1000);
+            }, 3 * 1000);
         },
         doClientInitDone: function() {
             var me = this;
@@ -279,8 +279,11 @@
             var me = this;
             setTimeout(function() {
                 E.dispatch($('#event_submit_do_publish')[0], "click");
-                me.goSell();
             }, 1000);
+
+            setTimeout(function() {
+                me.goSell();
+            }, 50 * 1000);
         },
         initProperty: function() {
             var me = this;

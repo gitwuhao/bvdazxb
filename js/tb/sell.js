@@ -40,17 +40,7 @@
             });
 
 
-            array.push(function() {
-                setTimeout(function() {
-                    E.dispatch($('#J_CatePubBtn')[0], "click");
-                }, 10 * 1000);
-            });
-
-            array.push(function() {
-                setTimeout(function() {
-                    window.location.reload();
-                }, 50 * 1000);
-            });
+            array.push(this.checkSelected.bind(this));
 
 
 
@@ -61,6 +51,18 @@
                     task();
                 }
             });
+
+        },
+        checkSelected: function() {
+            var $selected = $('#J_SearchResult .selected:first');
+            if ($selected[0]) {
+                E.dispatch($selected[0], "dblclick");
+                setTimeout(function() {
+                    window.location.reload();
+                }, 50 * 1000);
+            } else {
+                setTimeout(this.checkSelected.bind(this), 1000);
+            }
 
         }
     });
