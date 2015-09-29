@@ -11,6 +11,8 @@
     var REG_SIZE = new RegExp(size_key + ':(\\d+)');
     var REG_MATCH_SIZE = /\s?([^X]S|[^X]M|[^X]L)\s?/i;
 
+
+
     var metaData = {
         brand: {
             'handu': {
@@ -81,7 +83,11 @@
             this.client.send('getDetail', {
                 id: id
             }, function(data) {
-                me.doDetailData(data);
+                if (!data) {
+                    me.goSell();
+                } else {
+                    me.doDetailData(data);
+                }
             });
 
         },

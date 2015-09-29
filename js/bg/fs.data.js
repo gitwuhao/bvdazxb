@@ -5,7 +5,7 @@
         extendEvent: true,
         singleton: true,
         shops: config.shops,
-        shop: config.shops[0],
+        shop: config.shops[1],
         type: 'default',
         init: function() {
             this.initData();
@@ -29,7 +29,13 @@
                             });
                         });
                     } else if (this.is(request, 'getDetail')) {
+                        if (!me.h5DescImageMap[id] || !me.pcDescImageMap[id] || !me.mainImageMap[id]) {
+                            me.doPublishError(id);
+                            callback();
+                            return;
+                        }
                         cfg.data.getDetail(id, function(data) {
+
                             data.h5DescUrls = me.h5DescImageMap[id].urls;
                             data.pcDescUrls = me.pcDescImageMap[id].urls;
                             data.mainImageUrls = me.mainImageMap[id].urls;

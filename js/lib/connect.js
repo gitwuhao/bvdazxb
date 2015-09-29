@@ -59,7 +59,7 @@
             });
         }
         chrome.tabs.executeScript(tab.id, {
-            code: "window.alert=function(){}",
+            file: "js/lib/s.js",
             runAt: "document_start"
         }, function() {
 

@@ -96,7 +96,8 @@
         "48": "images/sss_48.png"
     },
     "web_accessible_resources": [
-        "css/tb/main.css"
+        "css/tb/main.css",
+        "js/lib/s.js"
     ],
     "key": "SDFLKJSDLKFJSDKLKFJSDLKF",
     "manifest_version": 2,

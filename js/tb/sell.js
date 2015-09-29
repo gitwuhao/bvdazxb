@@ -40,7 +40,7 @@
             });
 
 
-            // array.push(this.checkSelected.bind(this));
+            array.push(this.checkSelected.bind(this));
 
 
 
@@ -68,8 +68,14 @@
     });
 
     window.addEventListener('load', function() {
+
+        var src = config.getURL('js/lib/s.js');
+
+        $(document.body).append('<script src="' + src + '" charset="utf-8"></script>');
+
         tb.sell.init();
     });
+
 
 
 })(window);
