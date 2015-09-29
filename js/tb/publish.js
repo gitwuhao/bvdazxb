@@ -38,11 +38,17 @@
                 }
             });
         },
+        goSell: function() {
+            setTimeout(function() {
+                window.location.href = "https://upload.taobao.com/auction/sell.jhtml";
+            }, 15 * 1000);
+        },
         doClientInitDone: function() {
             var me = this;
             var isPublishItemSuccess = window.location.href.indexOf('publishItemSuccess.htm') > -1;
             if (isPublishItemSuccess) {
                 this.client.send('publish');
+                this.goSell();
                 return;
             }
 
@@ -259,10 +265,10 @@
 
             $('#J_Internal').attr('checked', true);
 
-            // var $inStock = $('#inStock');
-            // $inStock.attr('checked', true);
-            // E.dispatch($inStock[0], "click");
-            // $inStock.attr('checked', true);
+            var $inStock = $('#inStock');
+            $inStock.attr('checked', true);
+            E.dispatch($inStock[0], "click");
+            $inStock.attr('checked', true);
 
             this.initProperty();
 
@@ -270,8 +276,10 @@
 
         },
         initValuesFinish: function() {
+            var me = this;
             setTimeout(function() {
                 E.dispatch($('#event_submit_do_publish')[0], "click");
+                me.goSell();
             }, 1000);
         },
         initProperty: function() {
@@ -504,11 +512,13 @@
                 }
             });
         },
+        qualificationIndex: 0,
         checkQualification: function() {
             var $item_qualification_check = $('#J_module-property [name=item_qualification_check]:first');
             $item_qualification_check.attr('checked', false);
             $item_qualification_check.val('false');
-            if ($item_qualification_check.val() != 'false') {
+            if ($item_qualification_check.val() != 'false' && this.qualificationIndex < 5) {
+                this.qualificationIndex++;
                 setTimeout(this.checkQualification.bind(this), 500);
             } else {
                 this.initValuesFinish();

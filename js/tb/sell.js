@@ -41,8 +41,17 @@
 
 
             array.push(function() {
-                E.dispatch($('#J_CatePubBtn')[0], "click");
+                setTimeout(function() {
+                    E.dispatch($('#J_CatePubBtn')[0], "click");
+                }, 10 * 1000);
             });
+
+            array.push(function() {
+                setTimeout(function() {
+                    window.location.reload();
+                }, 50 * 1000);
+            });
+
 
 
             new util.task({
