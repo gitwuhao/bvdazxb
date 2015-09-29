@@ -70,6 +70,7 @@
             "js/lib/class.js",
             "js/lib/class.event.js",
             "js/lib/html.js",
+            "js/lib/task.js",
             "js/lib/connect.js",
             "js/cfg/config.js",
             "js/cfg/data.js",

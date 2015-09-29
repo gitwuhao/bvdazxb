@@ -1,8 +1,8 @@
 (function(global, undefined) {
 
-// 韩都衣舍韩版2015秋装新款女装破洞宽松背带裤牛仔裤LZ4102烎
-// https://detail.tmall.com/item.htm?spm=686.1000924.0.0.ZCOva6&id=43855851787
-// https://detail.tmall.com/item.htm?spm=686.1000924.0.0.SgQ5tq&id=520491439885
+    // 韩都衣舍韩版2015秋装新款女装破洞宽松背带裤牛仔裤LZ4102烎
+    // https://detail.tmall.com/item.htm?spm=686.1000924.0.0.ZCOva6&id=43855851787
+    // https://detail.tmall.com/item.htm?spm=686.1000924.0.0.SgQ5tq&id=520491439885
     var color_key = '1627207';
     var size_key = '20509';
     var size_type = '27013';
@@ -312,21 +312,46 @@
             var array = [];
 
 
-            util.each($('.size-type [name=sizeGroupType]'), function(i, radio) {
-                if (radio.value.indexOf(size_type) > -1 || radio.parentElement.innerText.indexOf(size_type_text) > -1) {
-                    var f = (function(r) {
-                        return function() {
-                            r.checked = true;
-                            E.dispatch(r, "click");
-                            r.checked = true;
-                        };
-                    })(radio);
-                    array.push(f);
-                    return false;
+            // util.each($('.size-type [name=sizeGroupType]'), function(i, radio) {
+            //     if (radio.value.indexOf(size_type) > -1 || radio.parentElement.innerText.indexOf(size_type_text) > -1) {
+            //         var f = (function(r) {
+            //             return function() {
+            //                 r.checked = true;
+            //                 E.dispatch(r, "click");
+            //                 r.checked = true;
+            //             };
+            //         })(radio);
+            //         array.push(f);
+            //         return false;
+            //     }
+            // });
+            var skuSizeValues = skuMap[size_key].values,
+                sizeArray = [];
+
+            util.each(skuSizeValues, function(i, item) {
+                if (/^\s?(S|M|L)\s?$/i.test(item.text)) {
+                    sizeArray.push(item);
                 }
             });
-            util.each(["28314", "28315", "28316"], function(i, id) {
-                var $checkbox = $('#prop_' + size_key + '-' + id);
+
+
+            var J_SizePannel_id = $('#prop_' + size_key + '-' + sizeArray[0].id).closest('.size-pannel').attr('id');
+
+            var $sizeCheckbox = $('#J_SellProperties [value=' + J_SizePannel_id.replace('J_SizePannel_', '') + ']');
+
+            var radio = $sizeCheckbox[0];
+
+            array.push((function(r) {
+                return function() {
+                    r.checked = true;
+                    E.dispatch(r, "click");
+                    r.checked = true;
+                };
+            })(radio));
+
+
+            util.each(sizeArray, function(i, item) {
+                var $checkbox = $('#prop_' + size_key + '-' + item.id);
                 if ($checkbox[0]) {
                     var f = (function($c) {
                         return function() {
@@ -341,8 +366,10 @@
 
 
 
-            var colorItem = skuMap[color_key];
+            var colorItem = skuMap[color_key],
+                noFindColorMap = {};
             if (colorItem) {
+                var noFindArray = [];
                 util.each(colorItem.values, function(i, item) {
                     var $checkbox = $('#prop_' + color_key + '-' + item.id);
                     if ($checkbox[0]) {
@@ -354,6 +381,28 @@
                                 E.dispatch($c[0], "click");
                             };
                         })($checkbox);
+                        array.push(f);
+                    } else {
+                        noFindArray.push(item);
+                    }
+                });
+
+
+                util.each(noFindArray, function(i, item) {
+                    var index = '-' + (i + 1);
+                    noFindColorMap[item.id] = index;
+                    var propKey = color_key + '-' + index;
+                    var $checkbox = $('#prop_' + propKey);
+                    var $text = $('#J_note_' + propKey);
+                    if ($checkbox[0]) {
+                        var f = (function($c, $t, it) {
+                            return function() {
+                                E.dispatch($c[0], "click");
+                                // E.dispatch($t[0], "focus");
+                                $t.val(it.text);
+                                E.dispatch($t[0], "blur");
+                            };
+                        })($checkbox, $text, item);
                         array.push(f);
                     }
                 });
@@ -375,16 +424,18 @@
                 mArray = pvs.match(REG_COLOR) || [];
                 if (mArray[1]) {
                     color_value = mArray[1];
+                    if (noFindColorMap[color_value]) {
+                        color_value = noFindColorMap[color_value];
+                    }
                 }
                 var fieldKey = color_key + '-' + color_value + '_' + size_key + '-' + size_value;
-
-
 
                 array.push((function(i, fKey) {
                     return function() {
                         var $text = $('#J_SkuField_price_' + fKey);
-                        $text.focus();
+                        // $text.focus();
                         $text.val(i.price);
+                        E.dispatch($text[0], "blur");
                     };
                 })(item, fieldKey));
 
@@ -392,7 +443,7 @@
                 array.push((function(i, fKey) {
                     return function() {
                         var $text = $('#J_SkuField_quantity_' + fKey);
-                        $text.focus();
+                        // $text.focus();
                         var quantity = i.quantity;
                         if (quantity > 10) {
                             quantity = 10;
@@ -400,6 +451,7 @@
                             quantity = 0;
                         }
                         $text.val(quantity);
+                        E.dispatch($text[0], "blur");
                     };
                 })(item, fieldKey));
 

@@ -24,6 +24,31 @@
             oEvent = document.createEvent(eventType);
             if (eventType == 'HTMLEvents') {
                 oEvent.initEvent(eventName, options.bubbles, options.cancelable);
+
+            } else if (eventType == 'KeyboardEvent') {
+
+                var keyCode = options.keyCode;
+
+                // Chromium Hack
+                Object.defineProperty(oEvent, 'keyCode', {
+                    get: function() {
+                        return this.keyCodeVal;
+                    }
+                });
+                Object.defineProperty(oEvent, 'which', {
+                    get: function() {
+                        return this.keyCodeVal;
+                    }
+                });
+
+                if (oEvent.initKeyboardEvent) {
+                    oEvent.initKeyboardEvent(eventName, true, true, document.defaultView, false, false, false, false, keyCode, keyCode);
+                } else {
+                    oEvent.initKeyEvent(eventName, true, true, document.defaultView, false, false, false, false, keyCode, 0);
+                }
+
+                oEvent.keyCodeVal = keyCode;
+
             } else {
                 oEvent.initMouseEvent(eventName, options.bubbles, options.cancelable, document.defaultView,
                     options.button, options.pointerX, options.pointerY, options.pointerX, options.pointerY,
@@ -40,6 +65,8 @@
         return element;
     };
 
+
+
     function dispatchOtherEvent(element, eventName) {
         var oEvent = new Event(eventName);
         element.dispatchEvent(oEvent);
@@ -53,7 +80,8 @@
 
     var eventMatchers = {
         'HTMLEvents': /^(?:load|unload|abort|error|select|change|submit|reset|focus|blur|resize|scroll)$/,
-        'MouseEvents': /^(?:click|dblclick|mouse(?:down|up|over|move|out))$/
+        'MouseEvents': /^(?:click|dblclick|mouse(?:down|up|over|move|out))$/,
+        'KeyboardEvent': /^(?:key(?:down|up|press))$/,
     };
     var defaultOptions = {
         pointerX: 0,
