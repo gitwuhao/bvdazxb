@@ -282,6 +282,7 @@
             }, 1000);
 
             setTimeout(function() {
+                me.client.send('publishError');
                 me.goSell();
             }, 50 * 1000);
         },

@@ -58,7 +58,14 @@
                 tabId: tab.id
             });
         }
+        chrome.tabs.executeScript(tab.id, {
+            code: "window.alert=function(){}",
+            runAt: "document_start"
+        }, function() {
+
+        });
     });
+
 
 
     classjs({

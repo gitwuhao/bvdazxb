@@ -42,6 +42,9 @@
                         });
                     } else if (this.is(request, 'publish')) {
                         callback(me.doPublish(id));
+                    } else if (this.is(request, 'publishError')) {
+                        callback(me.doPublishError(id));
+
                     }
                 }
             });
@@ -142,6 +145,15 @@
                 itemId = this.activeItem.id;
             }
             this.itemData.index = this.itemIdMapIndex[itemId] + 1;
+            this.uploadData();
+        },
+        doPublishError: function(itemId) {
+            if (!itemId) {
+                itemId = this.activeItem.id;
+            }
+            var index = this.itemIdMapIndex[itemId];
+            this.itemData.list[index].isError = true;
+            this.itemData.index = index + 1;
             this.uploadData();
         },
         uploadData: function() {
