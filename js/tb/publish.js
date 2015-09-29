@@ -9,6 +9,7 @@
     var size_type_text = '中国码';
     var REG_COLOR = new RegExp(color_key + ':(\\d+)');
     var REG_SIZE = new RegExp(size_key + ':(\\d+)');
+    var REG_MATCH_SIZE = /\s?([^X]S|[^X]M|[^X]L)\s?/i;
 
     var metaData = {
         brand: {
@@ -186,7 +187,7 @@
                     if (parseFloat(sku.price) > parseFloat(promotion.price)) {
                         sku.price = promotion.price;
                         sku.priceType = promotion.type;
-                        sku.names = "  " + sku.names;
+                        sku.names = "  " + sku.names + " ";
                         // sku.colorId = pvs.match(/20509:(\d+)/);
                         // sku.sizeId = pvs.match(/20509:(\d+)/);
                         itemData.price = sku.price;
@@ -197,7 +198,7 @@
             var html = [];
             util.each(array, function(i, sku) {
                 var sizeClass;
-                var array = sku.names.match(/\s?([^X]S|[^X]M|[^X]L)\s?/i);
+                var array = sku.names.match(REG_MATCH_SIZE);
                 if (array && array[1]) {
                     sizeClass = array[1].toLowerCase() + '-size';
                 } else {
@@ -268,6 +269,11 @@
             this.initSKUValues();
 
         },
+        initValuesFinish: function() {
+            setTimeout(function() {
+                E.dispatch($('#event_submit_do_publish')[0], "click");
+            }, 1000);
+        },
         initProperty: function() {
             var me = this;
             this.client.send('getProperty', {
@@ -306,52 +312,79 @@
             var skuMap = {};
 
             util.each(skuArray, function(i, item) {
+                var text = item.text;
+                if (text.indexOf('尺寸') > -1) {
+                    size_key = item.id;
+                    REG_SIZE = new RegExp(size_key + ':(\\d+)');
+                } else if (text.indexOf('颜色') > -1) {
+                    color_key = item.id;
+                    REG_COLOR = new RegExp(color_key + ':(\\d+)');
+                }
                 skuMap[item.id] = item;
             });
 
             var array = [];
 
 
-            // util.each($('.size-type [name=sizeGroupType]'), function(i, radio) {
-            //     if (radio.value.indexOf(size_type) > -1 || radio.parentElement.innerText.indexOf(size_type_text) > -1) {
-            //         var f = (function(r) {
-            //             return function() {
-            //                 r.checked = true;
-            //                 E.dispatch(r, "click");
-            //                 r.checked = true;
-            //             };
-            //         })(radio);
-            //         array.push(f);
-            //         return false;
-            //     }
-            // });
             var skuSizeValues = skuMap[size_key].values,
-                sizeArray = [];
+                sizeArray = [],
+                oldSizeMap = {},
+                dataSizeMap = {};
 
             util.each(skuSizeValues, function(i, item) {
-                if (/^\s?(S|M|L)\s?$/i.test(item.text)) {
+                var v = (" " + item.text + " ").match(REG_MATCH_SIZE);
+                if (v && v[1]) {
+                    var skey = $.trim(v[1]);
                     sizeArray.push(item);
+                    dataSizeMap[skey] = item.id;
                 }
             });
 
 
             var J_SizePannel_id = $('#prop_' + size_key + '-' + sizeArray[0].id).closest('.size-pannel').attr('id');
+            if (J_SizePannel_id) {
+                var $sizeCheckbox = $('#J_SellProperties [value=' + J_SizePannel_id.replace('J_SizePannel_', '') + ']');
+                var radio = $sizeCheckbox[0];
 
-            var $sizeCheckbox = $('#J_SellProperties [value=' + J_SizePannel_id.replace('J_SizePannel_', '') + ']');
+                array.push((function(r) {
+                    return function() {
+                        r.checked = true;
+                        E.dispatch(r, "click");
+                        r.checked = true;
+                    };
+                })(radio));
+            } else {
+                util.each($('.size-type [name=sizeGroupType]'), function(i, radio) {
+                    if (radio.value.indexOf(size_type) > -1 || radio.parentElement.innerText.indexOf(size_type_text) > -1) {
+                        $('#J_SizePannel_' + radio.value).children().each(function(i, item) {
+                            var vs = (" " + item.innerText + " ").match(/\s?([^X]S|[^X]M|[^X]L)\s?/i);
+                            if (vs && vs[1]) {
+                                var val = $(item).children(":checkbox:first").val();
+                                var skey = $.trim(vs[1]);
+                                oldSizeMap[dataSizeMap[skey]] = val.split(":")[1];
+                            }
+                        });
 
-            var radio = $sizeCheckbox[0];
+                        array.push((function(r) {
+                            return function() {
+                                r.checked = true;
+                                E.dispatch(r, "click");
+                                r.checked = true;
+                            };
+                        })(radio));
+                        return false;
+                    }
+                });
+            }
 
-            array.push((function(r) {
-                return function() {
-                    r.checked = true;
-                    E.dispatch(r, "click");
-                    r.checked = true;
-                };
-            })(radio));
 
 
             util.each(sizeArray, function(i, item) {
-                var $checkbox = $('#prop_' + size_key + '-' + item.id);
+                var sizeId = item.id;
+                if (oldSizeMap[sizeId]) {
+                    sizeId = oldSizeMap[sizeId];
+                }
+                var $checkbox = $('#prop_' + size_key + '-' + sizeId);
                 if ($checkbox[0]) {
                     var f = (function($c) {
                         return function() {
@@ -375,9 +408,6 @@
                     if ($checkbox[0]) {
                         var f = (function($c) {
                             return function() {
-                                // $c[0].checked = true;
-                                // E.dispatch($c[0], "change");
-                                // $c[0].checked = true;
                                 E.dispatch($c[0], "click");
                             };
                         })($checkbox);
@@ -420,6 +450,9 @@
                 mArray = pvs.match(REG_SIZE) || [];
                 if (mArray[1]) {
                     size_value = mArray[1];
+                    if (oldSizeMap[size_value]) {
+                        size_value = oldSizeMap[size_value];
+                    }
                 }
                 mArray = pvs.match(REG_COLOR) || [];
                 if (mArray[1]) {
@@ -428,14 +461,16 @@
                         color_value = noFindColorMap[color_value];
                     }
                 }
+
                 var fieldKey = color_key + '-' + color_value + '_' + size_key + '-' + size_value;
 
                 array.push((function(i, fKey) {
                     return function() {
                         var $text = $('#J_SkuField_price_' + fKey);
-                        // $text.focus();
-                        $text.val(i.price);
-                        E.dispatch($text[0], "blur");
+                        if ($text[0]) {
+                            $text.val(i.price);
+                            E.dispatch($text[0], "blur");
+                        }
                     };
                 })(item, fieldKey));
 
@@ -443,21 +478,22 @@
                 array.push((function(i, fKey) {
                     return function() {
                         var $text = $('#J_SkuField_quantity_' + fKey);
-                        // $text.focus();
-                        var quantity = i.quantity;
-                        if (quantity > 10) {
-                            quantity = 10;
-                        } else {
-                            quantity = 0;
+                        if ($text[0]) {
+                            var quantity = i.quantity;
+                            if (quantity > 10) {
+                                quantity = 10;
+                            } else {
+                                quantity = 0;
+                            }
+                            $text.val(quantity);
+                            E.dispatch($text[0], "blur");
                         }
-                        $text.val(quantity);
-                        E.dispatch($text[0], "blur");
                     };
                 })(item, fieldKey));
 
             });
 
-            array.push(this.setSKUValuesAfter.bind(this));
+            array.push(this.checkQualification.bind(this));
 
 
             new util.task({
@@ -468,44 +504,15 @@
                 }
             });
         },
-        setSKUValuesAfter: function() {
+        checkQualification: function() {
             var $item_qualification_check = $('#J_module-property [name=item_qualification_check]:first');
             $item_qualification_check.attr('checked', false);
             $item_qualification_check.val('false');
             if ($item_qualification_check.val() != 'false') {
-                setTimeout(this.setSKUValuesAfter.bind(this), 500);
+                setTimeout(this.checkQualification.bind(this), 500);
+            } else {
+                this.initValuesFinish();
             }
-        },
-        setSKUValues: function() {
-            var data = this.itemData;
-
-            util.each(data.list, function(i, item) {
-                var pvs = item.pvs,
-                    array,
-                    color_value,
-                    size_value;
-                //"-1:-1;20509:28314;1627207:28320"
-                array = pvs.match(REG_SIZE) || [];
-                if (array[1]) {
-                    size_value = array[1];
-                }
-                array = pvs.match(REG_COLOR) || [];
-                if (array[1]) {
-                    color_value = array[1];
-                }
-                var fieldKey = color_key + '-' + color_value + '_' + size_key + '-' + size_value;
-
-                $('#J_SkuField_price_' + fieldKey).val(item.price);
-
-                var quantity = item.quantity;
-                if (quantity > 10) {
-                    quantity = 10;
-                } else {
-                    quantity = 0;
-                }
-                $('#J_SkuField_quantity_' + fieldKey).val(quantity);
-            });
-
         },
         selectedOption: function(option, text) {
             var select = option.parentElement;
