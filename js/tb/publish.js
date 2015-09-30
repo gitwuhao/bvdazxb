@@ -344,8 +344,11 @@
             this.$attrUL.html(html.join(''));
 
             this.$propertyForm = $('#J_module-property');
+
             this.initSelectValues();
+
             this.initCheckBoxValues();
+
         },
         initSKUValues: function() {
 
@@ -579,21 +582,37 @@
         initSelectValues: function() {
             var propMap = this.propMap;
             var me = this;
+            var array = [];
             $('.J_spu-property select').each(function(i, select) {
                 var $li = $(select).closest('.J_spu-property');
-                var $label = $li.find('.label-title:first');
-                var key = $.trim($label.text().replace('：', ''));
-                var value = propMap[key];
-                if (!value) {
-                    value = '其他';
-                    $li.addClass('no-find-property');
-                }
-                util.each($li.find('option'), function(m, option) {
-                    if (me.selectedOption(option, value)) {
-                        delete propMap[key];
-                        return false;
+
+                E.dispatch($li.find('.kui-dropdown-trigger:first')[0], "click");
+
+                array.push(function() {
+                    var $label = $li.find('.label-title:first');
+                    var key = $.trim($label.text().replace('：', ''));
+                    var value = propMap[key];
+                    if (!value) {
+                        value = '其他';
+                        $li.addClass('no-find-property');
                     }
+                    util.each($li.find('option'), function(m, option) {
+                        if (me.selectedOption(option, value)) {
+                            delete propMap[key];
+                            return false;
+                        }
+                    });
                 });
+            });
+
+
+
+            new util.task({
+                array: array,
+                timeout: 500,
+                handle: function(task) {
+                    task();
+                }
             });
         },
         initCheckBoxValues: function() {
