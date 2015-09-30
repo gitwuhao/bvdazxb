@@ -15,13 +15,18 @@
         },
         doClientInitDone: function() {
             var me = this;
-            this.client.send('getItem', {}, function(data) {
-                me.execute(data);
+            this.client.send('getItem', {}, function(item) {
+                me.execute(item);
             });
         },
-        execute: function(data) {
+        execute: function(item) {
+
+            this.categoryId = item.mainData.detail.itemDO.categoryId;
+
+
             var array = [];
-            var key = data.key;
+            var key = item.key;
+            var me = this;
             var $keyword = $('#J_SearchKeyWord');
 
 
@@ -29,7 +34,6 @@
                 E.dispatch($keyword[0], "focus");
                 $keyword.val(key);
             });
-
 
             array.push(function() {
                 E.dispatch($keyword[0], "blur");
@@ -39,31 +43,29 @@
                 E.dispatch($('#J_SearchButton')[0], "click");
             });
 
-
             array.push(this.checkSelected.bind(this));
-
-
 
             new util.task({
                 array: array,
-                timeout: 500,
+                timeout: 1000,
                 handle: function(task) {
                     task();
                 }
             });
 
         },
+        checkCount: 0,
         checkSelected: function() {
-            var $selected = $('#J_SearchResult .selected:first');
-            if ($selected[0]) {
-                E.dispatch($selected[0], "dblclick");
-                setTimeout(function() {
-                    window.location.reload();
-                }, 50 * 1000);
-            } else {
-                setTimeout(this.checkSelected.bind(this), 1000);
+            this.checkCount++;
+            var $li = $('#J_SearchResult [data-sid=' + this.categoryId + ']:first');
+            if ($li[0]) {
+                E.dispatch($li[0], "dblclick");
             }
-
+            if (this.checkCount > 5) {
+                this.client.send('publishError');
+                return;
+            }
+            setTimeout(this.checkSelected.bind(this), 5 * 1000);
         }
     });
 

@@ -299,11 +299,25 @@
             var propMap = {};
             var html = [];
             util.rec(data.model.list, function(i, pro) {
-                if (util.isString(pro.v)) {
-                    propMap[pro.k] = pro.v;
-                    html.push('<li>', pro.k, ' ： ', pro.v, '</li>');
-                } else if (util.isArray(pro.v)) {
-                    return pro.v;
+                var key = pro.k,
+                    value = pro.v;
+                if (util.isString(value)) {
+                    propMap[key] = value;
+                    html.push('<li>', key, ' ： ', value, '</li>');
+                    if (key == '上市年份季节') {
+                        var array = value.split('年');
+                        if (array) {
+                            if (array[0]) {
+                                propMap['上市时间'] = array[0] + '年';
+                            }
+                            if (array[1]) {
+                                propMap['适用季节'] = array[1];
+                            }
+                        }
+                        propMap['年份季节'] = value;
+                    }
+                } else if (util.isArray(value)) {
+                    return value;
                 }
             });
             this.propMap = propMap;
@@ -330,7 +344,7 @@
 
             util.each(skuArray, function(i, item) {
                 var text = item.text;
-                if (text.indexOf('尺寸') > -1) {
+                if (text.indexOf('尺寸') > -1 || text.indexOf('尺码') > -1) {
                     size_key = item.id;
                     REG_SIZE = new RegExp(size_key + ':(\\d+)');
                 } else if (text.indexOf('颜色') > -1) {
@@ -530,7 +544,7 @@
                 this.qualificationIndex++;
                 setTimeout(this.checkQualification.bind(this), 500);
             } else {
-                // this.initValuesFinish();
+                this.initValuesFinish();
             }
         },
         selectedOption: function(option, text) {

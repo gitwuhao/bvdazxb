@@ -21,7 +21,12 @@
                 onMessage: function(request, sender, callback) {
                     var id = request.id;
                     if (this.is(request, 'getItem')) {
-                        callback(me.getItem(id));
+                        var activeItem = me.getItem(id);
+                        cfg.data.getDetail(activeItem.id, function(data) {
+                            activeItem.mainData = data;
+                            callback(activeItem);
+                        });
+
                     } else if (this.is(request, 'getAttrUL')) {
                         cfg.data.getAttrUL(id, function(html) {
                             callback({
@@ -34,14 +39,12 @@
                             callback();
                             return;
                         }
-                        cfg.data.getDetail(id, function(data) {
-
-                            data.h5DescUrls = me.h5DescImageMap[id].urls;
-                            data.pcDescUrls = me.pcDescImageMap[id].urls;
-                            data.mainImageUrls = me.mainImageMap[id].urls;
-                            data.shop = me.shop;
-                            callback(data);
-                        });
+                        var data = me.activeItem.mainData;
+                        data.h5DescUrls = me.h5DescImageMap[id].urls;
+                        data.pcDescUrls = me.pcDescImageMap[id].urls;
+                        data.mainImageUrls = me.mainImageMap[id].urls;
+                        data.shop = me.shop;
+                        callback(data);
                     } else if (this.is(request, 'getProperty')) {
                         cfg.data.getProperty(id, function(data) {
                             callback(data);
@@ -143,8 +146,12 @@
                 item = data.list[data.index];
             }
             item.type = shop.name;
-            this.activeItem = item;
-            return util.merger({}, item);
+
+            var activeItem = util.merger({}, item);
+
+            this.activeItem = activeItem;
+
+            return activeItem;
         },
         doPublish: function(itemId) {
             if (!itemId) {
