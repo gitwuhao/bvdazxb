@@ -45,6 +45,10 @@
                 window.location.href = "https://upload.taobao.com/auction/sell.jhtml";
             }, 3 * 1000);
         },
+        doPublishError: function() {
+            this.client.send('publishError');
+            this.goSell();
+        },
         doClientInitDone: function() {
             var me = this;
             var isPublishItemSuccess = window.location.href.indexOf('publishItemSuccess.htm') > -1;
@@ -173,6 +177,7 @@
 
             this.itemData = itemData;
             var skuMap = {},
+                maxStock = -1,
                 colorMap = {},
                 sizeMap = {},
                 array = itemData.list,
@@ -181,10 +186,25 @@
 
             util.each(valItemInfo.skuList, function(i, sku) {
                 skuMap[sku.skuId] = sku;
-                sku.quantity = skuQuantity[sku.skuId].quantity;
+                var quantity = skuQuantity[sku.skuId].quantity;
+                sku.quantity = quantity;
+                var stock = 0;
+                if (quantity > 10) {
+                    stock = 10;
+                }
+                if (maxStock < stock) {
+                    maxStock = stock;
+                }
+                sku.stock = stock;
                 sku.price = itemData.price;
                 array.push(sku);
             });
+
+            //没有库存了
+            if (maxStock <= 0) {
+                this.doPublishError();
+                return;
+            }
 
             util.it(mdskip.defaultModel.itemPriceResultDO.priceInfo, function(key, priceInfo) {
                 var sku = skuMap[key];
@@ -282,8 +302,7 @@
             }, 1000);
 
             setTimeout(function() {
-                me.client.send('publishError');
-                me.goSell();
+                me.doPublishError();
             }, 50 * 1000);
         },
         initProperty: function() {
@@ -510,13 +529,7 @@
                     return function() {
                         var $text = $('#J_SkuField_quantity_' + fKey);
                         if ($text[0]) {
-                            var quantity = i.quantity;
-                            if (quantity > 10) {
-                                quantity = 10;
-                            } else {
-                                quantity = 0;
-                            }
-                            $text.val(quantity);
+                            $text.val(i.stock);
                             E.dispatch($text[0], "blur");
                         }
                     };
