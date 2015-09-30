@@ -58,12 +58,12 @@
                 tabId: tab.id
             });
         }
-        chrome.tabs.executeScript(tab.id, {
-            file: "js/lib/s.js",
-            runAt: "document_start"
-        }, function() {
+        // chrome.tabs.executeScript(tab.id, {
+        //     file: "js/lib/s.js",
+        //     runAt: "document_start"
+        // }, function() {
 
-        });
+        // });
     });
 
 

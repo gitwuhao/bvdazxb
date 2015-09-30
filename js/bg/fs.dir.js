@@ -28,6 +28,7 @@
         doLoadDirMap: function(data) {
             this.itemDirMap = data;
             this.initEvent();
+            console.warn('wait client connect,open http://tadget.taobao.com/redaction/manager.htm#isImage ...');
         }
     });
 
