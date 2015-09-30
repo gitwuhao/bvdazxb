@@ -563,11 +563,16 @@
         selectedOption: function(option, text) {
             var select = option.parentElement;
             var value = option.value;
-            if (option.innerText == text) {
-                $('#simulate-' + select.id).val(text);
+            if (option.innerText.indexOf(text) > -1) {
+                text = option.innerText;
+                var $text = $('#simulate-' + select.id);
                 $(select).html(['<option value="', value, '">', text, '</option>'].join(''));
                 E.dispatch(select, "change");
                 E.dispatch(select, "click");
+
+                E.dispatch($text[0], "focus");
+                $text.val(text);
+                E.dispatch($text[0], "blur");
                 return true;
             }
         },
@@ -579,16 +584,16 @@
                 var $label = $li.find('.label-title:first');
                 var key = $.trim($label.text().replace('：', ''));
                 var value = propMap[key];
-                if (value) {
-                    util.each($li.find('option'), function(m, option) {
-                        if (me.selectedOption(option, value)) {
-                            delete propMap[key];
-                            return false;
-                        }
-                    });
-                } else {
+                if (!value) {
+                    value = '其他';
                     $li.addClass('no-find-property');
                 }
+                util.each($li.find('option'), function(m, option) {
+                    if (me.selectedOption(option, value)) {
+                        delete propMap[key];
+                        return false;
+                    }
+                });
             });
         },
         initCheckBoxValues: function() {
