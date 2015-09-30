@@ -87,11 +87,16 @@
         doAttrULHTML: function(itemId, html, handle) {
             var fsHTML = new util.html(html);
             var ul = fsHTML.getById('J_AttrUL');
-            var html = util.html.decodeHTML(ul.outerHTML);
+            if (ul) {
+                html = util.html.decodeHTML(ul.outerHTML);
+            } else {
+                html = "--->>>获取不到参数列表<<<---";
+            }
             if (handle) {
                 handle(html);
             }
             return html;
+
         },
         getDetailHTML: function(itemId, handle) {
             var me = this;

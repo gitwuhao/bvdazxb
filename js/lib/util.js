@@ -32,6 +32,22 @@
         }
     };
 
+
+    function recursive(array, handle, scope) {
+        if (!array || !handle) {
+            return;
+        }
+        each(array, function(i, item) {
+            if (scope == null) {
+                scope = item;
+            }
+            var result = handle.call(scope, i, item, array);
+            if (result === false || (isArray(result) && recursive(result, handle, scope) === false)) {
+                return false;
+            }
+        });
+    };
+
     function iterator(array, handle, scope) {
         if (!array || !handle) {
             return;
@@ -145,6 +161,7 @@
     apply(util, {
         each: each,
         it: iterator,
+        rec: recursive,
         iterator: iterator,
         merger: merger,
         apply: apply,
@@ -154,7 +171,8 @@
         isObject: isObject,
         isDate: isDate,
         isFunction: isFunction,
-        isObject: isObject
+        isObject: isObject,
+        isString: isString
     });
 
 })(window);

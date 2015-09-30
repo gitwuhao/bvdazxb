@@ -74,12 +74,6 @@
             var me = this;
             var id = this.activeItem.id;
 
-            this.client.send('getAttrUL', {
-                id: id
-            }, function(data) {
-                me.$attrUL.html(data.html);
-            });
-
             this.client.send('getDetail', {
                 id: id
             }, function(data) {
@@ -301,16 +295,21 @@
             });
         },
         doInitProperty: function(data) {
-
             this.property = data;
             var propMap = {};
-
-            util.each(data.model.list, function(i, item) {
-                util.each(item.v, function(n, pro) {
+            var html = [];
+            util.rec(data.model.list, function(i, pro) {
+                if (util.isString(pro.v)) {
                     propMap[pro.k] = pro.v;
-                });
+                    html.push('<li>', pro.k, ' ： ', pro.v, '</li>');
+                } else if (util.isArray(pro.v)) {
+                    return pro.v;
+                }
             });
             this.propMap = propMap;
+
+            this.$attrUL.html(html.join(''));
+
             this.$propertyForm = $('#J_module-property');
             this.initSelectValues();
             this.initCheckBoxValues();
@@ -531,7 +530,7 @@
                 this.qualificationIndex++;
                 setTimeout(this.checkQualification.bind(this), 500);
             } else {
-                this.initValuesFinish();
+                // this.initValuesFinish();
             }
         },
         selectedOption: function(option, text) {
