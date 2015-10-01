@@ -695,7 +695,7 @@
 
             new util.task({
                 array: taskArray,
-                timeout: 500,
+                timeout: 1000,
                 handle: function(task) {
                     task();
                 }
