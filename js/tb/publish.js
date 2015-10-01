@@ -462,7 +462,7 @@
             var skuItem = this.colorSKUItem;
             util.each(skuItem.values, function(i, item) {
                 var text = $.trim(item.text);
-                item.text = text;
+                item.text = text.replace('预计','').replace('【','[').replace('】',']');
                 map[text] = item;
                 data[item.id] = item;
             });
