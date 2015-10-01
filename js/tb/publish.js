@@ -597,9 +597,13 @@
             if ($sizeProp[0]) {
                 this.initSizeSKUValues(taskArray, $sizeProp.closest('.size-pannel'));
             } else {
-                var $sizeDIY = $('#J_SellProperties .size-diy:first');
+                var $sellProperties = $('#J_SellProperties');
+                var $sizeDIY = $sellProperties.find('.size-diy:first');
+                var $sizeValue = $sellProperties.find('input[value="165/84"]:first');
                 if ($sizeDIY[0]) {
                     this.initSizeDIYValues(taskArray, $sizeDIY);
+                } else if ($sizeValue[0]) {
+                    this.convertSizeList(taskArray, $sellProperties);
                 } else {
                     console.error('no find diy size...');
                     return;
@@ -640,31 +644,34 @@
                 values: sizeMap
             };
         },
-        convertSizeList: function(taskArray) {
-            var sizeId = 0;
-            var sizeMap = {
+        convertSizeList: function(taskArray, $sellProperties) {
+            // debugger;
+            var sizeProperty = this.sizeProperty;
+            var sizeKey = sizeProperty.key;
+            var sizeMap = sizeProperty.map;
+            var sizeArray = sizeProperty.array;
+            var sizeData = sizeProperty.data;
+            var metaSizeMap = {
                 "s": "165/84",
                 "m": "170/88",
                 "l": "175/92"
             };
-            var $sellPropert = $('#J_SellProperties');
-            util.it(sizeMap, function(key, value) {
-                var $text = $sellPropert.find('input[value=' + value + ']:first');
+            util.it(metaSizeMap, function(key, value) {
+                var $text = $sellProperties.find('input[value="' + value + '"]:first');
                 var $checkbox = $text.prevAll(':checkbox');
                 $checkbox.attr('checked', true);
                 var val = $checkbox.val();
                 var args = val.split(":");
-                sizeId = args[0];
-                sizeMap[key] = args[1];
-                $text.val(key);
+                if (args[1]) {
+                    var sizeItem = sizeMap[key];
+                    sizeItem.propId = args[1];
+                    $text.val(sizeItem.text);
+                }
             });
-            return {
-                key: sizeId,
-                values: sizeMap
-            };
+
         },
         initSkuFieldValues: function(taskArray) {
-            debugger;
+            // debugger;
             var data = this.itemData;
             var sizeProperty = this.sizeProperty;
             var sizeKey = sizeProperty.key;

@@ -38,7 +38,18 @@
                 return;
             }
 
-            this.categoryId = detail.itemDO.categoryId;
+            var item = detail.itemDO;
+            if (item.title.match(/鞋|靴|背包|女包|男包|皮带/)) {
+                this.doPublishError();
+                return;
+            }
+            var itemData = {
+                title: item.title,
+                itemId: item.itemId,
+                price: item.reservePrice,
+                list: []
+            };
+            this.categoryId = item.categoryId;
 
 
             var array = [];

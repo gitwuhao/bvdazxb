@@ -191,7 +191,7 @@
         }
     });
 
-    // fs.data.init();
+    fs.data.init();
 
 
 })(window);
