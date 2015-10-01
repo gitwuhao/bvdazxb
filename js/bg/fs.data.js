@@ -161,8 +161,7 @@
             }
             this.itemData.index = this.itemIdMapIndex[itemId] + 1;
             this.uploadData();
-
-            console.error('meta item data index:' + data.index);
+            console.warn('meta item data index:' + this.itemData.index);
         },
         doPublishError: function(itemId) {
             if (!itemId) {
