@@ -529,22 +529,22 @@
             var sizeArray = sizeProperty.array;
             var sizeData = sizeProperty.data;
 
+            var $sellProperties = $('#J_SellProperties');
+            var $sizeDIY = $sellProperties.find('.size-diy:first');
+            var $sizeValue = $sellProperties.find('input[value="165/84"]:first');
+
             var $sizeProp = $('#prop_' + sizeKey + '-' + sizeArray[0].id);
-            if ($sizeProp[0]) {
+            if ($sizeDIY[0]) {
+                this.initSizeDIYValues(taskArray, $sizeDIY);
+            } else if ($sizeProp[0]) {
                 this.initSizeSKUValues(taskArray, $sizeProp.closest('.size-pannel'));
+            } else if ($sizeValue[0]) {
+                this.convertSizeList(taskArray, $sellProperties);
             } else {
-                var $sellProperties = $('#J_SellProperties');
-                var $sizeDIY = $sellProperties.find('.size-diy:first');
-                var $sizeValue = $sellProperties.find('input[value="165/84"]:first');
-                if ($sizeDIY[0]) {
-                    this.initSizeDIYValues(taskArray, $sizeDIY);
-                } else if ($sizeValue[0]) {
-                    this.convertSizeList(taskArray, $sellProperties);
-                } else {
-                    console.error('no find diy size...');
-                    return;
-                }
+                console.error('no find diy size...');
+                return;
             }
+
         },
         convertSizeGroupType: function(taskArray, $sizeGroupType) {
             var sizeProperty = this.sizeProperty;
