@@ -445,14 +445,18 @@
             util.each(sizeArray, function(i, item) {
                 var index = '-' + (i + 1);
                 item.propId = index;
-                taskArray.push(function() {
-                    // debugger;
-                    var $checkbox = $sizeDIY.find('[value="' + sizeKey + ':' + index + '"]:first');
-                    var $text = $checkbox.nextAll(':text');
-                    E.dispatch($checkbox[0], "click");
-                    $text.val(item.text);
-                    E.dispatch($text[0], "blur");
-                });
+                taskArray.push((function(sKey, i, item) {
+                    return function() {
+                        // debugger;
+                        setTimeout(function() {
+                            var $checkbox = $sizeDIY.find('[value="' + sKey + ':' + i + '"]:first');
+                            var $text = $checkbox.nextAll(':text');
+                            E.dispatch($checkbox[0], "click");
+                            $text.val(item.text);
+                            E.dispatch($text[0], "blur");
+                        }, 1000);
+                    };
+                })(sizeKey, index, item));
             });
 
         },
@@ -462,7 +466,7 @@
             var skuItem = this.colorSKUItem;
             util.each(skuItem.values, function(i, item) {
                 var text = $.trim(item.text);
-                item.text = text.replace('预计','').replace('【','[').replace('】',']');
+                item.text = text.replace('预计', '').replace('【', '[').replace('】', ']');
                 map[text] = item;
                 data[item.id] = item;
             });
@@ -600,8 +604,10 @@
                 var args = val.split(":");
                 if (args[1]) {
                     var sizeItem = sizeMap[key];
-                    sizeItem.propId = args[1];
-                    $text.val(sizeItem.text);
+                    if (sizeItem) {
+                        sizeItem.propId = args[1];
+                        $text.val(sizeItem.text);
+                    }
                 }
             });
 
@@ -684,9 +690,9 @@
             });
             // this.skuMap = skuMap;
 
-            this.initSizeValues(taskArray);
-
             this.initColorValues(taskArray);
+
+            this.initSizeValues(taskArray);
 
             this.initSkuFieldValues(taskArray);
 
@@ -695,7 +701,7 @@
 
             new util.task({
                 array: taskArray,
-                timeout: 1000,
+                timeout: 3000,
                 handle: function(task) {
                     task();
                 }
@@ -762,28 +768,30 @@
 
             $('.J_spu-property select').each(function(i, select) {
                 var $li = $(select).closest('.J_spu-property');
+                var $trigger = $li.find('.kui-dropdown-trigger:first');
+                if ($trigger[0]) {
 
+                    E.dispatch($trigger[0], "click");
 
-                E.dispatch($li.find('.kui-dropdown-trigger:first')[0], "click");
-
-                // array.push(function() {
-                var $label = $li.find('.label-title:first');
-                var key = $.trim($label.text().replace('：', ''));
-                var value = propMap[key];
-                if (!value) {
-                    value = me.otherOptionText;
-                    $li.addClass('no-find-property');
-                    var mv = select.id.match(/(\d+)/);
-                    if (mv && mv[1]) {
-                        me.otherOptionMap[mv[1]] = select;
+                    // array.push(function() {
+                    var $label = $li.find('.label-title:first');
+                    var key = $.trim($label.text().replace('：', ''));
+                    var value = propMap[key];
+                    if (!value) {
+                        value = me.otherOptionText;
+                        $li.addClass('no-find-property');
+                        var mv = select.id.match(/(\d+)/);
+                        if (mv && mv[1]) {
+                            me.otherOptionMap[mv[1]] = select;
+                        }
                     }
+                    util.each($li.find('option'), function(m, option) {
+                        if (me.selectedOption(option, value)) {
+                            delete propMap[key];
+                            return false;
+                        }
+                    });
                 }
-                util.each($li.find('option'), function(m, option) {
-                    if (me.selectedOption(option, value)) {
-                        delete propMap[key];
-                        return false;
-                    }
-                });
                 // });
             });
 

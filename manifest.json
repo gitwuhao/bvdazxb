@@ -93,7 +93,7 @@
             "js/cfg/data.js",
             "js/tb/auction_list.js"
         ],
-        "matches": ["http://sell.taobao.com/auction/merchandise/auction_list.htm?type=1*", "https://sell.taobao.com/auction/merchandise/auction_list.htm?type=1*"],
+        "matches": ["http://sell.taobao.com/auction/merchandise/auction_list.htm*", "https://sell.taobao.com/auction/merchandise/auction_list.htm*"],
         "run_at": "document_start"
     }, {
         "js": [
