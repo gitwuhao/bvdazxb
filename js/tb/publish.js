@@ -66,11 +66,14 @@
             if (itemId) {
                 this.isEdit = true;
             }
+
             this.client.send('getItem', {
                 id: itemId
             }, function(item) {
                 me.activeItem = item;
-                me.initDetailInfo();
+                setTimeout(function() {
+                    me.initDetailInfo();
+                }, 10 * 1000);
             });
         },
         initDetailInfo: function() {
@@ -320,7 +323,7 @@
             var me = this;
             setTimeout(function() {
                 E.dispatch($('#event_submit_do_publish')[0], "click");
-            }, 1000);
+            }, 5000);
 
             setTimeout(function() {
                 me.doPublishError();
@@ -701,7 +704,7 @@
 
             new util.task({
                 array: taskArray,
-                timeout: 3000,
+                timeout: 1500,
                 handle: function(task) {
                     task();
                 }
