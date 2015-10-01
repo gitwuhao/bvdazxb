@@ -569,10 +569,10 @@
             util.each(noFindArray, function(i, item) {
                 var index = '-' + (i + 1);
                 item.propId = index;
+                var propKey = color_key + '-' + index;
+                var $checkbox = $('#prop_' + propKey);
                 if ($checkbox[0]) {
                     taskArray.push(function() {
-                        var propKey = color_key + '-' + index;
-                        var $checkbox = $('#prop_' + propKey);
                         var $text = $('#J_note_' + propKey);
                         E.dispatch($checkbox[0], "click");
                         // E.dispatch($t[0], "focus");
