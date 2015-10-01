@@ -36,7 +36,9 @@
                     } else if (this.is(request, 'getDetail')) {
                         if (!me.h5DescImageMap[id] || !me.pcDescImageMap[id] || !me.mainImageMap[id]) {
                             me.doPublishError(id);
-                            callback();
+                            callback({
+                                isError: true
+                            });
                             return;
                         }
                         var data = me.activeItem.mainData;
@@ -132,7 +134,7 @@
                     me.mainImageMap = JSON.parse(data);
                 },
                 error: function() {
-                    console.error('node server no start up...')
+                    console.error('node server no start up...');
                 }
             });
         },
@@ -159,6 +161,8 @@
             }
             this.itemData.index = this.itemIdMapIndex[itemId] + 1;
             this.uploadData();
+
+            console.error('meta item data index:' + data.index);
         },
         doPublishError: function(itemId) {
             if (!itemId) {
@@ -187,7 +191,7 @@
         }
     });
 
-    fs.data.init();
+    // fs.data.init();
 
 
 })(window);

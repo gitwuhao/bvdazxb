@@ -15,17 +15,34 @@
         },
         doClientInitDone: function() {
             var me = this;
-            this.client.send('getItem', {}, function(item) {
-                me.execute(item);
+            this.client.send('getItem', {}, function(data) {
+                me.execute(data);
             });
         },
-        execute: function(item) {
+        doPublishError: function() {
+            this.client.send('publishError');
+            this.goSell();
+        },
+        goSell: function() {
+            setTimeout(function() {
+                window.location.reload();
+            }, 3 * 1000);
+        },
+        execute: function(data) {
+            var mainData = data.mainData;
+            var detail = mainData.detail;
+            var mdskip = mainData.mdskip;
 
-            this.categoryId = item.mainData.detail.itemDO.categoryId;
+            if (!mdskip.defaultModel) {
+                this.doPublishError();
+                return;
+            }
+
+            this.categoryId = detail.itemDO.categoryId;
 
 
             var array = [];
-            var key = item.key;
+            var key = data.key;
             var me = this;
             var $keyword = $('#J_SearchKeyWord');
 
@@ -62,7 +79,7 @@
                 E.dispatch($li[0], "dblclick");
             }
             if (this.checkCount > 5) {
-                this.client.send('publishError');
+                this.doPublishError();
                 return;
             }
             setTimeout(this.checkSelected.bind(this), 5 * 1000);

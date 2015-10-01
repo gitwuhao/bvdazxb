@@ -85,7 +85,7 @@
             this.client.send('getDetail', {
                 id: id
             }, function(data) {
-                if (!data) {
+                if (data.isError) {
                     me.goSell();
                 } else {
                     me.doDetailData(data);
@@ -135,6 +135,8 @@
                 '<button class="publish fs-btn">发布</button>',
                 '<button class="publishError fs-btn">报错</button>',
                 '<button class="stoprun fs-btn">停止</button>',
+                '<button class="color-value fs-btn">颜色属性</button>',
+                '<button class="size-value fs-btn">尺寸属性</button>',
                 '</div>'
             ];
             $(document.body).append(html.join(''));
@@ -182,6 +184,7 @@
             var shop = data.shop;
             if (!mdskip.defaultModel) {
                 this.doPublishError();
+                console.error('找不到商品...');
                 return;
             }
 
@@ -368,66 +371,7 @@
             this.initCheckBoxValues();
 
         },
-        initDIYSizeValues: function(taskArray, sizeSKUItem, $sizeDIY) {
-            // var $sizeDIY = $('#J_SellProperties .size-diy:first');
-            var values = sizeSKUItem.values,
-                sizeId = sizeSKUItem.id,
-                sizeMap = {},
-                sizeDIYArray = [];
-            util.each(values, function(i, item) {
-                var v = (" " + item.text + " ").match(REG_MATCH_SIZE);
-                if (v && v[1]) {
-                    var sKey = $.trim(v[1]).toLowerCase();
-                    sizeMap[sKey] = item;
-                    item.sKey = sKey;
-                    sizeDIYArray.push(item);
-                }
-            });
-
-            util.it(sizeDIYArray, function(i, item) {
-                var index = '-' + (i + 1);
-                var $checkbox = $sizeDIY.find('[value=' + sizeId + ':', +index + , ']:first');
-                var $text = $checkbox.next(':text');
-                if ($checkbox[0]) {
-                    var f = (function($c, $t, it) {
-                        return function() {
-                            E.dispatch($c[0], "click");
-                            $t.val(it.text);
-                            E.dispatch($t[0], "blur");
-                        };
-                    })($checkbox, $text, item);
-                    taskArray.push(f);
-                }
-            });
-
-            sizeSKUItem.map = sizeMap;
-
-        },
-        initSKUValues: function() {
-            var skuArray = this.mainData.detail.valItemInfo.skuName;
-            $('#sku-color-tab-contents .color-list').show();
-            // $('.size-content:first .size-pannel').show();
-
-            var skuMap = {},
-                sizeSKUItem,
-                colorSKUItem;
-
-            util.each(skuArray, function(i, item) {
-                var text = item.text;
-                if (text.indexOf('尺寸') > -1 || text.indexOf('尺码') > -1) {
-                    size_key = item.id;
-                    REG_SIZE = new RegExp(size_key + ':(\\d+)');
-                    sizeSKUItem = item;
-                } else if (text.indexOf('颜色') > -1) {
-                    color_key = item.id;
-                    REG_COLOR = new RegExp(color_key + ':(\\d+)');
-                    colorSKUItem = item;
-                }
-                skuMap[item.id] = item;
-            });
-
-            var array = [];
-
+        otherSizexx: function() {
 
             var skuSizeValues = skuMap[size_key].values,
                 sizeArray = [],
@@ -490,14 +434,57 @@
                 return false;
             }
 
+        },
+        initSizeProperty: function() {
+            var map = {};
+            var data = {};
+            var array = [];
+            var skuItem = this.sizeSKUItem;
+            util.each(skuItem.values, function(i, item) {
+                var v = (" " + item.text + " ").match(REG_MATCH_SIZE);
+                if (v && v[1]) {
+                    var sKey = $.trim(v[1]).toLowerCase();
+                    item.sKey = sKey;
+                    map[sKey] = item;
+                    array.push(item);
+                    data[item.id] = item;
+                }
+            });
+
+            this.sizeProperty = {
+                key: skuItem.id,
+                map: map,
+                array: array,
+                data: data
+            }
+
+            return this.sizeProperty;
+        },
+        initSizeSKUValues: function(taskArray, $sizePannel) {
+            // debugger;
+            var sizeProperty = this.sizeProperty;
+            var sizeKey = sizeProperty.key;
+            var sizeMap = sizeProperty.map;
+            var sizeArray = sizeProperty.array;
+            var sizeData = sizeProperty.data;
+
+            var sizePannel_id = $sizePannel.attr('id');
+            var $sizeCheckbox = $('#J_SellProperties [value=' + sizePannel_id.replace('J_SizePannel_', '') + ']');
+            var radio = $sizeCheckbox[0];
+
+            taskArray.push((function(r) {
+                return function() {
+                    r.checked = true;
+                    E.dispatch(r, "click");
+                    r.checked = true;
+                };
+            })(radio));
 
 
             util.each(sizeArray, function(i, item) {
                 var sizeId = item.id;
-                if (oldSizeMap[sizeId]) {
-                    sizeId = oldSizeMap[sizeId];
-                }
-                var $checkbox = $('#prop_' + size_key + '-' + sizeId);
+                item.propId = sizeId;
+                var $checkbox = $('#prop_' + sizeKey + '-' + sizeId);
                 if ($checkbox[0]) {
                     var f = (function($c) {
                         return function() {
@@ -506,121 +493,128 @@
                             $c[0].checked = true;
                         };
                     })($checkbox);
-                    array.push(f);
+                    taskArray.push(f);
                 }
             });
 
+        },
+        initSizeDIYValues: function(taskArray, $sizeDIY) {
+            // debugger;
+            var sizeProperty = this.sizeProperty;
+            var sizeKey = sizeProperty.key;
+            var sizeMap = sizeProperty.map;
+            var sizeArray = sizeProperty.array;
+            var sizeData = sizeProperty.data;
 
-
-            var colorItem = skuMap[color_key],
-                noFindColorMap = {};
-            if (colorItem) {
-                var noFindArray = [];
-                util.each(colorItem.values, function(i, item) {
-                    var $checkbox = $('#prop_' + color_key + '-' + item.id);
-                    if ($checkbox[0]) {
-                        var f = (function($c) {
-                            return function() {
-                                E.dispatch($c[0], "click");
-                            };
-                        })($checkbox);
-                        array.push(f);
-                    } else {
-                        noFindArray.push(item);
-                    }
+            util.each(sizeArray, function(i, item) {
+                var index = '-' + (i + 1);
+                item.propId = index;
+                taskArray.push(function() {
+                    // debugger;
+                    var $checkbox = $sizeDIY.find('[value="' + sizeKey + ':' + index + '"]:first');
+                    var $text = $checkbox.nextAll(':text');
+                    E.dispatch($checkbox[0], "click");
+                    $text.val(item.text);
+                    E.dispatch($text[0], "blur");
                 });
+            });
 
+        },
+        initColorProperty: function() {
+            var map = {};
+            var data = {};
+            var skuItem = this.colorSKUItem;
+            util.each(skuItem.values, function(i, item) {
+                var text = $.trim(item.text);
+                item.text = text;
+                map[text] = item;
+                data[item.id] = item;
+            });
 
-                util.each(noFindArray, function(i, item) {
-                    var index = '-' + (i + 1);
-                    noFindColorMap[item.id] = index;
-                    var propKey = color_key + '-' + index;
-                    var $checkbox = $('#prop_' + propKey);
-                    var $text = $('#J_note_' + propKey);
-                    if ($checkbox[0]) {
-                        var f = (function($c, $t, it) {
-                            return function() {
-                                E.dispatch($c[0], "click");
-                                // E.dispatch($t[0], "focus");
-                                $t.val(it.text);
-                                E.dispatch($t[0], "blur");
-                            };
-                        })($checkbox, $text, item);
-                        array.push(f);
-                    }
-                });
+            this.colorProperty = {
+                key: skuItem.id,
+                map: map,
+                array: skuItem.values,
+                data: data
             }
 
+            return this.colorProperty;
+        },
+        initColorValues: function(taskArray) {
+            // debugger;
 
-            var data = this.itemData;
+            this.initColorProperty();
 
-            util.each(data.list, function(i, item) {
-                var pvs = item.pvs,
-                    mArray,
-                    color_value,
-                    size_value;
-                //"-1:-1;20509:28314;1627207:28320"
-                mArray = pvs.match(REG_SIZE) || [];
-                if (mArray[1]) {
-                    size_value = mArray[1];
-                    if (oldSizeMap[size_value]) {
-                        size_value = oldSizeMap[size_value];
-                    }
+            var colorProperty = this.colorProperty;
+            var colorKey = colorProperty.key;
+            var colorMap = colorProperty.map;
+            var colorArray = colorProperty.array;
+            var colorData = colorProperty.data;
+            var noFindArray = [];
+
+            $('#sku-color-tab-contents .color-list').show();
+
+            util.each(colorArray, function(i, item) {
+                item.propId = item.id;
+                var $checkbox = $('#prop_' + color_key + '-' + item.id);
+                if ($checkbox[0]) {
+                    taskArray.push(function() {
+                        E.dispatch($checkbox[0], "click");
+                    });
+                } else {
+                    noFindArray.push(item);
                 }
-                mArray = pvs.match(REG_COLOR) || [];
-                if (mArray[1]) {
-                    color_value = mArray[1];
-                    if (noFindColorMap[color_value]) {
-                        color_value = noFindColorMap[color_value];
-                    }
-                }
-
-                var fieldKey = color_key + '-' + color_value + '_' + size_key + '-' + size_value;
-
-                array.push((function(i, fKey) {
-                    return function() {
-                        var $text = $('#J_SkuField_price_' + fKey);
-                        if ($text[0]) {
-                            $text.val(i.price);
-                            E.dispatch($text[0], "blur");
-                        }
-                    };
-                })(item, fieldKey));
-
-
-                array.push((function(i, fKey) {
-                    return function() {
-                        var $text = $('#J_SkuField_quantity_' + fKey);
-                        if ($text[0]) {
-                            $text.val(i.stock);
-                            E.dispatch($text[0], "blur");
-                        }
-                    };
-                })(item, fieldKey));
-
             });
 
-            array.push(this.checkQualification.bind(this));
-
-
-            new util.task({
-                array: array,
-                timeout: 500,
-                handle: function(task) {
-                    task();
+            util.each(noFindArray, function(i, item) {
+                var index = '-' + (i + 1);
+                item.propId = index;
+                if ($checkbox[0]) {
+                    taskArray.push(function() {
+                        var propKey = color_key + '-' + index;
+                        var $checkbox = $('#prop_' + propKey);
+                        var $text = $('#J_note_' + propKey);
+                        E.dispatch($checkbox[0], "click");
+                        // E.dispatch($t[0], "focus");
+                        $text.val(item.text);
+                        E.dispatch($text[0], "blur");
+                    });
                 }
             });
         },
-        convertSizeGroupType: function(taskArray) {
-            var sizeId = 0;
-            var sizeMap = {
-                "s": "",
-                "m": "",
-                "l": ""
-            };
+        initSizeValues: function(taskArray) {
+            // $('.size-content:first .size-pannel').show();
+
+            this.initSizeProperty();
+
+            var sizeProperty = this.sizeProperty;
+            var sizeKey = sizeProperty.key;
+            var sizeMap = sizeProperty.map;
+            var sizeArray = sizeProperty.array;
+            var sizeData = sizeProperty.data;
+
+            var $sizeProp = $('#prop_' + sizeKey + '-' + sizeArray[0].id);
+            if ($sizeProp[0]) {
+                this.initSizeSKUValues(taskArray, $sizeProp.closest('.size-pannel'));
+            } else {
+                var $sizeDIY = $('#J_SellProperties .size-diy:first');
+                if ($sizeDIY[0]) {
+                    this.initSizeDIYValues(taskArray, $sizeDIY);
+                } else {
+                    console.error('no find diy size...');
+                    return;
+                }
+            }
+        },
+        convertSizeGroupType: function(taskArray, $sizeGroupType) {
+            var sizeProperty = this.sizeProperty;
+            var sizeKey = sizeProperty.key;
+            var sizeMap = sizeProperty.map;
+            var sizeArray = sizeProperty.array;
+
             // var $sellPropert = $('#J_SellProperties');
-            util.each($('#J_SellProperties [name=sizeGroupType]'), function(i, radio) {
-                if (radio.value.indexOf(size_type) > -1 || radio.parentElement.innerText.indexOf(size_type_text) > -1) {
+            util.each($sizeGroupType, function(i, radio) {
+                if (radio.value.indexOf(sizeKey) > -1 || radio.parentElement.innerText.indexOf(size_type_text) > -1) {
                     $('#J_SizePannel_' + radio.value).children().each(function(i, item) {
                         var vs = (" " + item.innerText + " ").match(/\s?([^X]S|[^X]M|[^X]L)\s?/i);
                         if (vs && vs[1]) {
@@ -656,7 +650,7 @@
             var $sellPropert = $('#J_SellProperties');
             util.it(sizeMap, function(key, value) {
                 var $text = $sellPropert.find('input[value=' + value + ']:first');
-                var $checkbox = $text.prev(':checkbox');
+                var $checkbox = $text.prevAll(':checkbox');
                 $checkbox.attr('checked', true);
                 var val = $checkbox.val();
                 var args = val.split(":");
@@ -668,6 +662,101 @@
                 key: sizeId,
                 values: sizeMap
             };
+        },
+        initSkuFieldValues: function(taskArray) {
+            debugger;
+            var data = this.itemData;
+            var sizeProperty = this.sizeProperty;
+            var sizeKey = sizeProperty.key;
+            var sizeMap = sizeProperty.map;
+            var sizeData = sizeProperty.data;
+
+
+
+            var colorProperty = this.colorProperty;
+            var colorKey = colorProperty.key;
+            var colorMap = colorProperty.map;
+            var colorData = colorProperty.data;
+
+            util.each(data.list, function(i, item) {
+                var pvs = item.pvs,
+                    mArray,
+                    color_value,
+                    size_value;
+                //"-1:-1;20509:28314;1627207:28320"
+                mArray = pvs.match(REG_SIZE) || [];
+                if (mArray[1]) {
+                    var sizeItem = sizeData[mArray[1]] || {};
+                    size_value = sizeItem.propId;
+                }
+                mArray = pvs.match(REG_COLOR) || [];
+                if (mArray[1]) {
+                    var colorItem = colorData[mArray[1]] || {};
+                    color_value = colorItem.propId;
+                }
+                if (size_value && color_value) {
+                    var fieldKey = color_key + '-' + color_value + '_' + size_key + '-' + size_value;
+                    taskArray.push((function(i, fKey) {
+                        return function() {
+                            var $text = $('#J_SkuField_price_' + fKey);
+                            if ($text[0]) {
+                                $text.val(i.price);
+                                E.dispatch($text[0], "blur");
+                            }
+                        };
+                    })(item, fieldKey));
+
+
+                    taskArray.push((function(i, fKey) {
+                        return function() {
+                            var $text = $('#J_SkuField_quantity_' + fKey);
+                            if ($text[0]) {
+                                $text.val(i.stock);
+                                E.dispatch($text[0], "blur");
+                            }
+                        };
+                    })(item, fieldKey));
+                }
+
+            });
+        },
+        initSKUValues: function() {
+            var me = this,
+                taskArray = [],
+                // skuMap = {},
+                skuArray = this.mainData.detail.valItemInfo.skuName;
+
+            util.each(skuArray, function(i, item) {
+                var text = item.text;
+                if (text.indexOf('尺寸') > -1 || text.indexOf('尺码') > -1) {
+                    size_key = item.id;
+                    REG_SIZE = new RegExp(size_key + ':(\\d+)');
+                    me.sizeSKUItem = item;
+                } else if (text.indexOf('颜色') > -1) {
+                    color_key = item.id;
+                    REG_COLOR = new RegExp(color_key + ':(\\d+)');
+                    me.colorSKUItem = item;
+                }
+                // skuMap[item.id] = item;
+            });
+            // this.skuMap = skuMap;
+
+            this.initSizeValues(taskArray);
+
+            this.initColorValues(taskArray);
+
+            this.initSkuFieldValues(taskArray);
+
+            taskArray.push(this.checkQualification.bind(this));
+
+
+            new util.task({
+                array: taskArray,
+                timeout: 500,
+                handle: function(task) {
+                    task();
+                }
+            });
         },
         qualificationIndex: 0,
         checkQualification: function() {
