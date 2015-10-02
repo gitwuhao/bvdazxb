@@ -36,7 +36,7 @@
                     array: array,
                     timeout: 0,
                     autoRun: true,
-                    execute: function(src) {
+                    handle: function(src) {
                         var index = this.index;
                         var dir_id = this.dir_id;
                         var format = 'jpg';

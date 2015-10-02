@@ -101,9 +101,14 @@
                 console.error("no item job...");
                 return null;
             }
-            return util.merger({}, item, {
+
+            var activeItem = util.merger({}, item, {
                 type: shop.name
             });
+
+            this.activeItem = activeItem;
+
+            return activeItem;
         },
         uploadJobData: function() {
             $.ajax({

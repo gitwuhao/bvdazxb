@@ -142,6 +142,12 @@
                 me.doDetailMainImageArray(html, handle);
             });
         },
+        getSkuPics: function(itemId, handle) {
+            var me = this;
+            this.getDetail(itemId, function(data) {
+                handle(data.detail);
+            });
+        },
         getURL: function(url) {
             return url.replace(/^(\/\/)/, 'http://');
         },

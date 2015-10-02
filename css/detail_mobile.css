@@ -48,7 +48,7 @@ img {
     overflow: hidden;
 }
 
-.pages>p>img {
+.pages img{
     width: 100%
 }
 
