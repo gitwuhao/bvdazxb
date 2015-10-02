@@ -6,6 +6,7 @@
         singleton: true,
         shops: config.shops,
         shop: config.shops[0],
+        jobIndex: 1,
         type: 'default',
         init: function() {
             this.initData();
@@ -201,7 +202,7 @@
                 type: 'POST',
                 url: config.urls.upload,
                 data: {
-                    filename: shop.id + '_job_data.json',
+                    filename: shop.id + '_job_data' + this.jobIndex + '.json',
                     data: JSON.stringify(data)
                 },
                 success: function() {},

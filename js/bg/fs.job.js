@@ -34,7 +34,7 @@
             this.loadJob();
         },
         getJobDataFileName: function() {
-            return this.shop.id + '_' + this.task_type + '_' + this.data_type + '.json';
+            return this.shop.id + '_' + this.task_type + '_' + this.data_type + '_' + fs.data.jobIndex + '.json';
         },
         loadJob: function() {
             var me = this;
@@ -56,7 +56,7 @@
             $.ajax({
                 type: 'POST',
                 async: false,
-                url: config.urls.data + this.shop.id + '_job_data.json',
+                url: config.urls.data + this.shop.id + '_job_data' + fs.data.jobIndex + '.json',
                 dataType: 'text',
                 success: function(data) {
                     data = JSON.parse(data);
@@ -131,10 +131,10 @@
                 error: function() {}
             });
             this.uploadJobData();
-            console.info('>>upload job' + new Date().formatDateTime() + '...');
+            console.warn('>>upload job meta item data index:' + this.itemData.index);
         },
         getJobFileName: function() {
-            return this.shop.id + '_' + this.task_type + '_job_' + this.data_type + '.json';
+            return this.shop.id + '_' + this.task_type + '_job_' + fs.data.jobIndex + '_' + this.data_type + '.json';
         }
     });
 

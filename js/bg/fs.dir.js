@@ -10,7 +10,7 @@
             this.callSuper();
         },
         getDirMapFileName: function() {
-            return this.shop.id + '_dir_' + this.data_type + '.json';
+            return this.shop.id + '_dir_' + this.data_type + '_' + fs.data.jobIndex + '.json';
         },
         loadDirMap: function() {
             var me = this;
