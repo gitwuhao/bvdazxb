@@ -56,7 +56,7 @@
             $.ajax({
                 type: 'POST',
                 async: false,
-                url: config.urls.data + this.shop.id + '_default.json',
+                url: config.urls.data + this.shop.id + '_job_data.json',
                 dataType: 'text',
                 success: function(data) {
                     data = JSON.parse(data);

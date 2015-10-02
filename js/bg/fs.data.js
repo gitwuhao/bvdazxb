@@ -5,7 +5,7 @@
         extendEvent: true,
         singleton: true,
         shops: config.shops,
-        shop: config.shops[1],
+        shop: config.shops[0],
         type: 'default',
         init: function() {
             this.initData();
@@ -185,8 +185,26 @@
                 error: function() {}
             });
         },
-        getPCDescHTML: function(itemId, handel) {
-
+        uploadNewJobData: function(index) {
+            if (index == undefined) {
+                index = this.itemData.index;
+            }
+            var list = this.itemData.list.slice(index, index + 200);
+            var data = {
+                index: 0,
+                list: list
+            };
+            var shop = this.shop;
+            $.ajax({
+                type: 'POST',
+                url: config.urls.upload,
+                data: {
+                    filename: shop.id + '_job_data.json',
+                    data: JSON.stringify(data)
+                },
+                success: function() {},
+                error: function() {}
+            });
         }
     });
 

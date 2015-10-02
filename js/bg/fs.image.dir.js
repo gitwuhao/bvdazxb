@@ -21,6 +21,7 @@
                     }
                 }
             });
+            console.warn('wait client connect,open http://tadget.taobao.com/redaction/manager.htm#isImage ...');
         },
         doCreateDir: function() {
             var item = this.getItem();
@@ -38,7 +39,7 @@
             var item = this.metaItemMap[request.itemId];
             item.dir_id = request.id;
             this.uploadJob(item.id);
-            setTimeout(this.doCreateDir.bind(this),  1000);
+            setTimeout(this.doCreateDir.bind(this), 1000);
         }
     });
 
