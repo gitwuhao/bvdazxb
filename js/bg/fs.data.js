@@ -191,6 +191,8 @@
             }
             var list = this.itemData.list.slice(index, index + 200);
             var data = {
+                start: index,
+                end: index + list.length,
                 index: 0,
                 list: list
             };
