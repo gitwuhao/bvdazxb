@@ -35,7 +35,9 @@
 
             return this.sizeProperty;
         },
-        initSizeSKUValues: function(taskArray, $sizePannel) {
+        initSizeSKUValues: function(taskArray, $sizeProp) {
+
+
             // debugger;
             var sizeProperty = this.sizeProperty;
             var sizeKey = sizeProperty.key;
@@ -43,17 +45,21 @@
             var sizeArray = sizeProperty.array;
             var sizeData = sizeProperty.data;
 
-            var sizePannel_id = $sizePannel.attr('id');
-            var $sizeCheckbox = $('#J_SellProperties [value=' + sizePannel_id.replace('J_SizePannel_', '') + ']');
-            var radio = $sizeCheckbox[0];
 
-            taskArray.push((function(r) {
-                return function() {
-                    r.checked = true;
-                    E.dispatch(r, "click");
-                    r.checked = true;
-                };
-            })(radio));
+            var $sizePannel = $sizeProp.closest('.size-pannel');
+            var sizePannel_id = $sizePannel.attr('id');
+            if (sizePannel_id) {
+                var $sizeCheckbox = $('#J_SellProperties [value=' + sizePannel_id.replace('J_SizePannel_', '') + ']');
+                var radio = $sizeCheckbox[0];
+
+                taskArray.push((function(r) {
+                    return function() {
+                        r.checked = true;
+                        E.dispatch(r, "click");
+                        r.checked = true;
+                    };
+                })(radio));
+            }
 
 
             util.each(sizeArray, function(i, item) {
@@ -113,10 +119,9 @@
             var $sellProperties = $('#J_SellProperties');
             var $sizeDIY = $sellProperties.find('.size-diy:first');
             var $sizeValue = $sellProperties.find('input[value="165/84"]:first');
-
             var $sizeProp = $('#prop_' + sizeKey + '-' + sizeArray[0].id);
             if ($sizeProp[0]) {
-                this.initSizeSKUValues(taskArray, $sizeProp.closest('.size-pannel'));
+                this.initSizeSKUValues(taskArray, $sizeProp);
             } else if ($sizeDIY[0]) {
                 this.initSizeDIYValues(taskArray, $sizeDIY);
             } else if ($sizeValue[0]) {
