@@ -30,8 +30,8 @@
         },
         execute: function(data) {
             var mainData = data.mainData;
-            var detail = mainData.detail;
-            var mdskip = mainData.mdskip;
+            var detail = mainData.detail || {};
+            var mdskip = mainData.mdskip || {};
 
             if (!mdskip.defaultModel) {
                 this.doPublishError();

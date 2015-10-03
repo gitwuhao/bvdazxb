@@ -54,7 +54,7 @@
                             }, function() {
 
                             });
-                            setTimeout(task.complete.bind(task, src), 1 * 1000);
+                            // setTimeout(task.complete.bind(task, src), 1 * 1000);
                         }, format);
                     },
                     finish: function() {

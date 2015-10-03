@@ -73,7 +73,7 @@
                         }, function() {
 
                         });
-                        setTimeout(task.complete.bind(task, sku), 1 * 1000);
+                        // setTimeout(task.complete.bind(task, sku), 1 * 1000);
                     }, format);
                 },
                 finish: function() {
@@ -98,6 +98,7 @@
             var item = this.metaItemMap[request.itemId];
             item.skuPics = item.skuPics || {};
             item.skuPics[request.index] = request.url;
+            this.task.next();
         }
     });
 

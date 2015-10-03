@@ -1,5 +1,5 @@
 (function(global, undefined) {
-    var protocol = 'http:';
+    var protocol = 'https:';
     if (window.location.protocol.match(/chrome\-extension:/i)) {
 
     } else if (window.location && window.location.protocol) {
