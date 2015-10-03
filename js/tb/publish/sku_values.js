@@ -16,6 +16,8 @@
             var colorMap = colorProperty.map;
             var colorData = colorProperty.data;
 
+
+
             util.each(data.list, function(i, item) {
                 var pvs = item.pvs,
                     mArray,

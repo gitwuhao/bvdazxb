@@ -1,10 +1,7 @@
 (function(global, undefined) {
 
-    var color_key = '1627207';
-    var REG_COLOR = new RegExp(color_key + ':(\\d+)');
 
     util.merger(tb.publish, {
-        REG_COLOR: REG_COLOR,
         initColorProperty: function() {
             var map = {};
             var data = {};
@@ -15,6 +12,8 @@
                 map[text] = item;
                 data[item.id] = item;
             });
+
+            this.REG_COLOR = new RegExp(skuItem.id + ':(\\d+)');
 
             this.colorProperty = {
                 key: skuItem.id,
@@ -41,7 +40,7 @@
 
             util.each(colorArray, function(i, item) {
                 item.propId = item.id;
-                var $checkbox = $('#prop_' + color_key + '-' + item.id);
+                var $checkbox = $('#prop_' + colorKey + '-' + item.id);
                 if ($checkbox[0]) {
                     taskArray.push(function() {
                         E.dispatch($checkbox[0], "click");
@@ -54,7 +53,7 @@
             util.each(noFindArray, function(i, item) {
                 var index = '-' + (i + 1);
                 item.propId = index;
-                var propKey = color_key + '-' + index;
+                var propKey = colorKey + '-' + index;
                 var $checkbox = $('#prop_' + propKey);
                 if ($checkbox[0]) {
                     taskArray.push(function() {

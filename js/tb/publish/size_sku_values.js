@@ -1,13 +1,8 @@
 (function(global, undefined) {
 
-    var size_key = '20509';
-    var size_type = '27013';
-    var size_type_text = '中国码';
-    var REG_SIZE = new RegExp(size_key + ':(\\d+)');
     var REG_MATCH_SIZE = /\s?([^X]S|[^X]M|[^X]L)\s?/i;
 
     util.merger(tb.publish, {
-        REG_SIZE: REG_SIZE,
         REG_MATCH_SIZE: REG_MATCH_SIZE,
         initSizeProperty: function() {
             var me = this;
@@ -25,6 +20,10 @@
                     data[item.id] = item;
                 }
             });
+
+
+            this.REG_SIZE = new RegExp(skuItem.id + ':(\\d+)');
+
 
             this.sizeProperty = {
                 key: skuItem.id,
@@ -140,7 +139,7 @@
 
             // var $sellPropert = $('#J_SellProperties');
             util.each($sizeGroupType, function(i, radio) {
-                if (radio.value.indexOf(sizeKey) > -1 || radio.parentElement.innerText.indexOf(size_type_text) > -1) {
+                if (radio.value.indexOf(sizeKey) > -1 || radio.parentElement.innerText.indexOf('中国码') > -1) {
                     $('#J_SizePannel_' + radio.value).children().each(function(i, item) {
                         var vs = (" " + item.innerText + " ").match(/\s?([^X]S|[^X]M|[^X]L)\s?/i);
                         if (vs && vs[1]) {
