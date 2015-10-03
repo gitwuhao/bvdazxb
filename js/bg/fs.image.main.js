@@ -36,7 +36,7 @@
                     array: array,
                     timeout: 0,
                     autoRun: true,
-                    handle: function(src) {
+                    execute: function(src) {
                         var index = this.index;
                         var dir_id = this.dir_id;
                         var format = 'jpg';
@@ -54,6 +54,7 @@
                             }, function() {
 
                             });
+                            setTimeout(task.complete.bind(task, src), 1 * 1000);
                         }, format);
                     },
                     finish: function() {

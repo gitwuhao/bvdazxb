@@ -67,7 +67,7 @@
             $.ajax({
                 type: 'POST',
                 async: false,
-                url: config.urls.data + shop.id + '_' + this.type + '.json',
+                url: config.urls.data + shop.id + '_job_data' + this.jobIndex + '.json',
                 dataType: 'text',
                 success: function(data) {
                     me.doInitData(JSON.parse(data));
@@ -179,7 +179,7 @@
                 type: 'POST',
                 url: config.urls.upload,
                 data: {
-                    filename: shop.id + '_' + this.type + '.json',
+                    filename: shop.id + '_job_data' + this.jobIndex + '.json',
                     data: JSON.stringify(this.itemData)
                 },
                 success: function() {},

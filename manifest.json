@@ -58,10 +58,13 @@
             "js/lib/task.js",
             "js/lib/connect.js",
             "js/cfg/config.js",
-            // "js/cfg/data.js",
-            "js/tb/publish.js"
+            "js/tb/publish.js",
+            "js/tb/color_sku_values.js",
+            "js/tb/size_sku_values.js",
+            "js/tb/sku_values.js",
+            "js/tb/ready.js"
         ],
-        "matches": ["http://upload.taobao.com/auction/publish/*", "https://upload.taobao.com/auction/publish/*"],
+        "matches": ["http://upload.taobao.com/auction/publish/publish.htm*", "https://upload.taobao.com/auction/publish/publish.htm*"],
         "run_at": "document_start"
     }, {
         "js": [

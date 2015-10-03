@@ -54,14 +54,15 @@
                 array: array,
                 timeout: 0,
                 autoRun: true,
-                handle: function(task) {
+                execute: function(sku) {
                     var index = this.index;
-                    var skuId = task.skuId;
+                    var skuId = sku.skuId;
                     var dir_id = this.dir_id;
                     var format = 'jpg';
                     var activeItem = this.item;
+                    var task = this;
                     var shop_name = this.shop.name;
-                    util.image.getDataBySrc(task.src, function(data) {
+                    util.image.getDataBySrc(sku.src, function(data) {
                         me.server.request('uploadImage', {
                             dirId: dir_id,
                             data: data,
@@ -72,6 +73,7 @@
                         }, function() {
 
                         });
+                        setTimeout(task.complete.bind(task, sku), 1 * 1000);
                     }, format);
                 },
                 finish: function() {
