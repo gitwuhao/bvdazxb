@@ -1,6 +1,57 @@
 (function(global, undefined) {
 
+
+
+    var metaData = {
+        brand: {
+            'handu': {
+                key: 'HSTYLE/韩都衣舍',
+                value: '20000:8598007'
+            },
+            'amh': {
+                key: 'AMH',
+                value: '20000:4533216'
+            }
+        }
+    };
+
     util.merger(tb.publish, {
+        initPropertyValues: function() {
+            var item = this.itemData;
+            var activeItem = this.activeItem;
+
+            $('#prop_13021751').val(activeItem.key);
+
+            var brand = metaData.brand[activeItem.type];
+            var $p20000 = $('#simulate-prop_20000');
+            $p20000.focus();
+            $p20000.val(brand.key);
+
+            var $select = $('#prop_20000');
+            $select.html(['<option value="', brand.value, '">', brand.key, '</option>'].join(''));
+            E.dispatch($select[0], "change");
+            E.dispatch($select[0], "click");
+
+            $('#simulate-prop_13328588').val('');
+
+
+            $('#TitleID').val(item.title);
+            $('#buynow').val(item.price);
+            $('#quantityId').val(10);
+            $('#outerIdId').val(item.itemId);
+
+            $('#J_Internal').attr('checked', true);
+
+            var $inStock = $('#inStock');
+            $inStock.attr('checked', true);
+            E.dispatch($inStock[0], "click");
+            $inStock.attr('checked', true);
+
+            this.initSKUProperty();
+
+            this.initSKUValues();
+
+        },
         initSKUProperty: function() {
             var me = this;
             this.client.send('getProperty', {

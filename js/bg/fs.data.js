@@ -13,6 +13,7 @@
             this.initPCDescImageData();
             this.initH5DescImageData();
             this.initMainImageData();
+            this.initSkuPicsData();
             this.initEvent();
         },
         initEvent: function() {
@@ -46,6 +47,7 @@
                         data.h5DescUrls = me.h5DescImageMap[id].urls;
                         data.pcDescUrls = me.pcDescImageMap[id].urls;
                         data.mainImageUrls = me.mainImageMap[id].urls;
+                        data.skuPicsUrls = me.skuPicsMap[id].skuPics;
                         data.shop = me.shop;
                         callback(data);
                     } else if (this.is(request, 'getProperty')) {
@@ -89,7 +91,7 @@
             this.itemIdMapIndex = map;
         },
         getDataURL: function(shop, dataType, type) {
-            return config.urls.data + shop.id + '_' + dataType + '_' + shop.name + '_' + type + '.json';
+            return config.urls.data + shop.id + '_' + dataType + '_' + shop.name + '_' + type + '_' + this.jobIndex + '.json';
         },
         initPCDescImageData: function() {
             var me = this;
@@ -133,6 +135,22 @@
                 dataType: 'text',
                 success: function(data) {
                     me.mainImageMap = JSON.parse(data);
+                },
+                error: function() {
+                    console.error('node server no start up...');
+                }
+            });
+        },
+        initSkuPicsData: function() {
+            var me = this;
+            var shop = this.shop;
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: this.getDataURL(shop, 'sku', 'pc'),
+                dataType: 'text',
+                success: function(data) {
+                    me.skuPicsMap = JSON.parse(data);
                 },
                 error: function() {
                     console.error('node server no start up...');

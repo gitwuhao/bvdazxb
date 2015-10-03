@@ -1,7 +1,7 @@
 (function(global, undefined) {
 
 
-
+//publishItemSuccess
 
     classjs({
         className: 'tb.plugin',

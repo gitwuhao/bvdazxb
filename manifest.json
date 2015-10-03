@@ -58,13 +58,33 @@
             "js/lib/task.js",
             "js/lib/connect.js",
             "js/cfg/config.js",
-            "js/tb/publish.js",
-            "js/tb/color_sku_values.js",
-            "js/tb/size_sku_values.js",
-            "js/tb/sku_values.js",
+            "js/tb/publish/startup.js",
+            "js/tb/publish/detail_info.js",
+            "js/tb/publish/desc_images.js",
+            "js/tb/publish/sku_property.js",
+            "js/tb/publish/color_sku_values.js",
+            "js/tb/publish/size_sku_values.js",
+            "js/tb/publish/sku_values.js",
             "js/tb/ready.js"
         ],
         "matches": ["http://upload.taobao.com/auction/publish/publish.htm*", "https://upload.taobao.com/auction/publish/publish.htm*"],
+        "run_at": "document_start"
+    }, {
+        "js": [
+            "js/lib/jquery-2.1.1.js",
+            "js/lib/util.js",
+            "js/lib/E.js",
+            "js/lib/class.js",
+            "js/lib/class.event.js",
+            "js/lib/class.log.js",
+            "js/lib/html.js",
+            "js/lib/task.js",
+            "js/lib/connect.js",
+            "js/cfg/config.js",
+            "js/tb/publish/publish_success.js",
+            "js/tb/ready.js"
+        ],
+        "matches": ["http://upload.taobao.com/auction/publish/publishItemSuccess.htm*", "https://upload.taobao.com/auction/publish/publishItemSuccess.htm*"],
         "run_at": "document_start"
     }, {
         "js": [

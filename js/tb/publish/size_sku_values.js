@@ -115,10 +115,10 @@
             var $sizeValue = $sellProperties.find('input[value="165/84"]:first');
 
             var $sizeProp = $('#prop_' + sizeKey + '-' + sizeArray[0].id);
-            if ($sizeDIY[0]) {
-                this.initSizeDIYValues(taskArray, $sizeDIY);
-            } else if ($sizeProp[0]) {
+            if ($sizeProp[0]) {
                 this.initSizeSKUValues(taskArray, $sizeProp.closest('.size-pannel'));
+            } else if ($sizeDIY[0]) {
+                this.initSizeDIYValues(taskArray, $sizeDIY);
             } else if ($sizeValue[0]) {
                 this.convertSizeList(taskArray, $sellProperties);
             } else {
