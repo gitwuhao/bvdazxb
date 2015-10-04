@@ -6,7 +6,7 @@
         singleton: true,
         shops: config.shops,
         shop: config.shops[0],
-        jobIndex: 1,
+        jobIndex: 0,
         type: 'default',
         init: function() {
             this.initData();
@@ -204,11 +204,36 @@
                 error: function() {}
             });
         },
-        uploadNewJobData: function(index) {
+        createJob: function(index) {
+            var me = this;
+            this.loadJobData(function(data) {
+                me.uploadNewJobData(index, data);
+            });
+        },
+        loadJobData: function(callback) {
+            var me = this;
+            var shop = this.shop;
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: config.urls.data + shop.id + '_default.json',
+                dataType: 'text',
+                success: function(data) {
+                    callback(JSON.parse(data));
+                },
+                error: function() {
+                    console.error('node server no start up...')
+                }
+            });
+        },
+        uploadNewJobData: function(index, itemData) {
             if (index == undefined) {
-                index = this.itemData.index;
+                index = itemData.index;
             }
-            var list = this.itemData.list.slice(index, index + 200);
+            var list = itemData.list.slice(index, index + 200);
+            util.each(list, function(i, item) {
+                delete item.isError;
+            });
             var data = {
                 start: index,
                 end: index + list.length,
