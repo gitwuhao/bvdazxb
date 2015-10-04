@@ -1,5 +1,7 @@
 (function(global, undefined) {
 
+    //http://upload.taobao.com/auction/publish/edit.htm?itemNumId=522761265384&auto=false
+
     classjs({
         className: 'tb.plugin',
         singleton: true,

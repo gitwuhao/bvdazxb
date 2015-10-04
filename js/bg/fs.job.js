@@ -140,6 +140,30 @@
         },
         getJobFileName: function() {
             return this.shop.id + '_' + this.task_type + '_job_' + fs.data.jobIndex + '_' + this.data_type + '.json';
+        },
+        uploadErrorJobData: function() {
+            var list = [];
+            util.each(this.itemData.list, function(i, item) {
+                if (item.isError) {
+                    delete item.isError;
+                    list.push(item);
+                }
+            });
+            var data = {
+                index: 0,
+                list: list
+            };
+            var shop = this.shop;
+            $.ajax({
+                type: 'POST',
+                url: config.urls.upload,
+                data: {
+                    filename: this.getJobFileName(),
+                    data: JSON.stringify(data)
+                },
+                success: function() {},
+                error: function() {}
+            });
         }
     });
 

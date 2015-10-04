@@ -78,7 +78,7 @@
                 },
                 finish: function() {
                     me.uploadJob(this.item.id);
-                    me.uploadSkuPics();
+                    setTimeout(me.uploadSkuPics.bind(me), 3 * 1000);
                 }
             });
         },
@@ -86,7 +86,7 @@
             var index = this.itemIdMapIndex[itemId];
             this.itemData.list[index].isError = true;
             this.uploadJob(itemId);
-            this.uploadSkuPics();
+            setTimeout(this.uploadSkuPics.bind(this), 3 * 1000);
         },
         /*
         index: 1
@@ -98,6 +98,7 @@
             var item = this.metaItemMap[request.itemId];
             item.skuPics = item.skuPics || {};
             item.skuPics[request.index] = request.url;
+
             this.task.next();
         }
     });

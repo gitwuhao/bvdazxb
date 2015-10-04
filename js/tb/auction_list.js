@@ -9,6 +9,7 @@
 
             this.includeCSS();
             this.initButton();
+            setTimeout(this.initDataTable.bind(this), 1000);
         },
         includeCSS: function() {
             var css = config.getURL('css/tb/auction-list.css');
@@ -19,6 +20,7 @@
             var html = ['<div id="', fsboxId, '" class="fs-detail-info">',
                 '<button class="handu fs-btn">韩都</button>',
                 '<button class="amh fs-btn">amh</button>',
+                '<button class="up-shelf fs-btn">上架</button>',
                 '</div>'
             ];
             $(document.body).append(html.join(''));
@@ -31,6 +33,11 @@
             fsBox.children('.amh:first').on('click', function(event) {
                 me.doQuery('amh');
             });
+            fsBox.children('.up-shelf:first').on('click', function(event) {
+                me.doUpShelf();
+            });
+
+
         },
         doQuery: function(keyword) {
             var array = [];
@@ -50,8 +57,45 @@
                     task();
                 }
             });
+        },
+        initDataTable: function() {
+            var $table = $('#J_DataTable');
+            $('.goods-sid', $table).each(function(i, tr) {
+                var $goodsTR = $(tr);
+                var $withTR = $goodsTR.next();
+                var $auctionIdNumber = $goodsTR.find('.auctionIdNumber:first');
+                var label = $auctionIdNumber.text();
+                var auctionId = label.match(/(\d+)/)[1];
+                $auctionIdNumber.html('<a href="http://detail.tmall.com/item.htm?id=' + auctionId + '" target="_blank">' + label + '</a>');
+                var $checkbox = $goodsTR.find(':checkbox[name="selectedIds"]:first');
+
+                var goods_num = $(get('goods_num:' + $checkbox.val())).val();
+                if (goods_num == '1') {
+                    $checkbox.remove();
+                } else {
+                    $checkbox.attr('checked', true);
+                }
+            });
+
+        },
+        doUpShelf: function() {
+            var $table = $('#J_DataTable');
+
+            $('.kbutton', $table).each(function(i, button) {
+                var text = button.innerText.replace(/\s/g, '');
+                if (text == '上架') {
+                    console.info(button);
+                    // E.dispatch(button, "click");
+                    return false;
+                }
+            });
+
         }
     });
+
+    function get(eid) {
+        return document.getElementById(eid);
+    };
 
     window.addEventListener('load', function() {
         var src = config.getURL('js/lib/s.js');
