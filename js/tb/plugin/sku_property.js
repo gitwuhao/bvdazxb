@@ -206,7 +206,7 @@
 
 
 
-    tb.publish.on('detail_box_ready', function(event) {
+    tb.plugin.on('detail_box_ready', function(event) {
         this.$btnBox.append('<button class="sku-field fs-btn">sku属性</button>');
 
         this.$btnBox.children('.sku-field:first').on('click', function(event) {
@@ -218,7 +218,7 @@
 
     function run() {
         var taskArray = [];
-        tb.publish.initSkuFieldValues(taskArray);
+        tb.plugin.initSkuFieldValues(taskArray);
         new util.task({
             array: taskArray,
             timeout: 1000,

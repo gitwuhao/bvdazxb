@@ -17,8 +17,14 @@
             var colorData = colorProperty.data;
 
 
+            var maxStock = 0,
+                $lastStockField;
+
 
             util.each(data.list, function(i, item) {
+                if (item.stock > maxStock) {
+                    maxStock = item.stock;
+                }
                 taskArray.push(function() {
 
                     var pvs = item.pvs,
@@ -46,15 +52,21 @@
                         }
 
 
-                        var $text = $('#J_SkuField_quantity_' + fieldKey);
+                        $text = $('#J_SkuField_quantity_' + fieldKey);
                         if ($text[0]) {
+                            $lastStockField = $text;
                             $text.val(item.stock);
                             E.dispatch($text[0], "blur");
                         }
                     }
                 });
-
             });
+
+            if (maxStock == 0 && $lastStockField) {
+                taskArray.push(function() {
+                    $lastStockField.val(1);
+                });
+            }
         },
         initSKUValues: function() {
             var me = this,
@@ -99,7 +111,7 @@
 
 
 
-    tb.publish.on('detail_box_ready', function(event) {
+    tb.plugin.on('detail_box_ready', function(event) {
         this.$btnBox.append('<button class="sku-field fs-btn">sku属性</button>');
 
         this.$btnBox.children('.sku-field:first').on('click', function(event) {
@@ -111,7 +123,7 @@
 
     function run() {
         var taskArray = [];
-        tb.publish.initSkuFieldValues(taskArray);
+        tb.plugin.initSkuFieldValues(taskArray);
         new util.task({
             array: taskArray,
             timeout: 1000,

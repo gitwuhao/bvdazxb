@@ -1,23 +1,16 @@
 (function(global, undefined) {
 
 
-//publishItemSuccess
+    //publishItemSuccess
 
     classjs({
         className: 'tb.plugin',
-        singleton: true,
-        init: function() {
-            tb.publish.init();
-        }
-    });
-
-
-
-    classjs({
-        className: 'tb.publish',
         extendEvent: true,
         singleton: true,
         init: function() {
+            this.ready();
+        },
+        ready: function() {
             var me = this;
             this.client = new connect.client({
                 id: 'data',

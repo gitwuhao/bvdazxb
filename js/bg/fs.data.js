@@ -226,6 +226,30 @@
                 success: function() {},
                 error: function() {}
             });
+        },
+        uploadErrorJobData: function() {
+            var list = [];
+            util.each(this.itemData.list, function(i, item) {
+                if (item.isError) {
+                    delete item.isError;
+                    list.push(item);
+                }
+            });
+            var data = {
+                index: 0,
+                list: list
+            };
+            var shop = this.shop;
+            $.ajax({
+                type: 'POST',
+                url: config.urls.upload,
+                data: {
+                    filename: shop.id + '_job_data_error.json',
+                    data: JSON.stringify(data)
+                },
+                success: function() {},
+                error: function() {}
+            });
         }
     });
 

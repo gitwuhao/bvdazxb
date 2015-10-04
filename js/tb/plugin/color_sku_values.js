@@ -133,7 +133,7 @@
 
 
 
-    tb.publish.on('detail_box_ready', function(event) {
+    tb.plugin.on('detail_box_ready', function(event) {
         this.$btnBox.append('<button class="color-value fs-btn">颜色属性</button>');
 
         this.$btnBox.children('.color-value:first').on('click', function(event) {
@@ -145,7 +145,7 @@
 
     function run() {
         var taskArray = [];
-        tb.publish.initColorValues(taskArray);
+        tb.plugin.initColorValues(taskArray);
         new util.task({
             array: taskArray,
             timeout: 1000,

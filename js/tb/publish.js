@@ -1,24 +1,16 @@
 (function(global, undefined) {
 
-
-
     classjs({
         className: 'tb.plugin',
-        singleton: true,
-        init: function() {
-            setTimeout(function() {
-                tb.publish.init();
-            }, 10 * 1000);
-        }
-    });
-
-
-
-    classjs({
-        className: 'tb.publish',
         extendEvent: true,
         singleton: true,
         init: function() {
+            var me = this;
+            setTimeout(function() {
+                me.ready();
+            }, 10 * 1000);
+        },
+        ready: function() {
             var me = this;
             this.client = new connect.client({
                 id: 'data',

@@ -201,7 +201,7 @@
     });
 
 
-    tb.publish.on('detail_box_ready', function(event) {
+    tb.plugin.on('detail_box_ready', function(event) {
         this.$btnBox.append('<button class="size-value fs-btn">尺寸属性</button>');
 
         this.$btnBox.children('.size-value:first').on('click', function(event) {
@@ -213,7 +213,7 @@
 
     function run() {
         var taskArray = [];
-        tb.publish.initSizeValues(taskArray);
+        tb.plugin.initSizeValues(taskArray);
         new util.task({
             array: taskArray,
             timeout: 1000,
