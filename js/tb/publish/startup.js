@@ -85,8 +85,6 @@
                 this.initPCDescImage();
 
                 this.initMainImage();
-
-                this.initSKUPics();
             }
         },
         initValuesFinish: function() {

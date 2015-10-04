@@ -72,13 +72,12 @@
                 var args = key.match(/(\d+)/g);
                 if (args && args[1]) {
                     var item = colorData[args[1]];
-                    var $mapImg = $('#J_MapImg_1627207-' + item.propId);
+                    var $mapImg = $('#J_MapImg_'+colorKey+'-' + item.propId);
                     $mapImg.find('.J_ImgInput:first').val(url);
                     var $preview = $mapImg.find('.preview:first');
                     $preview.html('<img src="' + url + '_24x24.jpg">');
                     $preview.show();
                 }
-
             });
         }
     });

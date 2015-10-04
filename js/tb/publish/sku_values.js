@@ -19,44 +19,40 @@
 
 
             util.each(data.list, function(i, item) {
-                var pvs = item.pvs,
-                    mArray,
-                    color_value,
-                    size_value;
-                //"-1:-1;20509:28314;1627207:28320"
-                mArray = pvs.match(me.REG_SIZE) || [];
-                if (mArray[1]) {
-                    var sizeItem = sizeData[mArray[1]] || {};
-                    size_value = sizeItem.propId;
-                }
-                mArray = pvs.match(me.REG_COLOR) || [];
-                if (mArray[1]) {
-                    var colorItem = colorData[mArray[1]] || {};
-                    color_value = colorItem.propId;
-                }
-                if (size_value && color_value) {
-                    var fieldKey = color_key + '-' + color_value + '_' + size_key + '-' + size_value;
-                    taskArray.push((function(i, fKey) {
-                        return function() {
-                            var $text = $('#J_SkuField_price_' + fKey);
-                            if ($text[0]) {
-                                $text.val(i.price);
-                                E.dispatch($text[0], "blur");
-                            }
-                        };
-                    })(item, fieldKey));
+                taskArray.push(function() {
+
+                    var pvs = item.pvs,
+                        mArray,
+                        color_value,
+                        size_value;
+                    //"-1:-1;20509:28314;1627207:28320"
+                    mArray = pvs.match(me.REG_SIZE) || [];
+                    if (mArray[1]) {
+                        var sizeItem = sizeData[mArray[1]] || {};
+                        size_value = sizeItem.propId;
+                    }
+                    mArray = pvs.match(me.REG_COLOR) || [];
+                    if (mArray[1]) {
+                        var colorItem = colorData[mArray[1]] || {};
+                        color_value = colorItem.propId;
+                    }
+                    if (size_value && color_value) {
+                        var fieldKey = color_key + '-' + color_value + '_' + size_key + '-' + size_value;
+
+                        var $text = $('#J_SkuField_price_' + fieldKey);
+                        if ($text[0]) {
+                            $text.val(item.price);
+                            E.dispatch($text[0], "blur");
+                        }
 
 
-                    taskArray.push((function(i, fKey) {
-                        return function() {
-                            var $text = $('#J_SkuField_quantity_' + fKey);
-                            if ($text[0]) {
-                                $text.val(i.stock);
-                                E.dispatch($text[0], "blur");
-                            }
-                        };
-                    })(item, fieldKey));
-                }
+                        var $text = $('#J_SkuField_quantity_' + fieldKey);
+                        if ($text[0]) {
+                            $text.val(item.stock);
+                            E.dispatch($text[0], "blur");
+                        }
+                    }
+                });
 
             });
         },
@@ -81,14 +77,15 @@
             });
             // this.skuMap = skuMap;
 
-            this.initColorValues(taskArray);
-
             this.initSizeValues(taskArray);
+
+            this.initColorValues(taskArray);
 
             this.initSkuFieldValues(taskArray);
 
-            taskArray.push(this.checkQualification.bind(this));
+            taskArray.push(this.initSKUPics.bind(this));
 
+            taskArray.push(this.checkQualification.bind(this));
 
             new util.task({
                 array: taskArray,

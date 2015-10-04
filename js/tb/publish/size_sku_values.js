@@ -55,6 +55,7 @@
                     return function() {
                         r.checked = true;
                         E.dispatch(r, "click");
+                        E.dispatch(r, "blur");
                         r.checked = true;
                     };
                 })(radio));
@@ -70,7 +71,10 @@
                         return function() {
                             $c[0].checked = true;
                             E.dispatch($c[0], "click");
+                            E.dispatch($c[0], "blur");
+                            // setTimeout(function() {
                             $c[0].checked = true;
+                            // }, 1000);
                         };
                     })($checkbox);
                     taskArray.push(f);
@@ -92,13 +96,13 @@
                 taskArray.push((function(sKey, i, item) {
                     return function() {
                         // debugger;
-                        setTimeout(function() {
-                            var $checkbox = $sizeDIY.find('[value="' + sKey + ':' + i + '"]:first');
-                            var $text = $checkbox.nextAll(':text');
-                            E.dispatch($checkbox[0], "click");
-                            $text.val(item.text);
-                            E.dispatch($text[0], "blur");
-                        }, 1000);
+                        // setTimeout(function() {
+                        var $checkbox = $sizeDIY.find('[value="' + sKey + ':' + i + '"]:first');
+                        var $text = $checkbox.nextAll(':text');
+                        E.dispatch($checkbox[0], "click");
+                        $text.val(item.text);
+                        E.dispatch($text[0], "blur");
+                        // }, 1000);
                     };
                 })(sizeKey, index, item));
             });
@@ -154,6 +158,7 @@
                         return function() {
                             r.checked = true;
                             E.dispatch(r, "click");
+                            E.dispatch(r, "blur");
                             r.checked = true;
                         };
                     })(radio));
