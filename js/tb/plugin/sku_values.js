@@ -17,8 +17,7 @@
             var colorData = colorProperty.data;
 
 
-            var maxStock = 0,
-                $lastStockField;
+            var maxStock = 0;
 
 
             util.each(data.list, function(i, item) {
@@ -54,7 +53,7 @@
 
                         $text = $('#J_SkuField_quantity_' + fieldKey);
                         if ($text[0]) {
-                            $lastStockField = $text;
+                            me.$lastStockField = $text;
                             $text.val(item.stock);
                             E.dispatch($text[0], "blur");
                         }
@@ -62,9 +61,12 @@
                 });
             });
 
-            if (maxStock == 0 && $lastStockField) {
+            if (maxStock == 0) {
                 taskArray.push(function() {
-                    $lastStockField.val(1);
+                    if (me.$lastStockField) {
+                        me.$lastStockField.val(1);
+                        E.dispatch(me.$lastStockField[0], "blur");
+                    }
                 });
             }
         },

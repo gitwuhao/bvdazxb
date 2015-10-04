@@ -122,10 +122,10 @@
             });
 
             //没有库存了
-            if (maxStock <= 0) {
-                this.doPublishError();
-                return;
-            }
+            // if (maxStock <= 0) {
+                // this.doPublishError();
+                // return;
+            // }
 
             util.it(model.itemPriceResultDO.priceInfo, function(key, priceInfo) {
                 var sku = skuMap[key];
