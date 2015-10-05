@@ -148,11 +148,39 @@
                 handle(data.detail);
             });
         },
+        getDetailImages: function(itemId, handle) {
+            var me = this;
+            this.getDetailHTML(itemId, function(html) {
+                var fsHTML = new util.html(html);
+                var array = me.getMainImageArray(fsHTML);
+                var data = me.getDetailData(fsHTML);
+                var detail = data.detail || {}
+                var valItemInfo = detail.valItemInfo || {};
+                var skuPics = valItemInfo.skuPics;
+
+                var list = [];
+                util.each(array, function(i, src) {
+                    list.push({
+                        type: 'main',
+                        key: i,
+                        src: src
+                    });
+                });
+
+                util.it(skuPics, function(key, src) {
+                    list.push({
+                        type: 'sku',
+                        key: key,
+                        src: src
+                    });
+                });
+                handle(list);
+            });
+        },
         getURL: function(url) {
             return url.replace(/^(\/\/)/, 'http://');
         },
-        doDetailMainImageArray: function(html, handle) {
-            var fsHTML = new util.html(html);
+        getMainImageArray: function(fsHTML) {
             var array = [];
             var me = this;
             util.each(fsHTML.doc.getElementsByClassName('itbox'), function(i, div) {
@@ -160,6 +188,11 @@
                 var url = $(img[0]).attr('data-src').replace(/\.(jpg|png|gif)_.+/i, '.$1');
                 array.push(me.getURL(url));
             });
+            return array;
+        },
+        doDetailMainImageArray: function(html, handle) {
+            var fsHTML = new util.html(html);
+            var array = this.getMainImageArray(fsHTML);
             if (handle) {
                 handle(array);
             }

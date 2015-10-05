@@ -112,6 +112,7 @@
             var module = data.module;
             if (module && module.fullUrl) {
                 this.client.send('uploadSuccess', {
+                    request: request,
                     itemId: request.itemId,
                     index: request.index,
                     url: module.fullUrl,

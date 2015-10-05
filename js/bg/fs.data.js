@@ -6,7 +6,7 @@
         singleton: true,
         shops: config.shops,
         shop: config.shops[0],
-        jobIndex: 0,
+        jobIndex: 2,
         type: 'default',
         init: function() {
             this.initData();
@@ -278,7 +278,7 @@
         }
     });
 
-    fs.data.init();
+    // fs.data.init();
 
 
 })(window);

@@ -26,42 +26,49 @@
             if (!item) {
                 return;
             }
+
             var dir = this.itemDirMap[item.id];
             var shop = this.shop;
-            cfg.data.getDetailMainImage(item.id, function(array) {
-                me.task = new util.task({
-                    item: item,
-                    dir_id: dir.dir_id,
-                    shop: shop,
-                    array: array,
-                    timeout: 0,
-                    autoRun: true,
-                    execute: function(src) {
-                        var index = this.index;
-                        var dir_id = this.dir_id;
-                        var format = 'jpg';
-                        var activeItem = this.item;
-                        var task = this;
-                        var shop_name = this.shop.name;
-                        util.image.getDataBySrc(src, function(data) {
-                            me.server.request('uploadImage', {
-                                dirId: dir_id,
-                                data: data,
-                                rate: '0.95',
-                                index: index,
-                                itemId: activeItem.id,
-                                file_name: activeItem.key + '_' + shop_name + '_main_' + index + '.' + format
-                            }, function() {
+            cfg.data.getDetailImages(item.id, function(array) {
+                me.createTask(array);
+            });
+        },
+        createTask: function(item, array) {
+            var me = this;
+            me.task = new util.task({
+                item: item,
+                dir_id: dir.dir_id,
+                shop: shop,
+                array: array,
+                timeout: 0,
+                autoRun: true,
+                execute: function(taskItem) {
+                    var index = this.index;
+                    var key = taskItem.key;
+                    var dir_id = this.dir_id;
+                    var type = taskItem.type;
+                    var format = 'jpg';
+                    var activeItem = this.item;
+                    var task = this;
+                    var shop_name = this.shop.name;
+                    util.image.getDataBySrc(taskItem.src, function(data) {
+                        me.server.request('uploadImage', {
+                            dirId: dir_id,
+                            data: data,
+                            rate: '0.95',
+                            type: type,
+                            key: key,
+                            itemId: activeItem.id,
+                            file_name: activeItem.key + '_' + shop_name + '_' + type + '_' + index + '.' + format
+                        }, function() {
 
-                            });
-                            // setTimeout(task.complete.bind(task, src), 1 * 1000);
-                        }, format);
-                    },
-                    finish: function() {
-                        me.uploadJob(this.item.id);
-                        me.uploadMainImage();
-                    }
-                });
+                        });
+                    }, format);
+                },
+                finish: function() {
+                    me.uploadJob(this.item.id);
+                    // me.uploadMainImage();
+                }
             });
         },
         /*
@@ -72,8 +79,14 @@
         */
         doUploadSuccess: function(request) {
             var item = this.metaItemMap[request.itemId];
-            item.urls = item.urls || {};
-            item.urls[request.index] = request.url;
+            var oldRequest = request.request;
+            if (oldRequest.type == 'sku') {
+                item.skuPics = item.skuPics || {};
+                item.skuPics[oldRequest.key] = request.url;
+            } else {
+                item.urls = item.urls || {};
+                item.urls[oldRequest.key] = request.url;
+            }
             this.task.next();
         }
     });
