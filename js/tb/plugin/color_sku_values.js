@@ -106,7 +106,9 @@
                 var $checkbox = $('#prop_' + colorKey + '-' + item.propId);
                 if ($checkbox[0]) {
                     taskArray.push(function() {
+                        $checkbox[0].checked = false;
                         E.dispatch($checkbox[0], "click");
+                        // $checkbox[0].checked = f;
                     });
                 } else {
                     noFindArray.push(item);

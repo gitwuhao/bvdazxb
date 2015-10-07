@@ -53,10 +53,10 @@
 
                 taskArray.push((function(r) {
                     return function() {
-                        r.checked = true;
+                        r.checked = false;
                         E.dispatch(r, "click");
                         E.dispatch(r, "blur");
-                        r.checked = true;
+                        // r.checked = true;
                     };
                 })(radio));
             }
@@ -67,17 +67,14 @@
                 item.propId = sizeId;
                 var $checkbox = $('#prop_' + sizeKey + '-' + sizeId);
                 if ($checkbox[0]) {
-                    var f = (function($c) {
-                        return function() {
-                            $c[0].checked = true;
-                            E.dispatch($c[0], "click");
-                            E.dispatch($c[0], "blur");
-                            // setTimeout(function() {
-                            $c[0].checked = true;
-                            // }, 1000);
-                        };
-                    })($checkbox);
-                    taskArray.push(f);
+                    taskArray.push(function() {
+                        $checkbox[0].checked = false;
+                        E.dispatch($checkbox[0], "click");
+                        // $checkbox[0].checked = true;
+                        E.dispatch($checkbox[0], "blur");
+                        // setTimeout(function() {
+                        // }, 1000);
+                    });
                 }
             });
 
@@ -98,10 +95,14 @@
                         // debugger;
                         // setTimeout(function() {
                         var $checkbox = $sizeDIY.find('[value="' + sKey + ':' + i + '"]:first');
-                        var $text = $checkbox.nextAll(':text');
-                        E.dispatch($checkbox[0], "click");
-                        $text.val(item.text);
-                        E.dispatch($text[0], "blur");
+                        if ($checkbox[0]) {
+                            var $text = $checkbox.nextAll(':text');
+                            $checkbox[0].checked = false;
+                            E.dispatch($checkbox[0], "click");
+                            // $checkbox[0].checked = true;
+                            $text.val(item.text);
+                            E.dispatch($text[0], "blur");
+                        }
                         // }, 1000);
                     };
                 })(sizeKey, index, item));
@@ -156,10 +157,10 @@
                     });
                     taskArray.push((function(r) {
                         return function() {
-                            r.checked = true;
+                            r.checked = false;
                             E.dispatch(r, "click");
                             E.dispatch(r, "blur");
-                            r.checked = true;
+                            // r.checked = true;
                         };
                     })(radio));
                     return false;
