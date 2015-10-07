@@ -1,7 +1,7 @@
 (function(global, undefined) {
 
     classjs({
-        className: 'fs.data.auction.list',
+        className: 'fs.data.idmapping',
         extendEvent: true,
         singleton: true,
         init: function() {
@@ -18,11 +18,12 @@
             chrome.tabs.create({
                 url: 'https://sell.taobao.com/auction/merchandise/auction_list.htm?type=1#' + type
             }, function(tab) {});
+
         },
         initEvent: function() {
             var me = this;
             this.server = new connect.server({
-                id: 'auction_list',
+                id: 'idmapping',
                 onMessage: function(request, sender, callback) {
                     var id = request.id;
                     if (this.is(request, 'doUploadItemIdData')) {
@@ -57,7 +58,12 @@
                 mainData[key] = list;
             });
             this.mainData = mainData;
-            this.ready();
+            this.metaData = data;
+
+            console.info('build id mapping data https://sell.taobao.com/auction/merchandise/auction_list.htm?type=1');
+
+            this.initMetaData();
+            // this.ready();
         },
         doUploadItemIdData: function(data) {
             var me = this;
@@ -102,11 +108,26 @@
         },
         nextPage: function() {
             this.server.request('nextPage');
+        },
+        initMetaData: function() {
+            var data = this.metaData;
+            var myItemIdMap = {};
+            util.it(data, function(key, value) {
+                myItemIdMap[value] = key;
+            });
+            this.myItemIdMap = myItemIdMap;
+            this.handuItemIdMap = data;
+        },
+        getMyItemId: function(id) {
+            return this.handuItemIdMap[id];
+        },
+        getHanduItemId: function(id) {
+            return this.myItemIdMap[id];
         }
     });
 
+    fs.data.idmapping.init();
 
-    console.info('https://sell.taobao.com/auction/merchandise/auction_list.htm?type=1');
 
 
 })(window);

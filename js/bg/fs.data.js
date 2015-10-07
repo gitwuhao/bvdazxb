@@ -13,7 +13,7 @@
             this.initPCDescImageData();
             this.initH5DescImageData();
             this.initMainImageData();
-            this.initSkuPicsData();
+            // this.initSkuPicsData();
             this.initEvent();
         },
         initEvent: function() {
@@ -46,8 +46,10 @@
                         var data = me.activeItem.mainData;
                         data.h5DescUrls = me.h5DescImageMap[id].urls;
                         data.pcDescUrls = me.pcDescImageMap[id].urls;
-                        data.mainImageUrls = me.mainImageMap[id].urls;
-                        data.skuPicsUrls = me.skuPicsMap[id].skuPics;
+                        var mainImageData = me.mainImageMap[id];
+                        data.mainImageUrls = mainImageData.main;
+                        data.skuPicsUrls = mainImageData.sku;
+                        data.attachImgUrls = mainImageData.attach;
                         data.shop = me.shop;
                         callback(data);
                     } else if (this.is(request, 'getProperty')) {
@@ -58,8 +60,8 @@
                         callback(me.doPublish(id));
                     } else if (this.is(request, 'publishError')) {
                         callback(me.doPublishError(id));
-                    } else if (this.is(request, 'getItemByMyItemId')) {
-                        thid.doItemByMyItemId(id, callback);
+                    } else if (this.is(request, 'getItemDetailByMyItemId')) {
+                        me.doGetItemDetailByMyItemId(id, callback);
                     }
                 }
             });
@@ -279,8 +281,22 @@
                 error: function() {}
             });
         },
-        doItemByMyItemId: function(id,callback) {
-
+        getMyItemId: function(id) {
+            return fs.data.idmapping.getMyItemId(id);
+        },
+        getHanduItemId: function(id) {
+            return fs.data.idmapping.getHanduItemId(id);
+        },
+        doGetItemDetailByMyItemId: function(id, callback) {
+            id = this.getHanduItemId(id);
+            if (id) {
+                cfg.data.getDetail(id, function(data) {
+                    callback({
+                        id: id,
+                        data: data
+                    });
+                });
+            }
         }
     });
 

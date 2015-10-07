@@ -15,13 +15,10 @@
                 console.warn('wait client connect,open http://tadget.taobao.com/redaction/manager.htm#isImage ...');
             });
 
-
             this.on('captureImage', this.doCaptureImage);
             this.on('captureDone', this.doCaptureDone);
 
-
             this.callSuper();
-
 
             fsPlugin.register(this);
         },
@@ -57,12 +54,12 @@
         },
         doCaptureDone: function() {
             var me = this;
-            this.activeWin.document.title = 'doCaptureDone...';
+            this.activeWin.document.title = 'doCaptureDone[' + this.itemData.index + ']...';
             setTimeout(function() {
                 var item = me.activeItem;
                 me.uploadJob(item.id);
                 me.activeWin.location.reload();
-            }, 1000);
+            }, 5 * 1000);
         },
         createTab: function() {
             var me = this,

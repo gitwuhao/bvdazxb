@@ -23,7 +23,7 @@
             }
             var me = this;
             this.client = new connect.client({
-                id: 'auction_list',
+                id: 'idmapping',
                 onConnect: function() {
                     me.doClientInitDone();
                 },

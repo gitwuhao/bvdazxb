@@ -22,7 +22,7 @@
             "js/bg/fs.job.js",
             "js/bg/fs.dir.js",
             "js/bg/fs.data.js",
-            "js/bg/fs.data.auction.list.js",
+            "js/bg/fs.data.idmapping.js",
             "js/bg/fs.image.dir.js",
             "js/bg/fs.image.desc.js",
             // "js/bg/fs.image.desc.h5.js",
@@ -119,6 +119,22 @@
             "js/tb/auction_list.js"
         ],
         "matches": ["http://sell.taobao.com/auction/merchandise/auction_list.htm*", "https://sell.taobao.com/auction/merchandise/auction_list.htm*"],
+        "run_at": "document_start"
+    }, {
+        "js": [
+            "js/lib/jquery-2.1.1.js",
+            "js/lib/util.js",
+            "js/lib/E.js",
+            "js/lib/class.js",
+            "js/lib/class.event.js",
+            "js/lib/html.js",
+            "js/lib/task.js",
+            "js/lib/connect.js",
+            "js/cfg/config.js",
+            "js/cfg/data.js",
+            "js/tb/checkitem.js"
+        ],
+        "matches": ["http://item.taobao.com/item.htm*", "https://item.taobao.com/item.htm*"],
         "run_at": "document_start"
     }, {
         "js": [

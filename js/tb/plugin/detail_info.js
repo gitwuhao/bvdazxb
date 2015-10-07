@@ -7,7 +7,7 @@
         },
         initDetailBox: function() {
             var fsboxId = 'fs_d_b' + Date.now();
-            var html = ['<div id="', fsboxId, '" class="fs-detail-info">',
+            var html = ['<div id="', fsboxId, '" class="fs-detail-info fs-detail-bg">',
                 '<div class="fs-btn-box">',
                 '<button class="main-image fs-btn">主图</button>',
                 '<button class="h5-desc fs-btn">H5描述 </button>',
