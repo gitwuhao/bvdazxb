@@ -7,9 +7,9 @@
         singleton: true,
         init: function() {
             var me = this;
-            setTimeout(function() {
-                me.ready();
-            }, 10 * 1000);
+            // setTimeout(function() {
+            // me.ready();
+            // }, 10 * 1000);
         },
         ready: function() {
             var me = this;
@@ -86,6 +86,17 @@
             });
 
         }
+    });
+
+
+
+    tb.plugin.on('detail_box_ready', function(event) {
+        var me = this;
+        this.$btnBox.append('<button class="run-field fs-btn">启动</button>');
+
+        this.$btnBox.children('.run-field:first').on('click', function(event) {
+            me.ready();
+        });
     });
 
 

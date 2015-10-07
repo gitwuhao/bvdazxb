@@ -26,8 +26,8 @@
             if (!urls) {
                 return;
             }
-            for (var i = 1; i < 100; i++) {
-                if (!urls[i] || handle(i, urls[i]) === false) {
+            for (var i = 0; i < 100; i++) {
+                if (urls[i] && handle(i, urls[i]) === false) {
                     return false;
                 }
             }
@@ -52,7 +52,7 @@
         initMainImage: function() {
             var urls = this.mainData.mainImageUrls;
             this.eachUrls(urls, function(key, value) {
-                var $picUrl = $('input[name=picUrl' + key + ']');
+                var $picUrl = $('input[name=picUrl' + (parseInt(key)+1) + ']');
                 $picUrl.next().remove();
                 $picUrl.closest('li').addClass('has-img');
                 $picUrl.val(value);
@@ -72,7 +72,7 @@
                 var args = key.match(/(\d+)/g);
                 if (args && args[1]) {
                     var item = colorData[args[1]];
-                    var $mapImg = $('#J_MapImg_'+colorKey+'-' + item.propId);
+                    var $mapImg = $('#J_MapImg_' + colorKey + '-' + item.propId);
                     $mapImg.find('.J_ImgInput:first').val(url);
                     var $preview = $mapImg.find('.preview:first');
                     $preview.html('<img src="' + url + '_24x24.jpg">');
