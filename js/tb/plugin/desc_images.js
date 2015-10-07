@@ -52,7 +52,7 @@
         initMainImage: function() {
             var urls = this.mainData.mainImageUrls;
             this.eachUrls(urls, function(key, value) {
-                var $picUrl = $('input[name=picUrl' + (parseInt(key)+1) + ']');
+                var $picUrl = $('input[name=picUrl' + (parseInt(key) + 1) + ']');
                 $picUrl.next().remove();
                 $picUrl.closest('li').addClass('has-img');
                 $picUrl.val(value);
@@ -79,6 +79,21 @@
                     $preview.show();
                 }
             });
+        },
+        initLabelImage: function() {
+            var $item_qualification_check = $('#J_module-property [name=item_qualification_check]:first');
+            if ($item_qualification_check[0]) {
+                var attachImgUrls = this.mainData.attachImgUrls;
+                if (attachImgUrls && attachImgUrls[0] && attachImgUrls[1]) {
+                    //吊牌
+                    $('#nav_material_field_item_label_image').val(attachImgUrls[0]);
+                    //耐久标
+                    $('#nav_material_field_item_hangtag_image').val(attachImgUrls[1]);
+
+                    $item_qualification_check.attr('checked', true);
+                    $item_qualification_check.val('true');
+                }
+            }
         }
     });
 
