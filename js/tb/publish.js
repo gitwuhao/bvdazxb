@@ -24,7 +24,7 @@
             var me = this;
             setTimeout(function() {
                 if (!me.isStopRun) {
-                    window.location.href = "https://upload.taobao.com/auction/sell.jhtml";
+                    // window.location.href = "https://upload.taobao.com/auction/sell.jhtml";
                 }
             }, 3 * 1000);
         },
@@ -98,9 +98,25 @@
                 this.qualificationIndex++;
                 setTimeout(this.checkQualification.bind(this), 500);
             } else {
+                if ($item_qualification_check[0]) {
+                    this.setLabelImage($item_qualification_check);
+                }
                 this.resetOtherOption();
                 this.initValuesFinish();
             }
+        },
+        setLabelImage: function($check) {
+            var attachImgUrls = this.mainData.attachImgUrls;
+            if (attachImgUrls && attachImgUrls[0] && attachImgUrls[1]) {
+                //吊牌
+                $('#nav_material_field_item_label_image').val(attachImgUrls[0]);
+                //耐久标
+                $('#nav_material_field_item_hangtag_image').val(attachImgUrls[1]);
+
+                $check.attr('checked', true);
+                $check.val('true');
+            }
+
         },
         onSubmit: function() {
             this.client.send('publish', {

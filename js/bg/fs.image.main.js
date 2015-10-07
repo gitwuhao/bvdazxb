@@ -78,7 +78,7 @@
             util.it(sku, function(key, value) {
                 array.push({
                     key: key,
-                    src: value
+                    src: value.replace()
                 });
             });
             this.createTask(item, 'sku', array, this.finishAllTask.bind(this));

@@ -26,8 +26,8 @@
             if (!urls) {
                 return;
             }
-            for (var i = 1; i < 100; i++) {
-                if (!urls[i] || handle(i, urls[i]) === false) {
+            for (var i = 0; i < 100; i++) {
+                if (urls[i] && handle(i, urls[i]) === false) {
                     return false;
                 }
             }

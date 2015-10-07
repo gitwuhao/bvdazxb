@@ -41,7 +41,7 @@
             var item = this.activeItem;
             var shop_name = this.shop.name;
             var file_name = item.key + '_' + shop_name + '_desc_' + this.desc_type + '_' + event.index + '.' + event.format;
-            this.activeWin.document.title = file_name;
+            this.activeWin.document.title = '[' + this.itemData.index + '] desc_' + event.index;
             this.server.request('uploadImage', {
                 data: event.data,
                 rate: '0.95',
