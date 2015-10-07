@@ -9,7 +9,7 @@
             this.initClient();
             this.includeCSS();
             this.initButton();
-            // setTimeout(this.initDataTable.bind(this), 1000);
+            setTimeout(this.initDataTable.bind(this), 1000);
         },
         initClient: function() {
             var location = window.location,
@@ -132,7 +132,7 @@
                 var $goods_num = $(get('goods_num:' + $checkbox.val()));
                 var num = $goods_num.val();
                 if (num == '1') {
-                    $checkbox.remove();
+                    // $checkbox.remove();
                     $goods_num.val('-');
                 } else {
                     $checkbox.attr('checked', true);

@@ -5,7 +5,8 @@
         "handu_h5": "106141123103879340",
         "amh_h5": "106141123103866088",
         "amh_pc": "106141122482910215",
-        "handu_pc": "106141123258114760"
+        "handu_pc": "106141123258114760",
+        "handu_all": "106141127333064896"
     };
 
 
@@ -13,6 +14,7 @@
         className: 'tb.image',
         extendEvent: true,
         singleton: true,
+        isAll: true,
         init: function() {
             var me = this;
             document.body.style.display = 'none';
@@ -96,7 +98,8 @@
             formData.append('compress', 'false');
             formData.append('watermark', 'false');
             formData.append('d', '1');
-            formData.append('dirId', request.dirId);
+            var dirId = request.dirId || DIR_MAPING['handu_all'];
+            formData.append('dirId', dirId);
             formData.append('upload_m', 'NewFlash');
             formData.append('bizCode', 'tu');
 

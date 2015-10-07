@@ -30,17 +30,14 @@
         },
         doUploadH5DescImage: function(item, array) {
             var me = this;
-            var dir = this.itemDirMap[item.id];
             this.task = new util.task({
                 item: item,
-                dir_id: dir.dir_id,
                 shop: this.shop,
                 array: array,
                 timeout: 0,
                 autoRun: true,
                 execute: function(src) {
                     var index = this.index;
-                    var dir_id = this.dir_id;
                     var format = 'jpg';
                     var activeItem = this.item;
                     var task = this;
@@ -48,7 +45,6 @@
                     var file_name = activeItem.key + '_' + shop_name + '_desc_h5_' + index + '.' + format;
                     util.image.getDataBySrc(src, function(data) {
                         me.server.request('uploadImage', {
-                            dirId: dir_id,
                             data: data,
                             rate: '0.95',
                             index: index,

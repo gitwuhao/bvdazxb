@@ -25,6 +25,12 @@
                 error: function() {}
             });
         },
+        getDirItem: function(id) {
+            return this.itemDirMap[id] || {
+
+
+            };
+        },
         doLoadDirMap: function(data) {
             this.itemDirMap = data;
             this.initEvent();

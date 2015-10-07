@@ -2,9 +2,16 @@
 
     classjs({
         className: 'fs.image.main',
-        extend: 'fs.dir',
+        extend: 'fs.job',
         data_type: 'handu_pc',
         task_type: 'main',
+        ready: function() {
+            this.on('loadJobAfter', function() {
+                this.initEvent();
+                console.warn('wait client connect,open http://tadget.taobao.com/redaction/manager.htm#isImage ...');
+            });
+            this.callSuper();
+        },
         initEvent: function() {
             var me = this;
             this.server = new connect.server({
@@ -26,48 +33,91 @@
             if (!item) {
                 return;
             }
-
-            var dir = this.itemDirMap[item.id];
-            var shop = this.shop;
-            cfg.data.getDetailImages(item.id, function(array) {
-                me.createTask(array);
+            cfg.data.getDetailImages(item.id, function(data) {
+                me.executeTask(item, data);
             });
         },
-        createTask: function(item, array) {
+        executeTask: function(item, data) {
+
+            this.activeTaskData = data;
+            this.activeItem = item;
+
+            this.executeMainTask();
+        },
+        executeMainTask: function() {
+            var data = this.activeTaskData;
+            var item = this.activeItem;
+            var main = data.main;
+            var array = [];
+            util.each(main, function(i, src) {
+                array.push({
+                    key: i,
+                    src: src
+                });
+            });
+            this.createTask(item, 'main', array, this.executeAttachTask.bind(this));
+        },
+        executeAttachTask: function() {
+            var data = this.activeTaskData;
+            var item = this.activeItem;
+            var attach = data.attach;
+            var array = [];
+            util.each(attach, function(i, src) {
+                array.push({
+                    key: i,
+                    src: src
+                });
+            });
+            this.createTask(item, 'attach', array, this.executeSKUTask.bind(this));
+        },
+        executeSKUTask: function() {
+            var data = this.activeTaskData;
+            var item = this.activeItem;
+            var sku = data.sku;
+            var array = [];
+            util.it(sku, function(key, value) {
+                array.push({
+                    key: key,
+                    src: value
+                });
+            });
+            this.createTask(item, 'sku', array, this.finishAllTask.bind(this));
+        },
+        finishAllTask: function() {
+            var item = this.activeItem;
+            this.uploadJob(item.id);
+            this.uploadMainImage();
+        },
+        createTask: function(item, type, array, finish) {
+            var shop = this.shop;
             var me = this;
             me.task = new util.task({
-                item: item,
-                dir_id: dir.dir_id,
                 shop: shop,
                 array: array,
                 timeout: 0,
                 autoRun: true,
                 execute: function(taskItem) {
                     var index = this.index;
-                    var key = taskItem.key;
-                    var dir_id = this.dir_id;
-                    var type = taskItem.type;
                     var format = 'jpg';
-                    var activeItem = this.item;
                     var task = this;
                     var shop_name = this.shop.name;
                     util.image.getDataBySrc(taskItem.src, function(data) {
                         me.server.request('uploadImage', {
-                            dirId: dir_id,
                             data: data,
                             rate: '0.95',
                             type: type,
-                            key: key,
-                            itemId: activeItem.id,
-                            file_name: activeItem.key + '_' + shop_name + '_' + type + '_' + index + '.' + format
+                            key: taskItem.key,
+                            itemId: item.id,
+                            file_name: item.key + '_' + shop_name + '_' + type + '_' + index + '.' + format
                         }, function() {
 
                         });
                     }, format);
                 },
                 finish: function() {
-                    me.uploadJob(this.item.id);
-                    // me.uploadMainImage();
+                    if (finish) {
+                        finish();
+                    }
                 }
             });
         },
@@ -81,11 +131,14 @@
             var item = this.metaItemMap[request.itemId];
             var oldRequest = request.request;
             if (oldRequest.type == 'sku') {
-                item.skuPics = item.skuPics || {};
-                item.skuPics[oldRequest.key] = request.url;
-            } else {
-                item.urls = item.urls || {};
-                item.urls[oldRequest.key] = request.url;
+                item.sku = item.sku || {};
+                item.sku[oldRequest.key] = request.url;
+            } else if (oldRequest.type == 'attach') {
+                item.attach = item.attach || {};
+                item.attach[oldRequest.key] = request.url;
+            } else if (oldRequest.type == 'main') {
+                item.main = item.main || {};
+                item.main[oldRequest.key] = request.url;
             }
             this.task.next();
         }

@@ -58,7 +58,8 @@
                         callback(me.doPublish(id));
                     } else if (this.is(request, 'publishError')) {
                         callback(me.doPublishError(id));
-
+                    } else if (this.is(request, 'getItemByMyItemId')) {
+                        thid.doItemByMyItemId(id, callback);
                     }
                 }
             });
@@ -207,7 +208,7 @@
         createJob: function(index) {
             var me = this;
             this.loadJobData(function(data) {
-                me.uploadNewJobData(index, data);
+                me.uploadNewJobData(index * 200, data);
             });
         },
         loadJobData: function(callback) {
@@ -240,6 +241,8 @@
                 index: 0,
                 list: list
             };
+
+            this.newJobData = data;
             var shop = this.shop;
             $.ajax({
                 type: 'POST',
@@ -275,10 +278,13 @@
                 success: function() {},
                 error: function() {}
             });
+        },
+        doItemByMyItemId: function(id,callback) {
+
         }
     });
 
-    // fs.data.init();
+    fs.data.init();
 
 
 })(window);

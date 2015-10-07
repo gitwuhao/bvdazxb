@@ -2,19 +2,27 @@
 
     classjs({
         className: 'fs.image.desc',
-        extend: 'fs.dir',
+        extend: 'fs.job',
         desc_type: 'pc',
         PC_TYPE: 'pc',
         H5_TYPE: 'h5',
         data_type: 'handu_pc',
         task_type: 'desc',
         ready: function() {
-            this.callSuper();
-            this.initPlugin();
-        },
-        initPlugin: function() {
+
+            this.on('loadJobAfter', function() {
+                this.initEvent();
+                console.warn('wait client connect,open http://tadget.taobao.com/redaction/manager.htm#isImage ...');
+            });
+
+
             this.on('captureImage', this.doCaptureImage);
             this.on('captureDone', this.doCaptureDone);
+
+
+            this.callSuper();
+
+
             fsPlugin.register(this);
         },
         initEvent: function() {
@@ -34,12 +42,10 @@
         },
         doCaptureImage: function(event) {
             var item = this.activeItem;
-            var dir = this.itemDirMap[item.id];
             var shop_name = this.shop.name;
             var file_name = item.key + '_' + shop_name + '_desc_' + this.desc_type + '_' + event.index + '.' + event.format;
             this.activeWin.document.title = file_name;
             this.server.request('uploadImage', {
-                dirId: dir.dir_id,
                 data: event.data,
                 rate: '0.95',
                 itemId: item.id,
