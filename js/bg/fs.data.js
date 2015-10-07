@@ -168,6 +168,10 @@
             } else {
                 var data = this.itemData;
                 item = data.list[data.index];
+                if (!item) {
+                    console.error('no find item...');
+                    return;
+                }
             }
             item.type = shop.name;
 
@@ -183,7 +187,7 @@
             }
             this.itemData.index = this.itemIdMapIndex[itemId] + 1;
             this.uploadData();
-            console.warn('meta item data index:' + this.itemData.index);
+            console.warn(new Date().formatDateTime() + ' :: meta item data index:' + this.itemData.index);
         },
         doPublishError: function(itemId) {
             if (!itemId) {
