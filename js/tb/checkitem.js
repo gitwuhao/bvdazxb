@@ -39,7 +39,7 @@
         },
         initDetailBox: function() {
             var fsboxId = 'fs_d_b' + Date.now();
-            var html = ['<div id="', fsboxId, '" class="fs-detail-info">',
+            var html = ['<div id="', fsboxId, '" class="fs-detail-info" style="bottom: initial;">',
                 '<div class="fs-detail-bg">',
                     '<div class="title" style="line-height: 30px;">',
                     '</div>',

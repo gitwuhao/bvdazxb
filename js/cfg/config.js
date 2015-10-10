@@ -29,32 +29,39 @@
         amh: 'amh'
     };
 
-    config.protocol = protocol;
+    util.merger(config, {
+        protocol: protocol,
+        PCSize: {
+            clientWidth: 790,
+            clientHeight: 0
+        },
+        MobileSize: {
+            clientWidth: 750,
+            clientHeight: 0
+        },
+        shops: [{
+            'id': '58501945',
+            'suid': '263817957',
+            'name': config.KEY.hd,
+            items: []
+        }, {
+            'id': '70986937',
+            'suid': '849727411',
+            'name': config.KEY.amh,
+            items: []
+        }],
+        getURL: function(fileName) {
+            return chrome.extension.getURL(fileName);
+        },
+        getKey: function(title) {
+            var array = (title || '').match(/\w{2}\d{4}/);
+            return (array || [])[0];
+        },
+        getItemId: function(url) {
+            var array = (url || '').match(/id=(\d{10,13})/i);
+            return (array || [])[0];
+        }
+    });
 
-    config.PCSize = {
-        clientWidth: 790,
-        clientHeight: 0
-    };
-
-    config.MobileSize = {
-        clientWidth: 750,
-        clientHeight: 0
-    };
-
-    config.shops = [{
-        'id': '58501945',
-        'suid': '263817957',
-        'name': config.KEY.hd,
-        items: []
-    }, {
-        'id': '70986937',
-        'suid': '849727411',
-        'name': config.KEY.amh,
-        items: []
-    }];
-
-    config.getURL = function(fileName) {
-        return chrome.extension.getURL(fileName);
-    };
 
 })(this);

@@ -23,6 +23,7 @@
             "js/bg/fs.dir.js",
             "js/bg/fs.data.js",
             "js/bg/fs.data.idmapping.js",
+            "js/bg/hd.data.idmapping.js",
             "js/bg/fs.image.dir.js",
             "js/bg/fs.image.desc.js",
             // "js/bg/fs.image.desc.h5.js",
@@ -70,7 +71,7 @@
         ],
         "matches": ["http://upload.taobao.com/auction/publish/publish.htm*", "https://upload.taobao.com/auction/publish/publish.htm*"],
         "run_at": "document_start"
-    },{
+    }, {
         "js": [
             "js/lib/jquery-2.1.1.js",
             "js/lib/util.js",
@@ -93,7 +94,7 @@
         ],
         "matches": ["http://upload.taobao.com/auction/publish/edit.htm*", "https://upload.taobao.com/auction/publish/edit.htm*"],
         "run_at": "document_start"
-    },  {
+    }, {
         "js": [
             "js/lib/jquery-2.1.1.js",
             "js/lib/util.js",
@@ -161,6 +162,22 @@
         "run_at": "document_start"
     }, {
         "js": [
+            "js/lib/jquery-2.1.1.js",
+            "js/lib/util.js",
+            "js/lib/E.js",
+            "js/lib/class.js",
+            "js/lib/class.event.js",
+            "js/lib/html.js",
+            "js/lib/task.js",
+            "js/lib/connect.js",
+            "js/cfg/config.js",
+            "js/cfg/data.js",
+            "js/hd/hd.idmapping.js"
+        ],
+        "matches": ["http://www.handu.com/search.php*", "https://www.handu.com/search.php*"],
+        "run_at": "document_start"
+    }, {
+        "js": [
             "js/lib/jquery-2.1.1.js"
             // "js/test/test.js"
         ],
@@ -178,7 +195,8 @@
     "web_accessible_resources": [
         "css/tb/main.css",
         "css/tb/auction-list.css",
-        "js/lib/s.js"
+        "js/lib/s.js",
+        "js/lib/initClient.js"
     ],
     "key": "SDFLKJSDLKFJSDKLKFJSDLKF",
     "manifest_version": 2,

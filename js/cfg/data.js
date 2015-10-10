@@ -4,14 +4,8 @@
         className: 'cfg.data',
         extendEvent: true,
         singleton: true,
-        getKey: function(title) {
-            var array = (title || '').match(/\w{2}\d{4}/);
-            return (array || [])[0];
-        },
-        getItemId: function(url) {
-            var array = (url || '').match(/\d{11,12}/);
-            return (array || [])[0];
-        },
+        getKey: config.getKey,
+        getItemId: config.getItemId,
         getShopList: function(index, page, sort) {
             var me = this;
             var shop = this.shops[index],

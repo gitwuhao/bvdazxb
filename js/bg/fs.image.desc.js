@@ -73,6 +73,8 @@
             }, function(tab) {
                 me.activeTab = tab;
             });
+
+
         },
         getDescHTML: function(win, handle) {
             var item = this.getItem();
