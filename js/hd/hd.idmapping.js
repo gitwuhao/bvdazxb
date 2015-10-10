@@ -35,13 +35,14 @@
             var map = {};
             util.each($('a[href^=goods]'), function(i, a) {
                 var key = config.getKey(a.title);
-                var value = a.href.match(/\d{6,10}/) || [];
-                map[key] = value[0] || '';
+                if (key) {
+                    var value = a.href.match(/(\d+)/) || [];
+                    map[key] = value[0] || '';
+                }
             });
             this.client.send('doUploadItemIdData', {
                 data: map
             });
-
         },
         nextPage: function() {
             E.dispatch($('.search_page .page.next')[0], "click");

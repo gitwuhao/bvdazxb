@@ -1,0 +1,315 @@
+{
+    "cartEnable": true,
+    "isService": false,
+    "api": {
+        "addFavUrl": "//fav.m.tmall.com/to_collection.htm?xid=0db2&pds=addfav#h#detail&itemNumId=521034277389",
+        "loginUrl": "//login.tmall.com/?",
+        "httpsDescUrl": "//desc.alicdn.com/i8/520/030/521034277389/TB1vhgNJFXXXXaQXpXX8qtpFXlX.desc%7Cvar%5Edesc%3Bsign%5E778e261f65b88220db367d63c435a5c7%3Blang%5Egbk%3Bt%5E1443507106",
+        "barterUrl": "//suggest.taobao.com/sug?area=app_detail&nid=521034277389",
+        "newWapDescJson": [{
+            "enable": true,
+            "data": [{
+                "templateId": "42",
+                "content": "[{\"img\":\"//img.alicdn.com/imgextra/i3/263817957/TB2rwkrfXXXXXcHXpXXXXXXXXXX-263817957.jpg\",\"url\":\"//handuyishe.m.tmall.com\"}]",
+                "img": "//img.alicdn.com/imgextra/i3/263817957/TB2rwkrfXXXXXcHXpXXXXXXXXXX-263817957.jpg"
+            }],
+            "moduleKey": "shop_discount",
+            "moduleName": "店铺活动",
+            "component": "mui/shopactivity/index"
+        }, {
+            "moduleName": "优惠",
+            "moduleKey": "coupon",
+            "enable": true,
+            "component": "mui/shopcoupon/index"
+        }, {
+            "component": "mui/standardItemProps/index",
+            "moduleName": "商品信息",
+            "moduleKey": "item_info",
+            "enable": true,
+            "data": [{
+                "attachImgUrls": [{
+                    "imageName": "吊牌图",
+                    "img": "//img.alicdn.com/imgextra/i1/263817957/TB24yvMepXXXXaTXpXXXXXXXXXX-263817957.jpg"
+                }, {
+                    "imageName": "耐久性标签",
+                    "img": "//img.alicdn.com/imgextra/i4/263817957/TB21DTTepXXXXc8XXXXXXXXXXXX-263817957.jpg"
+                }],
+                "props": [{
+                    "vtexts": ["2015年秋季"],
+                    "ptext": "年份季节"
+                }, {
+                    "ptext": "材质成分",
+                    "vtexts": ["棉85% 聚酯纤维15%"]
+                }, {
+                    "ptext": "风格",
+                    "vtexts": ["通勤"]
+                }, {
+                    "ptext": "裙长",
+                    "vtexts": ["短裙"]
+                }, {
+                    "vtexts": ["其他"],
+                    "ptext": "裙型"
+                }]
+            }]
+        }, {
+            "moduleName": "商品图片",
+            "moduleKey": "item_picture",
+            "data": [{
+                "height": "1242",
+                "width": "750",
+                "img": "https://img.alicdn.com/imgextra/i1/263817957/TB22urBfXXXXXa5XXXXXXXXXXXX-263817957.jpg"
+            }, {
+                "img": "https://img.alicdn.com/imgextra/i2/263817957/TB2te2xfXXXXXbDXXXXXXXXXXXX-263817957.jpg",
+                "width": "750",
+                "height": "1540"
+            }, {
+                "height": "1540",
+                "width": "750",
+                "img": "https://img.alicdn.com/imgextra/i4/263817957/TB2H1ztfXXXXXcUXXXXXXXXXXXX-263817957.jpg"
+            }, {
+                "img": "https://img.alicdn.com/imgextra/i4/263817957/TB23WHvfXXXXXcrXXXXXXXXXXXX-263817957.jpg",
+                "width": "750",
+                "height": "614"
+            }, {
+                "height": "1200",
+                "img": "https://img.alicdn.com/imgextra/i2/263817957/TB2pwztfXXXXXcwXXXXXXXXXXXX-263817957.jpg",
+                "width": "750"
+            }, {
+                "img": "https://img.alicdn.com/imgextra/i4/263817957/TB2rHvqfXXXXXXGXpXXXXXXXXXX-263817957.jpg",
+                "width": "750",
+                "height": "1200"
+            }],
+            "component": "mui/custommodule/index",
+            "enable": true
+        }, {
+            "moduleKey": "hot_recommanded",
+            "component": "mui/shoprecommend/index",
+            "moduleName": "同店推荐",
+            "enable": true,
+            "data": [{
+                "content": "[{\"img\":\"//img.alicdn.com/bao/uploaded/i3/TB1BdeKIVXXXXbHXXXXXXXXXXXX_!!0-item_pic.jpg\",\"itemId\":\"521035049918\",\"price\":258.00,\"title\":\"时尚纹理 蝙蝠袖型 \"},{\"img\":\"//img.alicdn.com/bao/uploaded/i4/TB1wbpgIFXXXXbtXFXXXXXXXXXX_!!0-item_pic.jpg\",\"itemId\":\"520491780704\",\"price\":239.00,\"title\":\"宽松圆领卫衣\"},{\"img\":\"//img.alicdn.com/bao/uploaded/i3/TB1m6jsIpXXXXXnXVXXXXXXXXXX_!!0-item_pic.jpg\",\"itemId\":\"520437830060\",\"price\":258.00,\"title\":\"小脚弹力牛仔长裤\"}]",
+                "templateId": "16192"
+            }]
+        }],
+        "descUrl": "//dsc.taobaocdn.com/i8/520/030/521034277389/TB1vhgNJFXXXXaQXpXX8qtpFXlX.desc%7Cvar%5Edesc%3Bsign%5E778e261f65b88220db367d63c435a5c7%3Blang%5Egbk%3Bt%5E1443507106",
+        "logOutUrl": "//login.m.taobao.com/logout.htm?pds=logout%23h%23",
+        "reUrl": "//u.m.taobao.com/reg/newUser.htm?pds=reg%23h%23",
+        "myUrl": "//h5.m.taobao.com/my/index.htm#!myTaobao",
+        "newWapDescDynUrl": "//detailskip.taobao.com/json/wap/tmallH5Desc.do?itemId=521034277389&sellerId=263817957&isPreview=false",
+        "recommendUrl": "//aldcdn.tmall.com/recommend.htm?appId=03126&itemId=521034277389",
+        "rateUrl": "//rate.tmall.com/list_detail_rate.htm",
+        "propertyUrl": "//mdetail.tmall.com/mobile/itemPackage.do?itemId=521034277389"
+    },
+    "isSevenDaysRefundment": false,
+    "detail": {
+        "isItemAllowSellerView": true,
+        "isH5NewLogin": true,
+        "quantityList": null,
+        "isCarYuEBao": false,
+        "isCyclePurchase": false,
+        "isHkO2OItem": false,
+        "timeKillAuction": false,
+        "isDownShelf": false,
+        "isVitual3C": false,
+        "loginBeforeCart": false,
+        "isCarService": false,
+        "goNewAuctionFlow": false,
+        "isTeMai": false,
+        "reviewListType": 1,
+        "isHasPos": false,
+        "isShowPreClosed": false,
+        "isNewMedical": false,
+        "isPrescriptionDrug": false,
+        "show9sVideo": true,
+        "isAliTelecomNew": false,
+        "isShowContentModuleTitle": false,
+        "buyNowStatus": 2,
+        "isSkuMemorized": false,
+        "isAlicomMasterCard": false,
+        "autoccUser": false,
+        "defaultItemPrice": "338.00",
+        "isNextDayService": false,
+        "isRegionLevel": false,
+        "pageType": "default",
+        "isHiddenShopAction": false,
+        "isHkItem": false,
+        "cdn75": false,
+        "canEditInItemDet": true,
+        "isHidePoi": false,
+        "isHasQualification": false,
+        "isAllowReport": true,
+        "isShowEcityBasicSign": false,
+        "isShowEcityDesc": false,
+        "isContractPhoneItem": false,
+        "shopSameCategoryUrl": "//handuyishe.tmall.com/search.htm?search=y&categoryp=50010850&detail_nid=521034277389",
+        "is0YuanBuy": false,
+        "isIFCShop": false,
+        "canBuyInMobile": true,
+        "isAutoFinancing": false,
+        "showDiscountRecommend": false,
+        "tryReportDisable": false,
+        "isPreSellBrand": false,
+        "allowRate": true,
+        "isNewAttraction": true,
+        "addressLevel": 2,
+        "isShowEcityVerticalSign": false
+    },
+    "valMode": 128,
+    "isTmallComboSupport": true,
+    "valFlashUrl": "//cloud.video.taobao.com/play/u/263817957/p/2/e/1/t/3/29140285.swf",
+    "isAreaSell": false,
+    "isMeiz": false,
+    "storePacket": null,
+    "rstShopId": 58501945,
+    "tagsId": "4,907,1089,1163,1478,1483,1675,1803,2049,2059,2443,2507,2635,3019,3851,3915,3974,4107,4166,4171,4363,4491,4555,4614,4678,4801,4811,5835,5954,6145,6401,6411,6603,7105,7371,7947,8641,9153,9281,10818,12737,13121,13825,13953,15297,15554,16321,16577,17665,17793,17921,19841,20161,20609,21057,21697,22081,24321,24705,25282,27521,28353,28802,29889,30337,30401,30657,30977,44930,57026,59010,60418,62082,63042,72386,82306",
+    "servItemExtend": null,
+    "idsMod": [],
+    "tradeParams": {
+        "_input_charset": "utf-8",
+        "etm": "post",
+        "buyNow": "true"
+    },
+    "tag": {
+        "isShowMeiliXinde": false,
+        "isRightRecommend": true,
+        "isShowEcityIcon": false,
+        "isShowYuanchuanIcon": true,
+        "isMedical": false,
+        "isBrandSiteRightColumn": true,
+        "isShowHouseIcon": false,
+        "isBrandAttr": true,
+        "isShowTryReport": false,
+        "isAsynDesc": true
+    },
+    "tradeConfig": {
+        "1": "//h5.m.taobao.com/awp/base/buy.htm",
+        "2": "//buy.m.tmall.com/order/confirmOrderWap.htm"
+    },
+    "apiBeans": "//count.taobao.com/counter3?keys=ICCP_1_521034277389",
+    "isWTContract": false,
+    "valCartInfo": {
+        "itemId": "521034277389",
+        "statsUrl": "//go.mmstat.com/1.gif?logtype=2&category=cart_{loc}_50010850",
+        "cartUrl": "//h5.m.taobao.com/awp/base/cart.htm"
+    },
+    "isChaoshi": false,
+    "tmallRateType": 0,
+    "itemDO": {
+        "sellerNickName": "%E9%9F%A9%E9%83%BD%E8%A1%A3%E8%88%8D%E6%97%97%E8%88%B0%E5%BA%97",
+        "brandSiteId": "0",
+        "attachImgUrl": ["//img.alicdn.com/imgextra/i1/263817957/TB24yvMepXXXXaTXpXXXXXXXXXX-263817957.jpg", "//img.alicdn.com/imgextra/i4/263817957/TB21DTTepXXXXc8XXXXXXXXXXXX-263817957.jpg"],
+        "brandId": "8598007",
+        "userId": "263817957",
+        "reservePrice": "338.00",
+        "imgVedioPic": null,
+        "itemId": "521034277389",
+        "newAttraction": "时尚连衣裙 假两件设计 个性拼接 潮流印花",
+        "auctionStatus": "0",
+        "feature": "1",
+        "isBidden": false,
+        "quantity": 197,
+        "isInRepository": false,
+        "hasSku": true,
+        "encryptSellerId": "UvCxGOmHuOF8u",
+        "isElecCouponItem": false,
+        "validatorUrl": "//store.taobao.com/tadget/shop_stats.htm",
+        "title": "韩都衣舍韩版2015秋装新款女装宽松显瘦拼接假两件连衣裙NG4429茵",
+        "isOnline": true,
+        "isNewProGroup": false,
+        "isSupportTryBeforeBuy": false,
+        "progressiveSupport": "false",
+        "isDcAsyn": true,
+        "categoryId": "50010850",
+        "isSecondKillFromMobile": false,
+        "spuId": "345715335",
+        "cspuCategorySwitch": false,
+        "shopIcon": "//img.alicdn.com/63/a7/TB1cOF2JXXXXXbfaXXXSutbFXXX.jpg",
+        "location": "山东",
+        "brand": "HSTYLE/&#38889;&#37117;&#34915;&#33293;",
+        "imgVedioUrl": null,
+        "isDefaultChooseTryBeforeBuy": false,
+        "prov": "山东",
+        "isSecondKillFromPC": false,
+        "brandSpecialSold": "false",
+        "isSecondKillFromPCAndWap": false,
+        "itemTaxRate": null,
+        "sellProgressiveRate": "3_100_1.60;6_0_4.50;9_0_6.00",
+        "auctionType": "b",
+        "baikeId": null,
+        "rootCatId": "16",
+        "mainPic": "//img.alicdn.com/bao/uploaded/i4/TB1QyBjJXXXXXakXpXXXXXXXXXX_!!0-item_pic.jpg",
+        "weight": "0"
+    },
+    "valPointTimes": 1,
+    "valItemInfo": {
+        "skuName": [{
+            "id": "20509",
+            "text": "尺码",
+            "values": [{
+                "id": "28314",
+                "text": "S"
+            }, {
+                "id": "28315",
+                "text": "M"
+            }, {
+                "id": "28316",
+                "text": "L"
+            }]
+        }, {
+            "id": "1627207",
+            "text": "颜色分类",
+            "values": [{
+                "id": "28334",
+                "text": "灰色"
+            }]
+        }],
+        "skuPics": {
+            ";1627207:28334;": "//img.alicdn.com/bao/uploaded/i1/263817957/TB228nCepXXXXcIXpXXXXXXXXXX-263817957.jpg"
+        },
+        "skuList": [{
+            "pvs": "20509:28314;1627207:28334",
+            "skuId": 3104805099999,
+            "names": "S 灰色 "
+        }, {
+            "skuId": 3104805100000,
+            "pvs": "20509:28315;1627207:28334",
+            "names": "M 灰色 "
+        }, {
+            "names": "L 灰色 ",
+            "pvs": "20509:28316;1627207:28334",
+            "skuId": 3104873072001
+        }],
+        "defSelected": [],
+        "skuExtra": {
+            "pickupPoints": null,
+            "tickets": null
+        },
+        "salesProp": {},
+        "skuMap": {
+            ";20509:28314;1627207:28334;": {
+                "price": "338.00",
+                "priceCent": 33800,
+                "stock": 121,
+                "skuId": 3104805099999
+            },
+            ";20509:28316;1627207:28334;": {
+                "skuId": 3104873072001,
+                "stock": 15,
+                "price": "338.00",
+                "priceCent": 33800
+            },
+            ";20509:28315;1627207:28334;": {
+                "priceCent": 33800,
+                "price": "338.00",
+                "stock": 61,
+                "skuId": 3104805100000
+            }
+        }
+    },
+    "valPointRate": 0.5,
+    "valTimeLeft": 273051,
+    "standingDate": 0,
+    "cmCatId": "-1",
+    "isHouseholdService": false,
+    "isMultiPoint": true
+}

@@ -1,0 +1,635 @@
+{
+    "itemData": {
+        "title": "韩都衣舍韩版2015秋装新款女装长袖圆领宽松蝙蝠衫T恤YK4229鲲",
+        "itemId": "520365232407",
+        "price": "128.00",
+        "list": [{
+            "names": "常规 S 白色 ",
+            "skuId": 3101752264389,
+            "pvs": "-1:-1;20509:28314;1627207:28320",
+            "quantity": 674,
+            "price": "128.00",
+            "priceType": "秋装盛宴"
+        }, {
+            "skuId": 3101752264390,
+            "pvs": "-1:-1;20509:28315;1627207:28320",
+            "names": "常规 M 白色 ",
+            "quantity": 312,
+            "price": "128.00",
+            "priceType": "秋装盛宴"
+        }, {
+            "names": "常规 L 白色 ",
+            "skuId": 3101752264391,
+            "pvs": "-1:-1;20509:28316;1627207:28320",
+            "quantity": 242,
+            "price": "128.00",
+            "priceType": "秋装盛宴"
+        }]
+    },
+    "detail": {
+        "storePacket": null,
+        "valPointTimes": 1,
+        "cartEnable": true,
+        "isHouseholdService": false,
+        "isWTContract": false,
+        "tradeConfig": {
+            "1": "//h5.m.taobao.com/awp/base/buy.htm",
+            "2": "//buy.m.tmall.com/order/confirmOrderWap.htm"
+        },
+        "apiBeans": "//count.taobao.com/counter3?keys=ICCP_1_520365232407",
+        "idsMod": [],
+        "valPointRate": 0.5,
+        "valItemInfo": {
+            "skuName": [{
+                "id": "-1",
+                "text": "厚薄",
+                "values": [{
+                    "id": "-1",
+                    "text": "常规"
+                }]
+            }, {
+                "id": "20509",
+                "text": "尺码",
+                "values": [{
+                    "id": "28314",
+                    "text": "S"
+                }, {
+                    "id": "28315",
+                    "text": "M"
+                }, {
+                    "id": "28316",
+                    "text": "L"
+                }]
+            }, {
+                "id": "1627207",
+                "text": "主要颜色",
+                "values": [{
+                    "id": "28320",
+                    "text": "白色"
+                }]
+            }],
+            "salesProp": {},
+            "skuExtra": {
+                "pickupPoints": null,
+                "tickets": null
+            },
+            "skuPics": {
+                ";1627207:28320;": "//img.alicdn.com/bao/uploaded/i3/263817957/TB2Im4bdFXXXXXGXpXXXXXXXXXX-263817957.jpg"
+            },
+            "skuList": [{
+                "names": "常规 S 白色 ",
+                "skuId": 3101752264389,
+                "pvs": "-1:-1;20509:28314;1627207:28320",
+                "quantity": 674,
+                "price": "128.00",
+                "priceType": "秋装盛宴"
+            }, {
+                "skuId": 3101752264390,
+                "pvs": "-1:-1;20509:28315;1627207:28320",
+                "names": "常规 M 白色 ",
+                "quantity": 312,
+                "price": "128.00",
+                "priceType": "秋装盛宴"
+            }, {
+                "names": "常规 L 白色 ",
+                "skuId": 3101752264391,
+                "pvs": "-1:-1;20509:28316;1627207:28320",
+                "quantity": 242,
+                "price": "128.00",
+                "priceType": "秋装盛宴"
+            }],
+            "defSelected": [],
+            "skuMap": {
+                ";-1:-1;20509:28315;1627207:28320;": {
+                    "skuId": 3101752264390,
+                    "priceCent": 21800,
+                    "stock": 312,
+                    "price": "218.00"
+                },
+                ";-1:-1;20509:28316;1627207:28320;": {
+                    "skuId": 3101752264391,
+                    "priceCent": 21800,
+                    "stock": 242,
+                    "price": "218.00"
+                },
+                ";-1:-1;20509:28314;1627207:28320;": {
+                    "priceCent": 21800,
+                    "stock": 674,
+                    "price": "218.00",
+                    "skuId": 3101752264389
+                }
+            }
+        },
+        "isMultiPoint": true,
+        "cmCatId": "-1",
+        "itemDO": {
+            "isElecCouponItem": false,
+            "hasSku": true,
+            "encryptSellerId": "UvCxGOmHuOF8u",
+            "imgVedioUrl": null,
+            "brandSpecialSold": "false",
+            "isSecondKillFromPCAndWap": false,
+            "isBidden": false,
+            "location": "山东",
+            "isSecondKillFromMobile": false,
+            "imgVedioPic": null,
+            "categoryId": "50000671",
+            "sellerNickName": "%E9%9F%A9%E9%83%BD%E8%A1%A3%E8%88%8D%E6%97%97%E8%88%B0%E5%BA%97",
+            "attachImgUrl": ["//img.alicdn.com/imgextra/i1/263817957/TB2r1g7dpXXXXa_XXXXXXXXXXXX-263817957.jpg", "//img.alicdn.com/imgextra/i1/263817957/TB2wXXedFXXXXXmXXXXXXXXXXXX-263817957.jpg", "//img.alicdn.com/imgextra/i1/263817957/TB2bGNvdFXXXXXdXXXXXXXXXXXX-263817957.jpg"],
+            "rootCatId": "16",
+            "mainPic": "//img.alicdn.com/bao/uploaded/i3/TB1DEcfJXXXXXbHaXXXXXXXXXXX_!!0-item_pic.jpg",
+            "cspuCategorySwitch": false,
+            "brandId": "8598007",
+            "isSecondKillFromPC": false,
+            "brand": "HSTYLE/&#38889;&#37117;&#34915;&#33293;",
+            "isDefaultChooseTryBeforeBuy": false,
+            "progressiveSupport": "false",
+            "feature": "1",
+            "isInRepository": false,
+            "isSupportTryBeforeBuy": false,
+            "weight": "0",
+            "prov": "山东",
+            "sellProgressiveRate": "3_100_1.60;6_0_4.50;9_0_6.00",
+            "newAttraction": "韩版显瘦版型 个性印花 立体铆钉装饰",
+            "spuId": "342518184",
+            "shopIcon": "//img.alicdn.com/63/a7/TB1cOF2JXXXXXbfaXXXSutbFXXX.jpg",
+            "auctionStatus": "0",
+            "isOnline": true,
+            "isNewProGroup": false,
+            "brandSiteId": "0",
+            "item3DUrl": "http://www.tmall.com/wh/tmall/fushi/act/vitual?from=tmallApp&disableptf=1&itemId=520365232407&sellerId=263817957",
+            "itemTaxRate": null,
+            "userId": "263817957",
+            "validatorUrl": "//store.taobao.com/tadget/shop_stats.htm",
+            "auctionType": "b",
+            "quantity": 1228,
+            "reservePrice": "218.00",
+            "isDcAsyn": true,
+            "itemId": "520365232407",
+            "title": "韩都衣舍韩版2015秋装新款女装长袖圆领宽松蝙蝠衫T恤YK4229鲲",
+            "baikeId": null
+        },
+        "tagsId": "4,907,1089,1163,1478,1483,1675,1803,2049,2059,2443,2507,2635,3019,3851,3915,3974,4107,4166,4171,4363,4491,4555,4614,4678,4801,4811,5835,5954,6145,6401,6411,6603,7105,7371,7947,8641,9153,9281,12737,13121,13825,13953,15297,15554,16321,16577,17665,17793,17921,19841,20161,20609,21057,21697,22081,24321,24705,25282,27521,28098,28353,28802,29889,30337,30401,30657,30977,44930,48706,57026,59010,59650,59842,60418,62082,63042,70274,72386,72834,82306",
+        "rstShopId": 58501945,
+        "isTmallComboSupport": true,
+        "valMode": 128,
+        "isService": false,
+        "api": {
+            "myUrl": "//h5.m.taobao.com/my/index.htm#!myTaobao",
+            "httpsDescUrl": "//desc.alicdn.com/i2/520/360/520365232407/TB1RJhQJFXXXXcQXXXX8qtpFXlX.desc%7Cvar%5Edesc%3Bsign%5E65fc135b748f5dc5864104ee68282b31%3Blang%5Egbk%3Bt%5E1443013975",
+            "propertyUrl": "//mdetail.tmall.com/mobile/itemPackage.do?itemId=520365232407",
+            "descUrl": "//dsc.taobaocdn.com/i2/520/360/520365232407/TB1RJhQJFXXXXcQXXXX8qtpFXlX.desc%7Cvar%5Edesc%3Bsign%5E65fc135b748f5dc5864104ee68282b31%3Blang%5Egbk%3Bt%5E1443013975",
+            "logOutUrl": "//login.m.taobao.com/logout.htm?pds=logout%23h%23",
+            "addFavUrl": "//fav.m.tmall.com/to_collection.htm?xid=0db2&pds=addfav#h#detail&itemNumId=520365232407",
+            "loginUrl": "//login.tmall.com/?",
+            "recommendUrl": "//aldcdn.tmall.com/recommend.htm?appId=03126&itemId=520365232407",
+            "barterUrl": "//suggest.taobao.com/sug?area=app_detail&nid=520365232407",
+            "newWapDescDynUrl": "//detailskip.taobao.com/json/wap/tmallH5Desc.do?itemId=520365232407&sellerId=263817957&isPreview=false",
+            "rateUrl": "//rate.tmall.com/list_detail_rate.htm",
+            "reUrl": "//u.m.taobao.com/reg/newUser.htm?pds=reg%23h%23",
+            "newWapDescJson": [{
+                "moduleName": "店铺活动",
+                "component": "mui/shopactivity/index",
+                "data": [{
+                    "img": "//img.alicdn.com/imgextra/i3/263817957/TB2rwkrfXXXXXcHXpXXXXXXXXXX-263817957.jpg",
+                    "templateId": "42"
+                }],
+                "moduleKey": "shop_discount",
+                "enable": true
+            }, {
+                "component": "mui/shopcoupon/index",
+                "moduleKey": "coupon",
+                "enable": true,
+                "moduleName": "优惠"
+            }, {
+                "enable": true,
+                "data": [{
+                    "attachImgUrls": [{
+                        "img": "//img.alicdn.com/imgextra/i1/263817957/TB2r1g7dpXXXXa_XXXXXXXXXXXX-263817957.jpg",
+                        "imageName": "吊牌图"
+                    }, {
+                        "img": "//img.alicdn.com/imgextra/i1/263817957/TB2wXXedFXXXXXmXXXXXXXXXXXX-263817957.jpg",
+                        "imageName": "耐久性标签"
+                    }],
+                    "props": [{
+                        "vtexts": ["2015年秋季"],
+                        "ptext": "年份季节"
+                    }, {
+                        "vtexts": ["棉72% 聚酯纤维28%"],
+                        "ptext": "材质成分"
+                    }, {
+                        "vtexts": ["通勤"],
+                        "ptext": "风格"
+                    }, {
+                        "ptext": "服装版型",
+                        "vtexts": ["宽松"]
+                    }]
+                }],
+                "component": "mui/standardItemProps/index",
+                "moduleName": "商品信息",
+                "moduleKey": "item_info"
+            }, {
+                "data": [{
+                    "img": "https://img.alicdn.com/imgextra/i4/263817957/TB2UTUUfXXXXXb0XpXXXXXXXXXX-263817957.jpg",
+                    "height": "1242",
+                    "width": "750"
+                }, {
+                    "img": "https://img.alicdn.com/imgextra/i3/263817957/TB2pMA5fXXXXXcyXXXXXXXXXXXX-263817957.jpg",
+                    "width": "750",
+                    "height": "1540"
+                }, {
+                    "width": "750",
+                    "height": "1540",
+                    "img": "https://img.alicdn.com/imgextra/i3/263817957/TB2Ef3YfXXXXXbuXpXXXXXXXXXX-263817957.jpg"
+                }, {
+                    "height": "518",
+                    "width": "750",
+                    "img": "https://img.alicdn.com/imgextra/i1/263817957/TB2laAZfXXXXXbbXpXXXXXXXXXX-263817957.jpg"
+                }, {
+                    "img": "https://img.alicdn.com/imgextra/i3/263817957/TB2VocWfXXXXXbCXpXXXXXXXXXX-263817957.jpg",
+                    "height": "1200",
+                    "width": "750"
+                }, {
+                    "height": "1200",
+                    "width": "750",
+                    "img": "https://img.alicdn.com/imgextra/i3/263817957/TB2s0UZfXXXXXa9XpXXXXXXXXXX-263817957.jpg"
+                }],
+                "moduleKey": "item_picture",
+                "component": "mui/custommodule/index",
+                "moduleName": "商品图片",
+                "enable": true
+            }, {
+                "component": "mui/shoprecommend/index",
+                "moduleName": "同店推荐",
+                "data": [{
+                    "templateId": "16189"
+                }],
+                "moduleKey": "hot_recommanded",
+                "enable": true
+            }]
+        },
+        "isMeiz": false,
+        "tag": {
+            "isShowEcityIcon": false,
+            "isShowYuanchuanIcon": true,
+            "isShowHouseIcon": false,
+            "isBrandSiteRightColumn": true,
+            "isRightRecommend": true,
+            "isBrandAttr": true,
+            "isShowTryReport": false,
+            "isAsynDesc": true,
+            "isMedical": false,
+            "isShowMeiliXinde": false
+        },
+        "servItemExtend": null,
+        "isSevenDaysRefundment": false,
+        "isAreaSell": false,
+        "tmallRateType": 0,
+        "tradeParams": {
+            "_input_charset": "utf-8",
+            "etm": "post",
+            "buyNow": "true"
+        },
+        "isChaoshi": false,
+        "valTimeLeft": 173662,
+        "standingDate": 0,
+        "detail": {
+            "canBuyInMobile": true,
+            "isSkuMemorized": false,
+            "isCarService": false,
+            "goNewAuctionFlow": false,
+            "pageType": "default",
+            "isRegionLevel": false,
+            "timeKillAuction": false,
+            "isContractPhoneItem": false,
+            "canEditInItemDet": true,
+            "showDiscountRecommend": false,
+            "isCarYuEBao": false,
+            "isNewMedical": false,
+            "isVitual3C": false,
+            "autoccUser": false,
+            "isNewAttraction": true,
+            "isIFCShop": false,
+            "allowRate": true,
+            "isHidePoi": false,
+            "isTeMai": false,
+            "defaultItemPrice": "218.00",
+            "addressLevel": 2,
+            "isHasQualification": false,
+            "isAliTelecomNew": false,
+            "buyNowStatus": 2,
+            "isPrescriptionDrug": false,
+            "isAutoFinancing": false,
+            "isH5NewLogin": true,
+            "isShowEcityDesc": false,
+            "quantityList": null,
+            "loginBeforeCart": false,
+            "isShowEcityBasicSign": false,
+            "isShowPreClosed": false,
+            "isShowContentModuleTitle": false,
+            "isItemAllowSellerView": true,
+            "tryReportDisable": false,
+            "isAllowReport": true,
+            "is0YuanBuy": false,
+            "isHiddenShopAction": false,
+            "isAlicomMasterCard": false,
+            "isShowEcityVerticalSign": false,
+            "cdn75": false,
+            "isPreSellBrand": false,
+            "reviewListType": 1,
+            "isHkItem": false,
+            "isHkO2OItem": false,
+            "isDownShelf": false,
+            "isHasPos": false,
+            "isCyclePurchase": false,
+            "shopSameCategoryUrl": "//handuyishe.tmall.com/search.htm?search=y&categoryp=50000671&detail_nid=520365232407",
+            "isNextDayService": false,
+            "show9sVideo": true
+        },
+        "valFlashUrl": "//cloud.video.taobao.com/play/u/263817957/p/2/e/1/t/3/27445968.swf",
+        "valCartInfo": {
+            "statsUrl": "//go.mmstat.com/1.gif?logtype=2&category=cart_{loc}_50000671",
+            "cartUrl": "//h5.m.taobao.com/awp/base/cart.htm",
+            "itemId": "520365232407"
+        }
+    },
+    "mdskip": {
+        "defaultModel": {
+            "customResourceDO": {
+                "success": true
+            },
+            "deliveryDO": {
+                "areaId": 420100,
+                "deliveryAddress": "山东济南",
+                "deliverySkuMap": {
+                    "default": [{
+                        "arrivalNextDay": false,
+                        "postage": "快递: 12.0",
+                        "postageFree": false,
+                        "skuDeliveryAddress": "山东济南",
+                        "type": 0
+                    }]
+                },
+                "destination": "武汉市",
+                "success": true
+            },
+            "detailPageTipsDO": {
+                "crowdType": 0,
+                "hideIcons": false,
+                "jhs99": false,
+                "minicartSurprise": 0,
+                "priceDisplayType": 4,
+                "primaryPicIcons": [],
+                "prime": false,
+                "showDou12CornerIcon": false,
+                "success": true
+            },
+            "doubleElevenDO": {
+                "doubleElevenItem": false,
+                "halfOffItem": false,
+                "showAtmosphere": false,
+                "showRightRecommendedArea": false,
+                "step": 0,
+                "success": true
+            },
+            "gatewayDO": {
+                "changeLocationGateway": {
+                    "queryDelivery": true,
+                    "queryProm": false
+                },
+                "success": true,
+                "trade": {
+                    "addToBuyNow": {},
+                    "addToCart": {}
+                }
+            },
+            "inventoryDO": {
+                "hidden": false,
+                "icTotalQuantity": 1228,
+                "skuQuantity": {
+                    "3101752264389": {
+                        "quantity": 674,
+                        "totalQuantity": 674,
+                        "type": 1
+                    },
+                    "3101752264390": {
+                        "quantity": 312,
+                        "totalQuantity": 312,
+                        "type": 1
+                    },
+                    "3101752264391": {
+                        "quantity": 242,
+                        "totalQuantity": 242,
+                        "type": 1
+                    }
+                },
+                "success": true,
+                "totalQuantity": 1228,
+                "type": 1
+            },
+            "itemPriceResultDO": {
+                "areaId": 420100,
+                "duo11Item": false,
+                "duo11Stage": 0,
+                "extraPromShowRealPrice": false,
+                "halfOffItem": false,
+                "hasDPromotion": false,
+                "hasMobileProm": false,
+                "hideMeal": false,
+                "priceInfo": {
+                    "3101752264389": {
+                        "areaSold": true,
+                        "price": "218.00",
+                        "promotionList": [{
+                            "amountPromLimit": 0,
+                            "amountRestriction": "",
+                            "basePriceType": "IcPrice",
+                            "canBuyCouponNum": 0,
+                            "endTime": 1443542400000,
+                            "extraPromTextType": 0,
+                            "extraPromType": 0,
+                            "limitProm": false,
+                            "postageFree": false,
+                            "price": "128.00",
+                            "promType": "normal",
+                            "start": false,
+                            "startTime": 1440604800000,
+                            "status": 2,
+                            "tfCartSupport": false,
+                            "tmallCartSupport": false,
+                            "type": "秋装盛宴",
+                            "unLogBrandMember": false,
+                            "unLogShopVip": false,
+                            "unLogTbvip": false
+                        }]
+                    },
+                    "3101752264390": {
+                        "areaSold": true,
+                        "price": "218.00",
+                        "promotionList": [{
+                            "amountPromLimit": 0,
+                            "amountRestriction": "",
+                            "basePriceType": "IcPrice",
+                            "canBuyCouponNum": 0,
+                            "endTime": 1443542400000,
+                            "extraPromTextType": 0,
+                            "extraPromType": 0,
+                            "limitProm": false,
+                            "postageFree": false,
+                            "price": "128.00",
+                            "promType": "normal",
+                            "start": false,
+                            "startTime": 1440604800000,
+                            "status": 2,
+                            "tfCartSupport": false,
+                            "tmallCartSupport": false,
+                            "type": "秋装盛宴",
+                            "unLogBrandMember": false,
+                            "unLogShopVip": false,
+                            "unLogTbvip": false
+                        }]
+                    },
+                    "3101752264391": {
+                        "areaSold": true,
+                        "price": "218.00",
+                        "promotionList": [{
+                            "amountPromLimit": 0,
+                            "amountRestriction": "",
+                            "basePriceType": "IcPrice",
+                            "canBuyCouponNum": 0,
+                            "endTime": 1443542400000,
+                            "extraPromTextType": 0,
+                            "extraPromType": 0,
+                            "limitProm": false,
+                            "postageFree": false,
+                            "price": "128.00",
+                            "promType": "normal",
+                            "start": false,
+                            "startTime": 1440604800000,
+                            "status": 2,
+                            "tfCartSupport": false,
+                            "tmallCartSupport": false,
+                            "type": "秋装盛宴",
+                            "unLogBrandMember": false,
+                            "unLogShopVip": false,
+                            "unLogTbvip": false
+                        }]
+                    }
+                },
+                "queryProm": false,
+                "success": true
+            },
+            "memberRightDO": {
+                "activityType": 0,
+                "level": 0,
+                "postageFree": false,
+                "shopMember": false,
+                "success": true,
+                "time": 1,
+                "value": 0.5
+            },
+            "miscDO": {
+                "bucketId": 3,
+                "city": "武汉",
+                "cityId": 420100,
+                "hasCoupon": true,
+                "region": "江夏区",
+                "regionId": 420115,
+                "smartBannerFlag": "top",
+                "success": true,
+                "systemTime": "1443445462841",
+                "town": "纸坊街道",
+                "townId": 420115001
+            },
+            "progressiveInfoDO": {
+                "double11Privilege": -1,
+                "newPCInstallment": false,
+                "progressiveEnable": false,
+                "rateMap": {},
+                "showProgressivePlan": false,
+                "success": true,
+                "text": "",
+                "tipType": -1,
+                "tryBeforeBuy": false
+            },
+            "rateDO": {
+                "rateCounts": 3094,
+                "success": true
+            },
+            "sellCountDO": {
+                "sellCount": 3999,
+                "success": true
+            },
+            "soldAreaDataDO": {
+                "success": true
+            },
+            "tradeParams": {},
+            "tradeResult": {
+                "cartEnable": true,
+                "cartType": 2,
+                "miniTmallCartEnable": true,
+                "startTime": 1443013867000,
+                "success": true,
+                "tradeBtnText": "立即购买",
+                "tradeEnable": true,
+                "tradeType": 2
+            },
+            "userInfoDO": {
+                "activeStatus": 3,
+                "loginUserType": "buyer",
+                "nicker": "meto00",
+                "success": true,
+                "userId": 346360614
+            }
+        },
+        "isSuccess": true,
+        "new": true,
+        "success": true
+    },
+    "h5DescUrls": {
+        "1": "https://img.alicdn.com/imgextra/i2/346360614/TB2YQhPfFXXXXaLXpXXXXXXXXXX_!!346360614.jpg",
+        "2": "https://img.alicdn.com/imgextra/i4/346360614/TB2fQNJfFXXXXbWXpXXXXXXXXXX_!!346360614.jpg",
+        "3": "https://img.alicdn.com/imgextra/i3/346360614/TB2w74RfFXXXXayXpXXXXXXXXXX_!!346360614.jpg",
+        "4": "https://img.alicdn.com/imgextra/i4/346360614/TB2YJB7fFXXXXboXXXXXXXXXXXX_!!346360614.jpg",
+        "5": "https://img.alicdn.com/imgextra/i4/346360614/TB2MxhSfFXXXXaxXpXXXXXXXXXX_!!346360614.jpg",
+        "6": "https://img.alicdn.com/imgextra/i4/346360614/TB2_ypNfFXXXXblXpXXXXXXXXXX_!!346360614.jpg",
+        "7": "https://img.alicdn.com/imgextra/i4/346360614/TB21DpUfFXXXXXWXpXXXXXXXXXX_!!346360614.jpg",
+        "8": "https://img.alicdn.com/imgextra/i2/346360614/TB2gK8MfFXXXXa8XpXXXXXXXXXX_!!346360614.jpg",
+        "9": "https://img.alicdn.com/imgextra/i4/346360614/TB2ka0HfFXXXXcOXpXXXXXXXXXX_!!346360614.jpg",
+        "10": "https://img.alicdn.com/imgextra/i1/346360614/TB2UI4OfFXXXXbJXpXXXXXXXXXX_!!346360614.jpg"
+    },
+    "pcDescUrls": {
+        "1": "https://img.alicdn.com/imgextra/i1/346360614/TB2DtQ5fpXXXXXcXpXXXXXXXXXX_!!346360614.jpg",
+        "2": "https://img.alicdn.com/imgextra/i2/346360614/TB201ASfpXXXXbrXpXXXXXXXXXX_!!346360614.jpg",
+        "3": "https://img.alicdn.com/imgextra/i2/346360614/TB2uXo5fpXXXXcAXXXXXXXXXXXX_!!346360614.jpg",
+        "4": "https://img.alicdn.com/imgextra/i1/346360614/TB28NE0fpXXXXX.XpXXXXXXXXXX_!!346360614.jpg",
+        "5": "https://img.alicdn.com/imgextra/i4/346360614/TB2.yw2fpXXXXXDXpXXXXXXXXXX_!!346360614.jpg",
+        "6": "https://img.alicdn.com/imgextra/i3/346360614/TB2OQINfpXXXXceXpXXXXXXXXXX_!!346360614.jpg",
+        "7": "https://img.alicdn.com/imgextra/i3/346360614/TB2H1sUfpXXXXa1XpXXXXXXXXXX_!!346360614.jpg",
+        "8": "https://img.alicdn.com/imgextra/i4/346360614/TB2EwFcfFXXXXaFXXXXXXXXXXXX_!!346360614.jpg",
+        "9": "https://img.alicdn.com/imgextra/i2/346360614/TB2_MhafFXXXXbnXXXXXXXXXXXX_!!346360614.jpg",
+        "10": "https://img.alicdn.com/imgextra/i3/346360614/TB2QP39fpXXXXbPXXXXXXXXXXXX_!!346360614.jpg",
+        "11": "https://img.alicdn.com/imgextra/i1/346360614/TB2LuM9fpXXXXccXXXXXXXXXXXX_!!346360614.jpg",
+        "12": "https://img.alicdn.com/imgextra/i3/346360614/TB2xnlifFXXXXXxXXXXXXXXXXXX_!!346360614.jpg",
+        "13": "https://img.alicdn.com/imgextra/i2/346360614/TB2zCdcfFXXXXaAXXXXXXXXXXXX_!!346360614.jpg",
+        "14": "https://img.alicdn.com/imgextra/i2/346360614/TB2f50afFXXXXbrXXXXXXXXXXXX_!!346360614.jpg",
+        "15": "https://img.alicdn.com/imgextra/i2/346360614/TB2_ydgfFXXXXX4XXXXXXXXXXXX_!!346360614.jpg",
+        "16": "https://img.alicdn.com/imgextra/i4/346360614/TB2BhwWfpXXXXaLXpXXXXXXXXXX_!!346360614.jpg",
+        "17": "https://img.alicdn.com/imgextra/i3/346360614/TB26tpdfFXXXXaMXXXXXXXXXXXX_!!346360614.jpg"
+    },
+    "mainImageUrls": {
+        "1": "https://img.alicdn.com/imgextra/i1/346360614/TB2uZXhfFXXXXajXXXXXXXXXXXX_!!346360614.jpg",
+        "2": "https://img.alicdn.com/imgextra/i1/346360614/TB2to3.fpXXXXceXXXXXXXXXXXX_!!346360614.jpg",
+        "3": "https://img.alicdn.com/imgextra/i3/346360614/TB2hPsPfpXXXXckXpXXXXXXXXXX_!!346360614.jpg",
+        "4": "https://img.alicdn.com/imgextra/i1/346360614/TB2FMQ5fpXXXXXKXpXXXXXXXXXX_!!346360614.jpg",
+        "5": "https://img.alicdn.com/imgextra/i1/346360614/TB2zos5fpXXXXXuXpXXXXXXXXXX_!!346360614.jpg"
+    },
+    "shop": {
+        "id": "58501945",
+        "suid": "263817957",
+        "name": "handu",
+        "items": []
+    },
+    "__topic__": "getDetail",
+    "__request_id__": "queue::1443445458627"
+}

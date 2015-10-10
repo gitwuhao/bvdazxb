@@ -7,10 +7,7 @@
     }
     var nodeURL = 'http://127.0.0.1:8901',
         urls = {
-            'node': nodeURL,
-            // /shop/itemid/dir/filename
-            'upload': nodeURL + '/upload/',
-            'data': nodeURL + '/data/',
+            'data': 'data/',
             'propertyUrl': protocol + "//mdetail.tmall.com/mobile/itemPackage.do?itemId=",
             'pcDetail': protocol + '//detail.tmall.com/item.htm?id=',
             'detail': protocol + '//detail.m.tmall.com/item.htm?id=',

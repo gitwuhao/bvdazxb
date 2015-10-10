@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Options</title>
+    <style>
+    ul,
+    li {}
+    
+    li {}
+    </style>
+</head>
+
+<body>
+    <ul>
+        <script type="text/javascript">
+        var array = [{
+            title: '我的淘宝店',
+            href: 'meiergz.taobao.com'
+        }, {
+            title: '韩都淘宝店',
+            href: 'handuyishe.tmall.com'
+        }, {
+            title: '韩都官网',
+            href: 'www.handu.com'
+        }];
+        for (var i = 0, len = array.length; i < len; i++) {
+            var item = array[i];
+            document.write('<li><a href="http://' + item.href + '">' + item.title + '</a></li>');
+        }
+        </script>
+    </ul>
+</body>
+
+</html>

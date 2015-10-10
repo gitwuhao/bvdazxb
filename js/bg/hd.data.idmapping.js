@@ -76,7 +76,7 @@
                 url: config.urls.upload,
                 data: {
                     filename: this.getDataFileName(),
-                    data: JSON.stringify(this.mainData)
+                    data: JSON.stringify(this.mainData || {})
                 },
                 success: function() {},
                 error: function() {}
