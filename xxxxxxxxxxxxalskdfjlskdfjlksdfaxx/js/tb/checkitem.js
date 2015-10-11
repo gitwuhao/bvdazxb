@@ -17,11 +17,14 @@
             var me = this;
             var args = window.location.href.match(/id=(\d{10,13})/i) || [];
             var myItemId = args[1];
+            var key = config.getKey(document.title);
             if (!myItemId) {
                 return;
             }
+            this.itemKey = key;
             this.client.send('getItemDetailByMyItemId', {
-                id: myItemId
+                id: myItemId,
+                key: key
             }, function(response) {
                 me.doInitData(response.id, response.hdId, response.data);
             });
@@ -66,6 +69,15 @@
             this.$skuTbody = this.$skuTable.children('tbody:first');
 
         },
+        getLinkHTML: function() {
+            this.$title.html(['<a href="https://detail.tmall.com/item.htm?id=', this.itemId, '" target="_detail">商品可能已下架</a>',
+                '<br/>',
+                '<a href="http://www.handu.com/goods-', this.hdId, '.html" target="_hd_detail">查看官网</a>',
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+                '<a href="http://cn.bing.com/search?q=site%3Awww.handu.com+', this.itemKey, '" target="_hd_detail">搜索</a>'
+            ].join(''));
+
+        },
         REG_MATCH_SIZE: /\s?([^X]S|[^X]M|[^X]L)\s?/i,
         initDetailInfo: function() {
             var data = this.mainData;
@@ -76,10 +88,7 @@
             var shop = data.shop;
             if (!model) {
                 this.$skuTable.html('获取不到商品信息...');
-                this.$title.html(['<a href="https://detail.tmall.com/item.htm?id=', this.itemId, '" target="_detail">商品可能已下架</a>',
-                    '<br/>',
-                    '<a href="http://www.handu.com/goods-', this.hdId, '.html" target="_hd_detail">查看官网</a>'
-                ].join(''));
+                this.getLinkHTML();
                 return;
             }
 
@@ -159,12 +168,7 @@
             this.$skuTbody.html(html.join(''));
 
             var activeItem = this.activeItem;
-            this.$title.html(['<a href="https://detail.tmall.com/item.htm?id=', itemData.itemId, '" target="_detail">',
-                itemData.title,
-                '</a>',
-                '<br/>',
-                '<a href="http://www.handu.com/goods-', this.hdId, '.html" target="_hd_detail">查看官网</a>'
-            ].join(''));
+            this.getLinkHTML();
         }
     });
 

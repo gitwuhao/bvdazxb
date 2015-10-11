@@ -19,7 +19,7 @@
                 onMessage: function(request, sender, callback) {
                     var id = request.id;
                     if (this.is(request, 'getItemDetailByMyItemId')) {
-                        me.doGetItemDetailByMyItemId(id, callback);
+                        me.doGetItemDetailByMyItemId(id, request.key, callback);
                     }
                 }
             });
@@ -94,11 +94,18 @@
         getHDIdByKey: function(key) {
             return this.hdKeyMap[key];
         },
-        doGetItemDetailByMyItemId: function(id, callback) {
+        getHdId: function(id, key) {
+            var hdId = this.getHDIdByKey(key || '');
+            if (!hdId) {
+                key = this.itemIdKeyMap[id];
+                hdId = this.getHDIdByKey(key);
+            }
+            return hdId;
+        },
+        doGetItemDetailByMyItemId: function(id, key, callback) {
             id = this.getHanduItemId(id);
             if (id) {
-                var key = this.itemIdKeyMap[id];
-                var hdId = this.getHDIdByKey(key);
+                var hdId = this.getHdId(id, key);
                 cfg.data.getDetail(id, function(data) {
                     callback({
                         id: id,

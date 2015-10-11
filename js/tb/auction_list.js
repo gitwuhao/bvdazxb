@@ -74,7 +74,7 @@
         doHanDuQuery: function() {
             this.doQuery('韩都衣舍');
         },
-        doAMH: function() {
+        doAMHQuery: function() {
             this.doQuery('amh');
         },
         doQuery: function(keyword) {
