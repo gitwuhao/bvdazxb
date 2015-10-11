@@ -70,7 +70,16 @@
 
         },
         getLinkHTML: function() {
-            this.$title.html(['<a href="https://detail.tmall.com/item.htm?id=', this.itemId, '" target="_detail">商品可能已下架</a>',
+            var itemId = this.itemId;
+            var url;
+            if (itemId) {
+                url = 'https://detail.tmall.com/item.htm?id=' + this.itemId;
+            } else {
+                url = 'https://handuyishe.tmall.com/?q=' + this.itemKey + '&type=p&search=y&newHeader_b=s_from&searcy_type=item&from=.shop.pc_2_searchbutton';
+            }
+
+            
+            this.$title.html(['<a href="', url, '" target="_detail">商品可能已下架</a>',
                 '<br/>',
                 '<a href="http://www.handu.com/goods-', this.hdId, '.html" target="_hd_detail">查看官网</a>',
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
