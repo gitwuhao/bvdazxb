@@ -69,7 +69,7 @@
             this.$skuTbody = this.$skuTable.children('tbody:first');
 
         },
-        getLinkHTML: function() {
+        getLinkHTML: function(title) {
             var itemId = this.itemId;
             var url;
             if (itemId) {
@@ -78,12 +78,11 @@
                 url = 'https://handuyishe.tmall.com/?q=' + this.itemKey + '&type=p&search=y&newHeader_b=s_from&searcy_type=item&from=.shop.pc_2_searchbutton';
             }
 
-            
-            this.$title.html(['<a href="', url, '" target="_detail">商品可能已下架</a>',
-                '<br/>',
-                '<a href="http://www.handu.com/goods-', this.hdId, '.html" target="_hd_detail">查看官网</a>',
+            this.$title.html(['<a href="', url, '" target="_detail">',title,'【天猫】</a>',
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
-                '<a href="http://cn.bing.com/search?q=site%3Awww.handu.com+', this.itemKey, '" target="_hd_detail">搜索</a>'
+                '<a href="http://www.handu.com/goods-', this.hdId, '.html" target="_hd_detail">&nbsp;&nbsp;官&nbsp;&nbsp;&nbsp;&nbsp;网&nbsp;&nbsp;</a>',
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+                '<a href="http://cn.bing.com/search?q=site%3Awww.handu.com+', this.itemKey, '" target="_hd_detail">&nbsp;&nbsp;搜&nbsp;&nbsp;&nbsp;&nbsp;索&nbsp;&nbsp;</a>'
             ].join(''));
 
         },
@@ -97,7 +96,7 @@
             var shop = data.shop;
             if (!model) {
                 this.$skuTable.html('获取不到商品信息...');
-                this.getLinkHTML();
+                this.getLinkHTML('商品可能已下架');
                 return;
             }
 
@@ -177,7 +176,7 @@
             this.$skuTbody.html(html.join(''));
 
             var activeItem = this.activeItem;
-            this.getLinkHTML();
+            this.getLinkHTML('商品正在热卖');
         }
     });
 
