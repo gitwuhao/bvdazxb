@@ -100,20 +100,20 @@
         getHanduItemId: function(id) {
             return this.myItemIdMap[id];
         },
-        getAllIds: function() {
+        downloadAllItemIds: function() {
             var me = this;
             $.ajax({
                 url: 'http://s.handu.com/themes/handuyishe/goods/js/goods_no0550.js',
                 dataType: 'text',
                 success: function(data) {
-                    me.doAllIds(data);
+                    me.doDownloadAllItemIds(data);
                 },
                 error: function(msg) {
 
                 }
             });
         },
-        doAllIds: function(data) {
+        doDownloadAllItemIds: function(data) {
             var me = this;
             var ids = util.html.getDataByKey('goods_no_11', [data]);
             var array = [];
@@ -121,14 +121,14 @@
                 array.push(key);
             });
 
-            this.itemKeyMap = {};
+            this.itemKeyAllMap = {};
 
             me.task = new util.task({
                 array: array,
                 timeout: 1000,
                 autoRun: true,
                 url: 'http://cn.bing.com/search?q=site%3Awww.handu.com+',
-                handle: function(key) {
+                execute: function(key) {
                     $.ajax({
                         url: this.url + key,
                         dataType: 'text',
@@ -141,7 +141,7 @@
                     });
                 },
                 finish: function() {
-                    me.allIdsFinish();
+                    me.uploadAllItemIds();
                 }
             });
 
@@ -150,11 +150,68 @@
             var args = html.match(/goods\-\d+/);
             if (args && args[0]) {
                 args = args[0].match(/(\d+)/);
-                this.itemKeyMap[key] = args[0];
+                this.itemKeyAllMap[key] = args[0];
             }
-        },
-        allIdsFinish: function() {
 
+            this.task.next();
+        },
+        getAllItemIdsFileName: function() {
+            return 'hd_all_item_ids.json';
+        },
+        uploadAllItemIds: function() {
+            $.ajax({
+                type: 'POST',
+                url: config.urls.upload,
+                data: {
+                    filename: this.getAllItemIdsFileName(),
+                    data: JSON.stringify(this.itemKeyAllMap)
+                },
+                success: function() {},
+                error: function() {}
+            });
+        },
+        initAllItemIds: function() {
+            var me = this;
+            $.ajax({
+                type: 'POST',
+                url: config.urls.data + this.getAllItemIdsFileName(),
+                dataType: 'text',
+                success: function(data) {
+                    data = JSON.parse(data);
+                    me.doInitAllItemIds(data);
+                },
+                error: function() {}
+            });
+        },
+        doInitAllItemIds: function(data) {
+            this.itemKeyAllMap = data;
+        },
+        checkSoldOut: function(key, handle) {
+            $.ajax({
+                url: 'http://www.handu.com/goods-1031196.html',
+                dataType: 'text',
+                success: function(html) {
+                    me.doCheckSoldOut(key, html, handle);
+                },
+                error: function(msg) {
+
+                }
+            });
+        },
+        doCheckSoldOut: function(key, html, handle) {
+            var result = false;
+            var fsHTML = new util.html(html);
+            var detail = fsHTML.getById('goods_detail_2');
+            var link = detail.querySelectorAll('.cannotbuy');
+            if (link) {
+                var title = link.getAttribute('title') || '';
+                if (title.match(/下架|无货/)) {
+                    result = true;
+                }
+            }
+            if (handle) {
+                handle(result);
+            }
         }
     });
 
