@@ -99,6 +99,62 @@
         },
         getHanduItemId: function(id) {
             return this.myItemIdMap[id];
+        },
+        getAllIds: function() {
+            var me = this;
+            $.ajax({
+                url: 'http://s.handu.com/themes/handuyishe/goods/js/goods_no0550.js',
+                dataType: 'text',
+                success: function(data) {
+                    me.doAllIds(data);
+                },
+                error: function(msg) {
+
+                }
+            });
+        },
+        doAllIds: function(data) {
+            var me = this;
+            var ids = util.html.getDataByKey('goods_no_11', [data]);
+            var array = [];
+            util.it(ids, function(key, value) {
+                array.push(key);
+            });
+
+            this.itemKeyMap = {};
+
+            me.task = new util.task({
+                array: array,
+                timeout: 1000,
+                autoRun: true,
+                url: 'http://cn.bing.com/search?q=site%3Awww.handu.com+',
+                handle: function(key) {
+                    $.ajax({
+                        url: this.url + key,
+                        dataType: 'text',
+                        success: function(html) {
+                            me.getGoodsId(key, html);
+                        },
+                        error: function(msg) {
+
+                        }
+                    });
+                },
+                finish: function() {
+                    me.allIdsFinish();
+                }
+            });
+
+        },
+        getGoodsId: function(key, html) {
+            var args = html.match(/goods\-\d+/);
+            if (args && args[0]) {
+                args = args[0].match(/(\d+)/);
+                this.itemKeyMap[key] = args[0];
+            }
+        },
+        allIdsFinish: function() {
+
         }
     });
 

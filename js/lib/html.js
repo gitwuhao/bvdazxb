@@ -22,15 +22,6 @@
         },
         decodeHTML: function(html) {
             return html.replace(this.decodeReg, '$1$2');
-        }
-    });
-
-    util.merger(util.html.prototype, {
-        init: function(html) {
-            this.doc = document.createElement('div');
-            if (html) {
-                this.doc.innerHTML = util.html.encodeHTML(html);
-            }
         },
         getDataByKey: function(key, array) {
             for (var n = 0, len = array.length; n < len; n++) {
@@ -44,7 +35,17 @@
                     }
                 }
             }
+        }
+    });
+
+    util.merger(util.html.prototype, {
+        init: function(html) {
+            this.doc = document.createElement('div');
+            if (html) {
+                this.doc.innerHTML = util.html.encodeHTML(html);
+            }
         },
+        getDataByKey: util.html.getDataByKey,
         getTagName: getTagName,
         getTagContext: function(tag) {
             var list = this.doc.getElementsByTagName(this.getTagName(tag));
