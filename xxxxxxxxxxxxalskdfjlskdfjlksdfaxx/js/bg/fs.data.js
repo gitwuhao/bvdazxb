@@ -18,7 +18,14 @@
                 id: 'data',
                 onMessage: function(request, sender, callback) {
                     var id = request.id;
-                    if (this.is(request, 'getItemDetailByMyItemId')) {
+                    if (this.is(request, 'getItem')) {
+                        cfg.data.getDetail(id, function(data) {
+                            callback({
+                                id: id,
+                                mainData: data
+                            });
+                        });
+                    } else if (this.is(request, 'getItemDetailByMyItemId')) {
                         me.doGetItemDetailByMyItemId(id, request.key, callback);
                     }
                 }
