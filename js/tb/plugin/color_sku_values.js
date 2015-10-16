@@ -123,6 +123,7 @@
                 if ($checkbox[0]) {
                     taskArray.push(function() {
                         var $text = $('#J_note_' + propKey);
+                        $checkbox[0].checked=false;
                         E.dispatch($checkbox[0], "click");
                         // E.dispatch($t[0], "focus");
                         $text.val(item.text);

@@ -27,6 +27,8 @@
                         });
                     } else if (this.is(request, 'getItemDetailByMyItemId')) {
                         me.doGetItemDetailByMyItemId(id, request.key, callback);
+                    } else if (this.is(request, 'finish')) {
+                        me.doFinish();
                     }
                 }
             });
@@ -117,8 +119,8 @@
         },
         doGetItemDetailByMyItemId: function(id, key, callback) {
             id = this.getHanduItemId(id);
-            if(!id){
-                id=this.keyItemIdTMALLMap[key];
+            if (!id) {
+                id = this.keyItemIdTMALLMap[key];
             }
             if (id) {
                 var hdId = this.getHdId(id, key);
@@ -130,6 +132,9 @@
                     });
                 });
             }
+        },
+        doFinish: function() {
+
         }
     });
 

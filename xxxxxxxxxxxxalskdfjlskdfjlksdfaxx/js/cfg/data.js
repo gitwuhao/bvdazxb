@@ -125,9 +125,12 @@
             if (array.length < 1) {
                 return null;
             }
+            var detail = fsHTML.getDataByKey('_DATA_Detail', array);
+            var mdskip = fsHTML.getDataByKey('_DATA_Mdskip', array);
             return {
-                detail: fsHTML.getDataByKey('_DATA_Detail', array),
-                mdskip: fsHTML.getDataByKey('_DATA_Mdskip', array)
+                detail: detail,
+                key: this.getKey(detail.itemDO.title),
+                mdskip: mdskip
             };
         },
         getDetailMainImage: function(itemId, handle) {

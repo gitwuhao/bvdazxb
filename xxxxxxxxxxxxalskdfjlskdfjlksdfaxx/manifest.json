@@ -54,6 +54,22 @@
         ],
         "matches": ["http://upload.taobao.com/auction/publish/edit.htm*", "https://upload.taobao.com/auction/publish/edit.htm*"],
         "run_at": "document_start"
+    }, {
+        "js": [
+            "js/lib/jquery-2.1.1.js",
+            "js/lib/util.js",
+            "js/lib/E.js",
+            "js/lib/class.js",
+            "js/lib/class.event.js",
+            "js/lib/html.js",
+            "js/lib/task.js",
+            "js/lib/connect.js",
+            "js/cfg/config.js",
+            "js/cfg/data.js",
+            "js/tb/sale.js"
+        ],
+        "matches": ["http://sell.taobao.com/auction/merchandise/auction_list.htm", "https://sell.taobao.com/auction/merchandise/auction_list.htm"],
+        "run_at": "document_start"
     }],
     "icons": {
         "128": "images/sss_128.png",

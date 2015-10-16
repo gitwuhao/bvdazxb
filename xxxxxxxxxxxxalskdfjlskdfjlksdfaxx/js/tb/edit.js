@@ -10,10 +10,19 @@
             var me = this;
             setTimeout(function() {
                 me.ready();
-            }, 10 * 1000);
+            }, 5 * 1000);
+        },
+        isError: function() {
+            return location.hash.indexOf('isError') == -1;
         },
         ready: function() {
             var me = this;
+            if (this.isError()) {
+                this.doInStock();
+                this.initValuesFinish();
+                return;
+            }
+
             this.client = new connect.client({
                 id: 'data',
                 onConnect: function() {
@@ -45,9 +54,31 @@
             });
         },
         initData: function() {
+            this.mainData = this.activeItem.mainData;
+            this.mainData.shop = {};
+            this.uncheckField();
             this.includeCSS();
             this.initDetailBox();
             this.loadDetailData();
+        },
+        uncheckField: function() {
+            var me = this;
+            $('input[data-type=quantity]').each(function(i, input) {
+                var id = $(input).attr('data-id');
+                var args = id.split('_');
+                me.uncheckSizeField(args[0]);
+                me.uncheckColorField(args[1]);
+            });
+        },
+        uncheckSizeField: function(id) {
+            var $checkbox = $('#prop_' + id);
+            $checkbox[0].checked = true;
+            E.dispatch($checkbox[0], "click");
+        },
+        uncheckColorField: function(id) {
+            var $checkbox = $('#prop_' + id);
+            $checkbox[0].checked = true;
+            E.dispatch($checkbox[0], "click");
         },
         loadDetailData: function() {
             var id = this.activeItem.id;
@@ -64,6 +95,9 @@
             this.initDetailInfo();
 
             var taskArray = [];
+
+            this.initSKUValues();
+
             this.initSizeValues(taskArray);
 
             this.initColorValues(taskArray);
@@ -81,6 +115,41 @@
                 }
             });
 
+        },
+        checkQualification: function() {
+            var quantity = 0;
+            $('input[data-type=quantity]').each(function(i, input) {
+                var value = input.value;
+                if (quantity < value) {
+                    quantity = value;
+                }
+            });
+            if (quantity < 10) {
+                this.doInStock();
+            }
+            this.initValuesFinish();
+        },
+        doInStock: function() {
+            var $inStock = $('#inStock');
+            $inStock.attr('checked', true);
+            E.dispatch($inStock[0], "click");
+            $inStock.attr('checked', true);
+        },
+        initValuesFinish: function() {
+            var me = this;
+
+
+            this.client.send('finish');
+
+
+            setTimeout(function() {
+                E.dispatch($('#event_submit_do_edit')[0], "click");
+            }, 5000);
+
+            setTimeout(function() {
+                location.hash = 'isError';
+                location.reload();
+            }, 50 * 1000);
         }
     });
 
