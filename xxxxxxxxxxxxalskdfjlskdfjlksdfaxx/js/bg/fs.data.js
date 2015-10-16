@@ -51,7 +51,13 @@
             });
         },
         doInitItemIdKeyData: function(data) {
-            this.itemIdKeyMap = data;
+            var keyItemIdTMALLMap = {};
+            util.it(data, function(key, value) {
+                keyItemIdTMALLMap[value] = key;
+            });
+            this.keyItemIdTMALLMap = keyItemIdTMALLMap;
+            this.itemIdKeyTMALLMap = data;
+
         },
         initHDKeyMapData: function() {
             var me = this;
@@ -104,13 +110,16 @@
         getHdId: function(id, key) {
             var hdId = this.getHDIdByKey(key || '');
             if (!hdId) {
-                key = this.itemIdKeyMap[id];
+                key = this.itemIdKeyTMALLMap[id];
                 hdId = this.getHDIdByKey(key);
             }
             return hdId;
         },
         doGetItemDetailByMyItemId: function(id, key, callback) {
             id = this.getHanduItemId(id);
+            if(!id){
+                id=this.keyItemIdTMALLMap[key];
+            }
             if (id) {
                 var hdId = this.getHdId(id, key);
                 cfg.data.getDetail(id, function(data) {
