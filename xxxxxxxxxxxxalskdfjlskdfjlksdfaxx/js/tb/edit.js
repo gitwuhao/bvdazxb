@@ -13,7 +13,7 @@
             }, 5 * 1000);
         },
         isError: function() {
-            return location.hash.indexOf('isError') == -1;
+            return location.hash.indexOf('isError') > -1;
         },
         ready: function() {
             var me = this;
@@ -72,11 +72,17 @@
         },
         uncheckSizeField: function(id) {
             var $checkbox = $('#prop_' + id);
+            if (!$checkbox[0]) {
+                $checkbox = $('[value="' + id.replace('-', ':') + '"]');
+            }
             $checkbox[0].checked = true;
             E.dispatch($checkbox[0], "click");
         },
         uncheckColorField: function(id) {
             var $checkbox = $('#prop_' + id);
+            if (!$checkbox[0]) {
+                $checkbox = $('[value="' + id.replace('-', ':') + '"]');
+            }
             $checkbox[0].checked = true;
             E.dispatch($checkbox[0], "click");
         },
@@ -104,7 +110,7 @@
 
             this.initSkuFieldValues(taskArray);
 
-            taskArray.push(this.initSKUPics.bind(this));
+            // taskArray.push(this.initSKUPics.bind(this));
 
 
             new util.task({
@@ -120,27 +126,50 @@
             var quantity = 0;
             $('input[data-type=quantity]').each(function(i, input) {
                 var value = input.value;
-                if (quantity < value) {
-                    quantity = value;
+                if (quantity < parseInt(value)) {
+                    quantity = parseInt(value);
                 }
             });
+
             if (quantity < 10) {
                 this.doInStock();
+            } else {
+                this.doOnSale();
             }
             this.initValuesFinish();
         },
+        doOnSale: function() {
+            var $now = $('#_now0');
+            $now[0].checked = false;
+            E.dispatch($now[0], "click");
+            $now.attr('checked', true);
+        },
         doInStock: function() {
             var $inStock = $('#inStock');
-            $inStock.attr('checked', true);
+            $inStock[0].checked = false;
             E.dispatch($inStock[0], "click");
             $inStock.attr('checked', true);
         },
         initValuesFinish: function() {
             var me = this;
 
+            if (this.client) {
+                this.client.send('finish');
+            }
+            var price = 0;
 
-            this.client.send('finish');
+            $('input[data-type=price]').each(function(i, input) {
+                var value = input.value;
+                if (price < parseFloat(value)) {
+                    price = parseFloat(value);
+                }
+            });
 
+            $('input[data-type=price]').each(function(i, input) {
+                input.value = price;
+            });
+
+            $('#buynow').val(price);
 
             setTimeout(function() {
                 E.dispatch($('#event_submit_do_edit')[0], "click");

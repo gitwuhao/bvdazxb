@@ -66,7 +66,7 @@
             "js/lib/connect.js",
             "js/cfg/config.js",
             "js/cfg/data.js",
-            "js/tb/sale.js"
+            "js/tb/onsale.js"
         ],
         "matches": ["http://sell.taobao.com/auction/merchandise/auction_list.htm", "https://sell.taobao.com/auction/merchandise/auction_list.htm"],
         "run_at": "document_start"
