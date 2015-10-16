@@ -31,6 +31,29 @@
         ],
         "matches": ["http://item.taobao.com/item.htm*", "https://item.taobao.com/item.htm*"],
         "run_at": "document_start"
+    }, {
+        "js": [
+            "js/lib/jquery-2.1.1.js",
+            "js/lib/util.js",
+            "js/lib/E.js",
+            "js/lib/class.js",
+            "js/lib/class.event.js",
+            "js/lib/class.log.js",
+            "js/lib/html.js",
+            "js/lib/task.js",
+            "js/lib/connect.js",
+            "js/cfg/config.js",
+            "js/tb/edit.js",
+            "js/tb/plugin/detail_info.js",
+            "js/tb/plugin/desc_images.js",
+            "js/tb/plugin/sku_property.js",
+            "js/tb/plugin/color_sku_values.js",
+            "js/tb/plugin/size_sku_values.js",
+            "js/tb/plugin/sku_values.js",
+            "js/tb/ready.js"
+        ],
+        "matches": ["http://upload.taobao.com/auction/publish/edit.htm*", "https://upload.taobao.com/auction/publish/edit.htm*"],
+        "run_at": "document_start"
     }],
     "icons": {
         "128": "images/sss_128.png",
