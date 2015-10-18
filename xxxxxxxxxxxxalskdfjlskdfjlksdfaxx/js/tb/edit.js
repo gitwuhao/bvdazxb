@@ -17,6 +17,7 @@
         },
         ready: function() {
             var me = this;
+            this.itemId = config.getItemId(location.href);
             if (this.isError()) {
                 this.doInStock();
                 this.initValuesFinish();
@@ -31,13 +32,19 @@
             });
         },
         // isStopRun: false,
-        goSell: function() {
+        goError: function() {
             // var me = this;
             // setTimeout(function() {
             //     if (!me.isStopRun) {
             //         window.location.href = "https://upload.taobao.com/auction/sell.jhtml";
             //     }
             // }, 3 * 1000);
+
+
+            setTimeout(function() {
+                location.hash = 'isError';
+                location.reload();
+            }, 50 * 1000);
         },
         doPublishError: function() {
             // this.client.send('publishError');
@@ -90,7 +97,7 @@
             var id = this.activeItem.id;
             var data = this.activeItem.mainData;
             if (data.isError) {
-                this.goSell();
+                this.goError();
             } else {
                 this.doDetailData(data);
             }
@@ -110,7 +117,7 @@
 
             this.initSkuFieldValues(taskArray);
 
-            // taskArray.push(this.initSKUPics.bind(this));
+            taskArray.push(this.initSKUPics.bind(this));
 
 
             new util.task({
@@ -153,9 +160,6 @@
         initValuesFinish: function() {
             var me = this;
 
-            if (this.client) {
-                this.client.send('finish');
-            }
             var price = 0;
 
             $('input[data-type=price]').each(function(i, input) {
@@ -169,16 +173,26 @@
                 input.value = price;
             });
 
+            $('input.J_ImgInput').each(function(i, input) {
+                input.value = '';
+            });
+
             $('#buynow').val(price);
 
+            if (!this.mainData || this.mainData.isSoldOut == true) {
+                this.doInStock();
+            }
+
             setTimeout(function() {
+                if (me.client) {
+                    me.client.send('finish', {
+                        itemId: me.itemId
+                    });
+                }
                 E.dispatch($('#event_submit_do_edit')[0], "click");
             }, 5000);
 
-            setTimeout(function() {
-                location.hash = 'isError';
-                location.reload();
-            }, 50 * 1000);
+            this.goError();
         }
     });
 

@@ -82,7 +82,7 @@
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
                 '<a href="http://www.handu.com/goods-', this.hdId, '.html" target="_hd_detail">&nbsp;&nbsp;官网查看不到就点搜索&nbsp;&nbsp;</a>',
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
-                '<a href="http://cn.bing.com/search?q=site%3Awww.handu.com+', this.itemKey, '" target="_hd_detail">&nbsp;&nbsp;搜&nbsp;&nbsp;&nbsp;&nbsp;索&nbsp;&nbsp;</a>'
+                '<a href="http://cn.bing.com/search?q=site%3Awww.handu.com+goods+', this.itemKey, '" target="_hd_detail">&nbsp;&nbsp;搜&nbsp;&nbsp;&nbsp;&nbsp;索&nbsp;&nbsp;</a>'
             ].join(''));
 
         },

@@ -20,15 +20,18 @@
                     var id = request.id;
                     if (this.is(request, 'getItem')) {
                         cfg.data.getDetail(id, function(data) {
-                            callback({
-                                id: id,
-                                mainData: data
+                            hd.data.checkSoldOutByKey(data.key, function(isSoldOut) {
+                                callback({
+                                    id: id,
+                                    isSoldOut: isSoldOut,
+                                    mainData: data
+                                });
                             });
                         });
                     } else if (this.is(request, 'getItemDetailByMyItemId')) {
                         me.doGetItemDetailByMyItemId(id, request.key, callback);
                     } else if (this.is(request, 'finish')) {
-                        me.doFinish();
+                        me.doFinish(request.itemId);
                     }
                 }
             });
@@ -133,8 +136,8 @@
                 });
             }
         },
-        doFinish: function() {
-
+        doFinish: function(itemId) {
+            tb.sync.next(itemId);
         }
     });
 

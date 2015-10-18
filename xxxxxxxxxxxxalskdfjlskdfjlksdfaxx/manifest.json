@@ -12,7 +12,9 @@
             "js/lib/task.js",
             "js/cfg/config.js",
             "js/cfg/data.js",
-            "js/bg/fs.data.js"
+            "js/bg/fs.data.js",
+            "js/bg/hd.data.js",
+            "js/bg/tb.sync.js"
         ]
     },
     "content_scripts": [{
@@ -68,7 +70,7 @@
             "js/cfg/data.js",
             "js/tb/onsale.js"
         ],
-        "matches": ["http://sell.taobao.com/auction/merchandise/auction_list.htm", "https://sell.taobao.com/auction/merchandise/auction_list.htm"],
+        "matches": ["http://sell.taobao.com/auction/merchandise/auction_list.htm?type=11", "https://sell.taobao.com/auction/merchandise/auction_list.htm?type=11"],
         "run_at": "document_start"
     }],
     "icons": {

@@ -5,14 +5,7 @@
         extendEvent: true,
         singleton: true,
         init: function() {
-            this.ready();
-        },
-        ready: function() {
             this.initEvent();
-            chrome.tabs.create({
-                url: 'https://sell.taobao.com/auction/merchandise/auction_list.htm?type=11#isRun'
-            }, function(tab) {});
-
         },
         initEvent: function() {
             var me = this;
@@ -34,29 +27,43 @@
         checkSoldOutByKey: function(key, handle) {
             var me = this;
             this.getGoodsId(key, function(id) {
-                me.checkSoldOutById(id, handle);
-            });
-        },
-        getGoodsId: function(key, callback) {
-            $.ajax({
-                url: 'http://cn.bing.com/search?q=site%3Awww.handu.com+' + key,
-                dataType: 'text',
-                success: function(html) {
-                    me.doGoodsId(key, html, callback);
-                },
-                error: function(msg) {
-
+                if (id == -1) {
+                    handle(true);
+                } else {
+                    me.checkSoldOutById(id, function(rs) {
+                        if (rs == -1) {
+                            handle(true);
+                        } else {
+                            handle(rs);
+                        }
+                    });
                 }
             });
         },
-        doGoodsId: function(key, html, callback) {
+        getGoodsId: function(key, handle) {
+            var me = this;
+            $.ajax({
+                url: 'http://cn.bing.com/search?q=site%3Awww.handu.com+goods+' + key,
+                dataType: 'text',
+                success: function(html) {
+                    me.doGoodsId(html, handle);
+                },
+                error: function(msg) {
+                    handle(-1);
+                }
+            });
+        },
+        doGoodsId: function(html, handle) {
             var args = html.match(/goods\-\d+/);
             if (args && args[0]) {
                 args = args[0].match(/(\d+)/);
-                callback(args[0]);
+                handle(args[0]);
+            } else {
+                handle(-1);
             }
         },
         checkSoldOutById: function(id, handle) {
+            var me = this;
             $.ajax({
                 url: 'http://www.handu.com/goods-' + id + '.html',
                 dataType: 'text',
@@ -64,15 +71,19 @@
                     me.doCheckSoldOut(html, handle);
                 },
                 error: function(msg) {
-
+                    handle(-1);
                 }
             });
         },
         doCheckSoldOut: function(html, handle) {
+            if (html == '') {
+                handle(-1);
+                return;
+            }
             var result = false;
             var fsHTML = new util.html(html);
             var detail = fsHTML.getById('goods_detail_2');
-            var link = detail.querySelectorAll('.cannotbuy');
+            var link = detail.querySelector('.cannotbuy');
             if (link) {
                 var title = link.getAttribute('title') || '';
                 if (title.match(/下架|无货/)) {
