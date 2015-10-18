@@ -11,9 +11,9 @@
             if (this.isAutoSync()) {
                 // var $a = $('#sold-amount-label:first');
                 // if (!$a.is('.order-by-asce')) {
-                    // E.dispatch($a[0], "click");
+                // E.dispatch($a[0], "click");
                 // } else {
-                    this.initClient();
+                this.initClient();
                 // }
             }
         },
@@ -83,7 +83,9 @@
         nextPage: function() {
             var $nextPage = $('#J_DataTable').find('.next-page:first a');
             if ($nextPage[0]) {
-                E.dispatch($nextPage[0], "click");
+                setTimeout(function() {
+                    E.dispatch($nextPage[0], "click");
+                }, 1 * 1000);
             } else {
                 this.client.send('dofinish');
             }

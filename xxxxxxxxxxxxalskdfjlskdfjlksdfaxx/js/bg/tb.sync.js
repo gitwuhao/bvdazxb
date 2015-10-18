@@ -29,12 +29,10 @@
         initMainData: function() {
             this.taskArray = [];
             setTimeout(function() {
-
                 chrome.tabs.create({
                     url: 'https://sell.taobao.com/auction/merchandise/auction_list.htm?type=11'
                 }, function(tab) {});
-
-            }, 15 * 1000);
+            }, 1 * 1000);
         },
         doUploadTaskItemIdData: function(data) {
             var me = this;
@@ -73,8 +71,8 @@
             this.task.next();
             if (this.executeNextIndex < 5) {
                 setTimeout(this.executeNext.bind(this), 60 * 1000);
-            }else{
-                this.executeNext=function(){};
+            } else {
+                this.executeNext = function() {};
             }
             this.executeNextIndex++;
         },

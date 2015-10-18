@@ -40,6 +40,7 @@
         createMessage: function(topic, data) {
             var message = data || {};
             message.__topic__ = topic;
+            message.__queue_id__ = this.queueIndex;
             return message;
         },
         is: function(request, topic) {
@@ -55,7 +56,8 @@
         if (request.__topic__ == connect.port.INIT_CLIENT) {
             connect.port.init({
                 id: request.id,
-                tabId: tab.id
+                tabId: tab.id,
+                __queue_id__: request.__queue_id__
             });
         }
         // chrome.tabs.executeScript(tab.id, {
@@ -126,14 +128,15 @@
         id: 'server',
         queueIndex: Date.now(),
         msgQueue: {},
+        portMap: {},
         ready: function() {
             connect.port.register(this);
         },
-        initEvent: function() {
+        initPort: function(port) {
             var me = this;
-            this.port.onMessage.addListener(function(request, sender) {
+            port.onMessage.addListener(function(request, sender) {
                 me.onMessage(request, sender, function(data) {
-                    me.response(request, data);
+                    me.response(port, request, data);
                 });
                 var callback = me.msgQueue[request.__request_id__];
                 if (callback) {
@@ -141,10 +144,10 @@
                 }
             });
         },
-        response: function(request, data) {
+        response: function(port, request, data) {
             var message = this.createMessage(request.__topic__, data);
             message.__request_id__ = request.__request_id__;
-            this.port.postMessage(message);
+            port.postMessage(message);
         },
         request: function(topic, data, callback) {
             var message = this.createMessage(topic, data);
@@ -158,10 +161,14 @@
             var message = this.createMessage(topic, data);
             this.port.postMessage(message);
         },
+        getPort: function(message) {
+            return this.portMap[message.__queue_id__];
+        },
         create: function(config) {
             var me = this;
-            this.port = chrome.tabs.connect(config.tabId);
-            this.initEvent();
+            var port = chrome.tabs.connect(config.tabId);
+            this.portMap[config.__queue_id__] = port;
+            this.initPort(port);
             // this.create = util.emptyFn;
         }
     });
