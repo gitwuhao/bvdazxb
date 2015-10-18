@@ -16,7 +16,7 @@
             var me = this;
             new connect.server({
                 id: 'data',
-                onMessage: function(request, sender, callback) {
+                onMessage: function(port, request, sender, callback) {
                     var id = request.id;
                     if (this.is(request, 'getItem')) {
                         cfg.data.getDetail(id, function(data) {

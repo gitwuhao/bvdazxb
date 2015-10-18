@@ -135,7 +135,12 @@
         initPort: function(port) {
             var me = this;
             port.onMessage.addListener(function(request, sender) {
+                request.port = port;
                 me.onMessage(request, sender, function(data) {
+                    if (util.isString(data)) {
+                        request.__topic__ = data;
+                        data = {};
+                    }
                     me.response(port, request, data);
                 });
                 var callback = me.msgQueue[request.__request_id__];
@@ -149,13 +154,13 @@
             message.__request_id__ = request.__request_id__;
             port.postMessage(message);
         },
-        request: function(topic, data, callback) {
+        request: function(port, topic, data, callback) {
             var message = this.createMessage(topic, data);
             message.__request_id__ = 'queue::' + (this.queueIndex++);
             if (callback) {
                 this.msgQueue[message.__request_id__] = callback;
             }
-            this.port.postMessage(message);
+            port.postMessage(message);
         },
         send: function(topic, data) {
             var message = this.createMessage(topic, data);
