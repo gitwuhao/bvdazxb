@@ -56,7 +56,10 @@
         },
         getItemId: function(url) {
             var array = (url || '').match(/id=(\d{10,13})/i);
-            return (array || [])[0];
+            return (array || [])[1];
+        },
+        getCacheID: function() {
+            return new Date().format('yyyyMMddhh');
         }
     });
 

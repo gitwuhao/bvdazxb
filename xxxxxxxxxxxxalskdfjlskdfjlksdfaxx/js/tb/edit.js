@@ -49,6 +49,10 @@
         doPublishError: function() {
             // this.client.send('publishError');
             // this.goSell();
+            // this.goError();
+
+            location.hash = 'isError';
+            location.reload();
         },
         doClientInitDone: function() {
             var me = this;

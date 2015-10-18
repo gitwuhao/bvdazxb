@@ -19,7 +19,7 @@
                     } else if (this.is(request, 'ready')) {
                         this.request('uploadTaskItemIdData');
                     } else if (this.is(request, 'dofinish')) {
-                        me.doFinish();
+                        me.createTask();
                     }
                 }
             });
@@ -51,7 +51,7 @@
         nextPage: function() {
             this.server.request('nextPage');
         },
-        doFinish: function() {
+        createTask: function() {
             this.task = new util.task({
                 array: this.taskArray,
                 timeout: 0,
@@ -59,19 +59,22 @@
                 autoRun: true,
                 execute: this.executeTask.bind(this),
                 finish: function() {
-                    if (finish) {
-                        finish();
-                    }
+                    me.doFinish();
                 }
             });
 
             this.executeNextIndex = 0;
             setTimeout(this.executeNext.bind(this), 30 * 1000);
         },
+        doFinish: function() {
+
+        },
         executeNext: function() {
             this.task.next();
             if (this.executeNextIndex < 5) {
-                setTimeout(this.executeNext.bind(this), 30 * 1000);
+                setTimeout(this.executeNext.bind(this), 60 * 1000);
+            }else{
+                this.executeNext=function(){};
             }
             this.executeNextIndex++;
         },
@@ -94,7 +97,7 @@
             }
         },
         next: function(itemId) {
-            setTimeout(this.removeTab.bind(this, itemId), 60 * 1000);
+            setTimeout(this.removeTab.bind(this, itemId), 30 * 1000);
             this.task.next();
         }
     });

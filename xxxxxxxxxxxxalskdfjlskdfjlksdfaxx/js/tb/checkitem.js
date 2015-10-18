@@ -12,6 +12,7 @@
                     me.doClientInitDone();
                 }
             });
+
         },
         doClientInitDone: function() {
             var me = this;
@@ -68,6 +69,8 @@
             this.$skuTable = fsBox.find('.sku-info:first');
             this.$skuTbody = this.$skuTable.children('tbody:first');
 
+            $('.footer_2014').remove();
+
         },
         getLinkHTML: function(title) {
             var itemId = this.itemId;
@@ -78,7 +81,7 @@
                 url = 'https://handuyishe.tmall.com/?q=' + this.itemKey + '&type=p&search=y&newHeader_b=s_from&searcy_type=item&from=.shop.pc_2_searchbutton';
             }
 
-            this.$title.html(['<a href="', url, '" target="_detail">',title,'【天猫】</a>',
+            this.$title.html(['<a href="', url, '" target="_detail">', title, '【天猫】</a>',
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
                 '<a href="http://www.handu.com/goods-', this.hdId, '.html" target="_hd_detail">&nbsp;&nbsp;官网查看不到就点搜索&nbsp;&nbsp;</a>',
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
@@ -180,8 +183,9 @@
         }
     });
 
-
-    tb.checkitem.init();
+    window.addEventListener('load', function() {
+        tb.checkitem.init();
+    });
 
 
 })(window);

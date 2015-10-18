@@ -55,7 +55,8 @@
         getAttrUL: function(itemId, handle) {
             var me = this;
             $.ajax({
-                url: config.urls.pcDetail + itemId,
+                type: 'GET',
+                url: config.urls.pcDetail + itemId+'&_='+config.getCacheID(),
                 dataType: 'text',
                 success: function(html) {
                     me.doAttrULHTML(itemId, html, handle);
@@ -68,7 +69,8 @@
         getProperty: function(itemId, handle) {
             var me = this;
             $.ajax({
-                url: config.urls.propertyUrl + itemId,
+                type: 'GET',
+                url: config.urls.propertyUrl + itemId+'&_='+config.getCacheID(),
                 dataType: 'text',
                 success: function(data) {
                     handle(JSON.parse(data));
@@ -95,7 +97,8 @@
         getDetailHTML: function(itemId, handle) {
             var me = this;
             $.ajax({
-                url: config.urls.detail + itemId,
+                type: 'GET',
+                url: config.urls.detail + itemId+'&_='+config.getCacheID(),
                 dataType: 'text',
                 success: function(html) {
                     handle(html);
@@ -186,6 +189,8 @@
             return array;
         }
     });
+
+
 
 
 
